@@ -2,11 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
+import { LocationHistoryModule } from './location-history/location-history.module';
+import { NotificationModule } from './notification/notification.module';
 import { AuthModule } from './auth/auth.module';
-import { NotificationsModule } from './notifications/notifications.module';
-import { ChannelModule } from './channel/channel.module';
-import { NotificationLogModule } from './notification-log/notification-log.module';
 
 @Module({
   imports: [
@@ -16,11 +15,11 @@ import { NotificationLogModule } from './notification-log/notification-log.modul
       useFactory: typeOrmConfig,
       inject: [ConfigService],
     }),
-    UsersModule,
     AuthModule,
-    NotificationsModule,
-    ChannelModule,
-    NotificationLogModule,
+    NotificationModule,
+    UserModule,
+    LocationHistoryModule,
+    NotificationModule,
   ],
 })
 export class AppModule {}
