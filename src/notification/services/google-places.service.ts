@@ -1,221 +1,130 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PlaceResult, TravelTime } from '../types/notification.types';
+import {
+  Client,
+  Language,
+  TravelMode
+} from '@googlemaps/google-maps-services-js';
 
 @Injectable()
-export class GooglePlacesService implements OnModuleInit {
+export class GooglePlacesService {
   private readonly logger = new Logger(GooglePlacesService.name);
-  private googleMaps: any;
-  private isInitialized: boolean = false;
-  private hasValidApiKey: boolean = false;
+  private client: Client;
+  private apiKey!: string; // aseguramos que será string
 
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {
+    this.client = new Client({});
 
-  async onModuleInit() {
-    await this.initializeGoogleMaps();
-  }
+    const key = this.configService.get<string>('GOOGLE_API_KEY');
 
-  private async initializeGoogleMaps() {
-    const apiKey = this.configService.get('GOOGLE_API_KEY');
-    
-    if (!apiKey || apiKey.includes('mock') || apiKey.length < 10) {
-      this.logger.error('GOOGLE_API_KEY NO VÁLIDA para producción');
-      this.logger.error('Configura una API key real en .env');
-      this.hasValidApiKey = false;
-      return;
+    if (!key) {
+      this.logger.error('GOOGLE_API_KEY faltante en el .env');
+      throw new Error('GOOGLE_API_KEY es obligatoria');
     }
 
+    this.apiKey = key;
+  }
+
+  /** Buscar lugares turísticos cercanos */
+  async getNearbyTouristPlaces(coords: { lat: number; lng: number }) {
     try {
-      const { createClient } = await import('@google/maps');
-      
-      this.googleMaps = createClient({
-        key: apiKey,
-        Promise: Promise,
-        language: 'es',
-        region: 'co'
+      const response = await this.client.placesNearby({
+        params: {
+          key: this.apiKey,
+          location: coords,
+          radius: 3000,
+          type: 'tourist_attraction',
+          language: Language.es // ✔ enum correcto
+        }
       });
-      
-      await this.testApiConnection();
-      this.isInitialized = true;
-      this.hasValidApiKey = true;
-      this.logger.log('Google Maps Client INICIALIZADO CON DATOS REALES');
-    } catch (error) {
-      this.logger.error(`FALLÓ INICIALIZACIÓN DE GOOGLE MAPS: ${error.message}`);
-      this.hasValidApiKey = false;
-      throw error;
+
+      return response.data.results;
+    } catch (err: any) {
+      this.logger.error(`Error en Places API: ${err.message}`);
+      throw new Error('Error consultando lugares turísticos');
     }
   }
 
-  private async testApiConnection(): Promise<void> {
+  /** Detalles del lugar */
+  async getPlaceDetails(placeId: string) {
     try {
-      const testResponse = await this.googleMaps.placesNearby({
-        location: [4.710989, -74.072092],
-        radius: 1000,
-        type: 'tourist_attraction'
-      }).asPromise();
-      
-      this.logger.log(`Google Places API CONECTADA - Encontrados ${testResponse.json.results?.length || 0} lugares`);
-    } catch (error: any) {
-      const errorDetails = error.json?.error_message || error.message;
-      this.logger.error(`TEST DE GOOGLE PLACES FALLÓ: ${errorDetails}`);
-      
-      if (errorDetails.includes('API key')) {
-        throw new Error('API key de Google inválida o sin permisos');
-      }
-      throw error;
+      const res = await this.client.placeDetails({
+        params: {
+          key: this.apiKey,
+          place_id: placeId,
+          language: Language.es // ✔ enum correcto
+        }
+      });
+
+      return res.data.result;
+    } catch (err: any) {
+      this.logger.error(`Error al obtener detalles del lugar: ${err.message}`);
+      throw new Error('Error obteniendo detalles del lugar');
     }
   }
 
-  async getNearbyTouristPlaces(location: { lat: number; lng: number }, radius: number = 2000): Promise<PlaceResult[]> {
-    if (!this.isInitialized || !this.hasValidApiKey) {
-      throw new Error('Google Places API no configurada para producción');
-    }
-
-    try {
-      this.logger.log(`BUSCANDO LUGARES TURÍSTICOS REALES en: ${location.lat}, ${location.lng}`);
-      
-      const response = await this.googleMaps.placesNearby({
-        location: [location.lat, location.lng],
-        radius: radius,
-        type: 'tourist_attraction',
-        rankby: 'prominence',
-        language: 'es'
-      }).asPromise();
-
-      if (response.json && response.json.results) {
-        const places = response.json.results;
-        this.logger.log(`ENCONTRADOS ${places.length} LUGARES TURÍSTICOS REALES`);
-        
-        return places.map(place => ({
-          name: place.name,
-          vicinity: place.vicinity,
-          rating: place.rating,
-          types: place.types,
-          geometry: place.geometry,
-          opening_hours: place.opening_hours,
-          photos: place.photos,
-          place_id: place.place_id 
-        })).filter(place => 
-          place.rating >= 3.5
-        );
-      } else {
-        throw new Error('Respuesta inválida de Google Places API');
-      }
-    } catch (error: any) {
-      this.logger.error(`ERROR BUSCANDO LUGARES REALES: ${error.message}`);
-      throw new Error(`No se pudieron obtener lugares turísticos: ${error.message}`);
-    }
-  }
-
-  async getPlaceDetails(placeId: string): Promise<any> {
-    if (!this.isInitialized) {
-      throw new Error('Google Places API no configurada');
-    }
-
-    try {
-      this.logger.log(`OBTENIENDO DETALLES REALES para: ${placeId}`);
-      
-      const response = await this.googleMaps.place({
-        placeid: placeId,
-        fields: [
-          'name', 
-          'formatted_address', 
-          'rating', 
-          'opening_hours', 
-          'website', 
-          'international_phone_number',
-          'photos',
-          'user_ratings_total'
-        ],
-        language: 'es'
-      }).asPromise();
-
-      return response.json.result;
-    } catch (error: any) {
-      this.logger.error(`ERROR OBTENIENDO DETALLES: ${error.message}`);
-      throw error;
-    }
-  }
-
+  /** Tiempo de viaje */
   async getTravelTime(
-    origin: { lat: number; lng: number }, 
-    destination: { lat: number; lng: number },
-    mode: string = 'walking'
-  ): Promise<TravelTime> {
-    if (!this.isInitialized) {
-      throw new Error('Google Directions API no configurada');
-    }
-
+    origin: { lat: number; lng: number },
+    destination: { lat: number; lng: number }
+  ) {
     try {
-      this.logger.log(`CALCULANDO TIEMPO REAL DE VIAJE`);
-      
-      const response = await this.googleMaps.directions({
-        origin: [origin.lat, origin.lng],
-        destination: [destination.lat, destination.lng],
-        mode: mode,
-        language: 'es',
-        units: 'metric'
-      }).asPromise();
+      const res = await this.client.directions({
+        params: {
+          key: this.apiKey,
+          origin,
+          destination,
+          mode: TravelMode.walking, // ✔ enum correcto
+          language: Language.es // ✔ enum correcto
+        }
+      });
 
-      if (response.json.routes && response.json.routes.length > 0) {
-        const route = response.json.routes[0];
-        const leg = route.legs[0];
-        
-        this.logger.log(`TIEMPO REAL: ${leg.duration.text}, Distancia: ${leg.distance.text}`);
-        
-        return {
-          duration: leg.duration.text,
-          distance: leg.distance.text,
-          success: true
-        };
-      } else {
-        throw new Error('No se encontraron rutas');
-      }
-    } catch (error: any) {
-      this.logger.error(`ERROR CALCULANDO TIEMPO DE VIAJE: ${error.message}`);
-      return { 
-        duration: 'No disponible', 
-        distance: 'No disponible', 
-        success: false 
-      };
-    }
-  }
-
-  async getRecommendedTouristPlace(location: { lat: number; lng: number }) {
-    try {
-      const places = await this.getNearbyTouristPlaces(location, 3000);
-      
-      if (places.length === 0) {
-        throw new Error('No se encontraron lugares turísticos cercanos');
-      }
-
-      const bestPlace = places.reduce((best, current) => 
-        (current.rating || 0) > (best.rating || 0) ? current : best
-      );
-
-      const placeDetails = await this.getPlaceDetails(bestPlace.place_id!);
-
-      let travelTime: TravelTime = { duration: 'No disponible', distance: 'No disponible', success: false };
-      if (bestPlace.geometry?.location) {
-        travelTime = await this.getTravelTime(location, bestPlace.geometry.location);
-      }
+      const leg = res.data.routes[0].legs[0];
 
       return {
-        place: bestPlace,
-        details: placeDetails,
-        travelTime: travelTime
+        duration: leg.duration.text,
+        distance: leg.distance.text
       };
-    } catch (error) {
-      this.logger.error(`ERROR OBTENIENDO LUGAR RECOMENDADO: ${error.message}`);
-      throw error;
+    } catch (err: any) {
+      this.logger.error(`Error en Directions API: ${err.message}`);
+      return {
+        duration: 'No disponible',
+        distance: 'No disponible'
+      };
     }
   }
 
-  getStatus(): { initialized: boolean; hasValidApiKey: boolean } {
-    const apiKey = this.configService.get('GOOGLE_API_KEY');
+  /** Mejor lugar turístico */
+  async getRecommendedTouristPlace(coords: { lat: number; lng: number }) {
+    const places = await this.getNearbyTouristPlaces(coords);
+
+    if (!places || places.length === 0) {
+      throw new Error('No se encontraron lugares cercanos.');
+    }
+
+    const best = places.reduce((a, b) =>
+      (b.rating || 0) > (a.rating || 0) ? b : a
+    );
+
+    if (!best.place_id) {
+      throw new Error('El lugar no tiene place_id válido');
+    }
+
+    const details = await this.getPlaceDetails(best.place_id);
+
+    let travelTime = {
+      duration: 'No disponible',
+      distance: 'No disponible'
+    };
+
+    if (best.geometry?.location) {
+      travelTime = await this.getTravelTime(coords, best.geometry.location);
+    }
+
     return {
-      initialized: this.isInitialized,
-      hasValidApiKey: !!(apiKey && apiKey.length > 10 && !apiKey.includes('mock'))
+      place: best,
+      details,
+      travelTime
     };
   }
 }

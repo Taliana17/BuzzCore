@@ -14,9 +14,10 @@ export class LocationHistoryController {
   @ApiOperation({ summary: 'Create location history record' })
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createLocationHistoryDto: CreateLocationHistoryDto, @Req() req) {
-    return this.locationHistoryService.create(createLocationHistoryDto, req.user);
+  async saveLocation(@Body() dto: CreateLocationHistoryDto, @Req() req) {
+    return this.locationHistoryService.receiveAndProcessLocation(dto, req.user);
   }
+
 
   @ApiOperation({ summary: 'Get user location history' })
   @UseGuards(JwtAuthGuard)

@@ -1,10 +1,13 @@
-import { IsString, IsObject, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateLocationHistoryDto {
-  @IsString()
-  city: string;
+  @IsNumber()
+  lat: number;
+
+  @IsNumber()
+  lng: number;
 
   @IsOptional()
-  @IsObject()
-  coordinates?: { lat: number; lng: number };
+  @IsString()
+  city?: string;   
 }
