@@ -23,4 +23,11 @@ export class Notification {
 
   @Column({ default: 'pending' })
   status: 'sent' | 'failed' | 'pending';
+
+  @Column({ type: 'jsonb', nullable: true })
+  metadata?: {
+    placeDetails?: any;
+    retryCount?: number;
+    errorMessage?: string;
+  };
 }

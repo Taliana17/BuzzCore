@@ -1,0 +1,42 @@
+### 1. Registrar usuario (si es necesario)
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "serranocaroldayana@gmail.com",
+  "password": "carol",
+  "phone":"3147327080",
+  "preferred_channel": "email"
+}
+
+### 2. Login y guardar token
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "serranocaroldayana@gmail.com",
+  "password": "carol"
+}
+
+> {%
+    client.global.set("auth_token", response.body.access_token);
+    client.log("✅ Token guardado: " + response.body.access_token);
+%}
+
+### 3. Probar estado del servicio
+GET http://localhost:3000/notifications/service-status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2Mjk5NjcwOSwiZXhwIjoxNzYzNTE1MTA5fQ.zLnY6k2tdEYIzH5IJ7NiNOO_mu7Cl_bDzy-lxv1Plas
+
+### 4. Probar Google Places
+GET http://localhost:3000/notifications/test-places
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2Mjk5NjcwOSwiZXhwIjoxNzYzNTE1MTA5fQ.zLnY6k2tdEYIzH5IJ7NiNOO_mu7Cl_bDzy-lxv1Plas
+
+### 5. Probar detalles de lugar
+GET http://localhost:3000/notifications/test-place-details?place=Centro Comercial Santafé
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2Mjk5NjcwOSwiZXhwIjoxNzYzNTE1MTA5fQ.zLnY6k2tdEYIzH5IJ7NiNOO_mu7Cl_bDzy-lxv1Plas
+
+### 6. Probar con coordenadas específicas
+GET http://localhost:3000/notifications/test-places?lat=4.710989&lng=-74.072092
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2Mjk5NjcwOSwiZXhwIjoxNzYzNTE1MTA5fQ.zLnY6k2tdEYIzH5IJ7NiNOO_mu7Cl_bDzy-lxv1Plas
+
