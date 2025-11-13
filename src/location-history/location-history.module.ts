@@ -8,5 +8,6 @@ import { LocationHistoryController } from './location-history.controller';
   imports: [TypeOrmModule.forFeature([LocationHistory])],
   controllers: [LocationHistoryController],
   providers: [LocationHistoryService],
+  exports: [LocationHistoryService],
 })
 export class LocationHistoryModule {}
