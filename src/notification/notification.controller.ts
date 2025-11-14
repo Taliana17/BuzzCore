@@ -6,10 +6,10 @@ import { EmailProvider } from './services/providers/email.provider';
 import { SmsProvider } from './services/providers/sms.provider';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { ReceiveLocationDto } from './dto/receive-location.dto';
-import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { JwtAuthGuard } from '../auth/jwt.guard';
 import { TouristPlacesService } from './services/tourist-places.service';
-import { UserService } from 'src/user/user.service';
-import { LocationHistoryService } from 'src/location-history/location-history.service';
+import { UserService } from '../user/user.service';
+import { LocationHistoryService } from '../location-history/location-history.service';
 import { 
   TestPlacesResponse, 
   TestPlaceDetailsResponse, 

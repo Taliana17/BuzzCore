@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { LocationHistory } from 'src/location-history/entities/location-history.entity';
-import { Notification } from 'src/notification/entities/notification.entity';
+import { LocationHistory } from '../../location-history/entities/location-history.entity';
+import { Notification } from '../../notification/entities/notification.entity';
 
 @Entity('users')
 export class User {

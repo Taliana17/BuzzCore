@@ -97,12 +97,7 @@ export class EmailProcessor extends WorkerHost {
     }
   }
 
-  /**
-   * Builds a basic HTML email template for notifications
-   * @param message - The notification message content
-   * @param placeName - The name of the recommended place
-   * @returns HTML string for the email template
-   */
+
   private buildBasicEmailTemplate(message: string, placeName: string): string {
     return `
 <!DOCTYPE html>
@@ -135,20 +130,13 @@ export class EmailProcessor extends WorkerHost {
 </html>`;
   }
 
-  /**
-   * Event handler for completed jobs
-   * @param job - The completed job instance
-   */
+
   @OnWorkerEvent('completed')
   onCompleted(job: Job) {
     this.logger.log(`Job ${job.id} completed successfully`);
   }
 
-  /**
-   * Event handler for failed jobs
-   * @param job - The failed job instance
-   * @param error - The error that caused the failure
-   */
+
   @OnWorkerEvent('failed')
   onFailed(job: Job, error: Error) {
     this.logger.error(`Job ${job.id} failed: ${error.message}`);

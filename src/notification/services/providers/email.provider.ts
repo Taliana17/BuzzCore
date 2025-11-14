@@ -13,10 +13,7 @@ export class EmailProvider {
     this.initializeResend();
   }
 
-  /**
-   * Initializes the Resend email client with API key validation
-   * Validates the API key format and sets up the production-ready client
-   */
+
   private initializeResend() {
     const apiKey = this.configService.get('RESEND_API_KEY');
 
@@ -36,13 +33,7 @@ export class EmailProvider {
     }
   }
 
-  /**
-   * Sends an email using the Resend service
-   * @param to - Recipient email address
-   * @param subject - Email subject line
-   * @param html - HTML content of the email
-   * @returns Promise with email sending result
-   */
+
   async send(to: string, subject: string, html: string): Promise<EmailResult> {
     // Check if provider is properly initialized before attempting to send
     if (!this.isInitialized) {
@@ -81,16 +72,7 @@ export class EmailProvider {
     }
   }
 
-  /**
-   * Sends a specialized tourist notification email with detailed place information
-   * @param to - Recipient email address
-   * @param userName - Name of the recipient
-   * @param city - City where the recommendation is located
-   * @param placeName - Name of the recommended place
-   * @param placeDetails - Detailed information about the place
-   * @param travelTime - Travel time and distance information
-   * @returns Promise with email sending result
-   */
+
   async sendTouristNotification(
     to: string, 
     userName: string,
@@ -114,15 +96,6 @@ export class EmailProvider {
     return this.send(to, subject, html);
   }
 
-  /**
-   * Builds an HTML template for tourist notifications with comprehensive place details
-   * @param userName - Name of the recipient
-   * @param city - City where the recommendation is located
-   * @param placeName - Name of the recommended place
-   * @param placeDetails - Detailed information about the place
-   * @param travelTime - Travel time and distance information
-   * @returns Formatted HTML string for the email
-   */
   private buildTouristNotificationTemplate(
     userName: string,
     city: string,
@@ -201,10 +174,7 @@ export class EmailProvider {
 </html>`;
   }
 
-  /**
-   * Returns the current status of the email provider
-   * @returns Object containing initialization status and API key validity
-   */
+
   getStatus() {
     const apiKey = this.configService.get('RESEND_API_KEY');
     return {

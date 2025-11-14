@@ -8,12 +8,6 @@ export class TouristPlacesService {
 
   constructor(private configService: ConfigService) { }
 
-  /**
-   * Retrieves nearby tourist places using a fallback strategy
-   * @param location - Geographic coordinates to search around
-   * @param radius - Search radius in meters (default: 2000)
-   * @returns Array of tourist places with fallback guarantees
-   */
   async getNearbyTouristPlaces(location: { lat: number; lng: number }, radius: number = 2000): Promise<PlaceResult[]> {
     try {
       this.logger.log(`🔍 Searching tourist places near: ${location.lat}, ${location.lng}`);
@@ -49,11 +43,6 @@ export class TouristPlacesService {
     }
   }
 
-  /**
-   * Gets a recommended tourist place with travel time calculations
-   * @param location - User's current location coordinates
-   * @returns Recommended place with details and travel information
-   */
   async getRecommendedTouristPlace(location: { lat: number; lng: number }) {
     try {
       const places = await this.getNearbyTouristPlaces(location);
@@ -117,11 +106,6 @@ export class TouristPlacesService {
     }
   }
 
-  /**
-   * Creates a fallback place when no real places are available
-   * @param location - User's current location
-   * @returns Fallback place with realistic data
-   */
   private createFallbackPlace(location: { lat: number; lng: number }) {
     this.logger.log('🔧 Using fallback place');
     
@@ -165,11 +149,6 @@ export class TouristPlacesService {
     };
   }
 
-  /**
-   * Fetches tourist places from OpenStreetMap Overpass API
-   * @param location - Geographic coordinates to search
-   * @returns Array of places from OpenStreetMap
-   */
   private async getPlacesFromOpenStreetMap(location: { lat: number; lng: number }): Promise<PlaceResult[]> {
     try {
       const query = `
@@ -247,11 +226,7 @@ export class TouristPlacesService {
     }
   }
 
-  /**
-   * Returns predefined tourist places for major Colombian cities
-   * @param location - Geographic coordinates to match against known cities
-   * @returns Array of predefined places for specific locations
-   */
+
   private getPredefinedPlacesByCoordinates(location: { lat: number; lng: number }): PlaceResult[] {
     // Bogotá area coordinates
     if (location.lat > 4.59 && location.lat < 4.62 && location.lng > -74.08 && location.lng < -74.07) {
@@ -323,11 +298,6 @@ export class TouristPlacesService {
     return [];
   }
 
-  /**
-   * Provides generic tourist places as final fallback option
-   * @param location - User's current location for proximity
-   * @returns Array of generic tourist places
-   */
   private getGenericTouristPlaces(location: { lat: number; lng: number }): PlaceResult[] {
     return [
       {
@@ -367,11 +337,7 @@ export class TouristPlacesService {
     ];
   }
 
-  /**
-   * Extracts place types from OpenStreetMap tags
-   * @param tags - OpenStreetMap element tags
-   * @returns Array of place type strings
-   */
+ 
   private getPlaceTypes(tags: any): string[] {
     const types: string[] = [];
     
@@ -385,11 +351,7 @@ export class TouristPlacesService {
     return types.length > 0 ? types : ['attraction'];
   }
 
-  /**
-   * Extracts coordinates from OpenStreetMap element
-   * @param element - OpenStreetMap element (node, way, or relation)
-   * @returns Coordinates object or null if unavailable
-   */
+
   private getElementCoordinates(element: any): { lat: number; lng: number } | null {
     if (element.lat && element.lon) {
       return { lat: element.lat, lng: element.lon };
@@ -404,11 +366,7 @@ export class TouristPlacesService {
     return null;
   }
 
-  /**
-   * Constructs address from OpenStreetMap tags
-   * @param tags - OpenStreetMap address tags
-   * @returns Formatted address string
-   */
+
   private getRealAddress(tags: any): string {
     if (tags['addr:street'] && tags['addr:housenumber']) {
       return `${tags['addr:street']} ${tags['addr:housenumber']}, ${tags['addr:city'] || ''}`.trim();
@@ -419,11 +377,7 @@ export class TouristPlacesService {
     return 'Location available on OpenStreetMap';
   }
 
-  /**
-   * Derives rating from OpenStreetMap tags with fallback values
-   * @param tags - OpenStreetMap element tags
-   * @returns Estimated rating value
-   */
+  
   private getRealRatingFromTags(tags: any): number {
     if (tags['review:score']) {
       return parseFloat(tags['review:score']);
@@ -436,11 +390,7 @@ export class TouristPlacesService {
     return baseRatings[tags.tourism] || baseRatings[tags.amenity] || 4.0;
   }
 
-  /**
-   * Extracts opening hours information from tags
-   * @param tags - OpenStreetMap element tags
-   * @returns Opening hours object with current status
-   */
+
   private getRealOpeningHours(tags: any): { open_now: boolean; weekday_text?: string[] } {
     if (tags.opening_hours) {
       const now = new Date();
@@ -457,11 +407,7 @@ export class TouristPlacesService {
     };
   }
 
-  /**
-   * Retrieves detailed information about a specific place
-   * @param placeId - Unique identifier for the place
-   * @returns Detailed place information
-   */
+
   async getPlaceDetails(placeId: string): Promise<any> {
     try {
       if (placeId.startsWith('predefined_') || placeId.startsWith('generic_') || placeId.startsWith('fallback_')) {
@@ -508,11 +454,6 @@ export class TouristPlacesService {
     }
   }
 
-  /**
-   * Returns predefined place details for known locations
-   * @param placeId - Predefined place identifier
-   * @returns Detailed information for the specified place
-   */
   private getPredefinedPlaceDetails(placeId: string): any {
     const detailsMap: { [key: string]: any } = {
       'predefined_museo_oro': {
@@ -592,13 +533,6 @@ export class TouristPlacesService {
     return detailsMap[placeId] || detailsMap['generic_details'];
   }
 
-  /**
-   * Calculates travel time between two points using OSRM routing service
-   * @param origin - Starting coordinates
-   * @param destination - Destination coordinates
-   * @param mode - Travel mode (walking, driving, etc.)
-   * @returns Travel time and distance information
-   */
   async getTravelTime(
     origin: { lat: number; lng: number },
     destination: { lat: number; lng: number },
@@ -641,10 +575,6 @@ export class TouristPlacesService {
     }
   }
 
-  /**
-   * Returns service status information
-   * @returns Service initialization status
-   */
   getStatus(): { initialized: boolean; hasApiKey: boolean } {
     return {
       initialized: true,
