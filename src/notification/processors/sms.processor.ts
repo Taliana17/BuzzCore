@@ -39,11 +39,26 @@ export class SmsProcessor extends WorkerHost {
 
       this.logger.log(`📱 Processing SMS notification for user: ${notification.user.email}`);
 
-      const smsResult = await this.smsProvider.sendNotificationSms(
-        notification.user.phone,
-        notification.message,
-        notification.recommended_place,
-      );
+      let smsResult;
+      
+      if (notification.metadata?.travelTime && notification.metadata?.location) {
+        smsResult = await this.smsProvider.sendTouristNotification(
+          notification.user.phone,
+          notification.user.name || 'Usuario',
+          notification.metadata.location.city || 'Ciudad',
+          notification.recommended_place,
+          notification.metadata.travelTime
+        );
+      } else {
+        const message = this.buildBasicSmsMessage(
+          notification.message, 
+          notification.recommended_place
+        );
+        smsResult = await this.smsProvider.send(
+          notification.user.phone,
+          message
+        );
+      }
 
       if (!smsResult.success) {
         throw new Error(smsResult.error || 'Failed to send SMS');
@@ -75,6 +90,10 @@ export class SmsProcessor extends WorkerHost {
 
       throw error;
     }
+  }
+
+  private buildBasicSmsMessage(message: string, placeName: string): string {
+    return `BuzzCore Notification\n\n${message}\n\n📍 ${placeName}\n\n¡Disfruta tu experiencia!`;
   }
 
   @OnWorkerEvent('completed')

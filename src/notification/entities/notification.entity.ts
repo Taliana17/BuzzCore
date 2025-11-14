@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
+import type { NotificationMetadata } from '../types/notification.types'; 
 
 @Entity('notifications')
 export class Notification {
@@ -25,9 +26,5 @@ export class Notification {
   status: 'sent' | 'failed' | 'pending';
 
   @Column({ type: 'jsonb', nullable: true })
-  metadata?: {
-    placeDetails?: any;
-    retryCount?: number;
-    errorMessage?: string;
-  };
+  metadata?: NotificationMetadata;
 }

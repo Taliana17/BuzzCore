@@ -33,15 +33,34 @@ export class EmailProcessor extends WorkerHost {
         throw new Error(`Notification ${notificationId} not found`);
       }
 
-      // Enviar email
-      await this.emailProvider.sendNotificationEmail(
-        notification.user.email,
-        notification.message,
-        notification.recommended_place,
-        notification.metadata?.placeDetails,
-      );
+      let emailResult;
+      
+      if (notification.metadata?.travelTime && notification.metadata?.location && notification.metadata?.placeDetails) {
+        emailResult = await this.emailProvider.sendTouristNotification(
+          notification.user.email,
+          notification.user.name || 'Usuario',
+          notification.metadata.location.city || 'Ciudad',
+          notification.recommended_place,
+          notification.metadata.placeDetails,
+          notification.metadata.travelTime
+        );
+      } else {
+        const html = this.buildBasicEmailTemplate(
+          notification.message,
+          notification.recommended_place
+        );
+      
+        emailResult = await this.emailProvider.send(
+          notification.user.email,
+          `${notification.recommended_place} - BuzzCore`,
+          html
+        );
+      }
 
-      // Actualizar estado
+      if (!emailResult.success) {
+        throw new Error(emailResult.error || 'Failed to send email');
+      }
+
       await this.notificationRepo.update(notificationId, { 
         status: 'sent',
         sent_at: new Date(),
@@ -53,11 +72,10 @@ export class EmailProcessor extends WorkerHost {
     } catch (error) {
       this.logger.error(`Failed to process email notification ${notificationId}: ${error.message}`);
 
-      // Actualizar estado a fallido - CORRECCIÓN AQUÍ
       await this.notificationRepo.update(notificationId, { 
         status: 'failed',
         metadata: {
-          ...(notification?.metadata || {}), // Usar el notification definido arriba
+          ...(notification?.metadata || {}),
           errorMessage: error.message,
           retryCount: job.attemptsMade,
         },
@@ -65,6 +83,38 @@ export class EmailProcessor extends WorkerHost {
 
       throw error;
     }
+  }
+
+  private buildBasicEmailTemplate(message: string, placeName: string): string {
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { padding: 30px; background: #f9f9f9; border-radius: 0 0 10px 10px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>BuzzCore Notification</h1>
+  </div>
+  
+  <div class="content">
+    <h2>¡Hola!</h2>
+    <p>${message}</p>
+    
+    <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3 style="color: #667eea; margin-top: 0;">📍 ${placeName}</h3>
+      <p><strong>Ubicación:</strong> Próxima a tu área actual</p>
+    </div>
+    
+    <p>¡Esperamos que disfrutes esta recomendación!</p>
+  </div>
+</body>
+</html>`;
   }
 
   @OnWorkerEvent('completed')
