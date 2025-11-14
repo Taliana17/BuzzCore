@@ -19,11 +19,16 @@ export class EmailProcessor extends WorkerHost {
     super();
   }
 
+  /**
+   * Main processing method for email notification jobs
+   * Handles both enhanced tourist notifications and basic notifications
+   */
   async process(job: Job<{ notificationId: string; channel: string }>): Promise<any> {
     const { notificationId } = job.data;
     let notification: Notification | null = null;
 
     try {
+      // Fetch notification with user relation for email sending
       notification = await this.notificationRepo.findOne({
         where: { id: notificationId },
         relations: ['user'],
@@ -35,7 +40,9 @@ export class EmailProcessor extends WorkerHost {
 
       let emailResult;
       
+      // Determine email type based on available metadata
       if (notification.metadata?.travelTime && notification.metadata?.location && notification.metadata?.placeDetails) {
+        // Enhanced tourist notification with travel details
         emailResult = await this.emailProvider.sendTouristNotification(
           notification.user.email,
           notification.user.name || 'Usuario',
@@ -45,6 +52,7 @@ export class EmailProcessor extends WorkerHost {
           notification.metadata.travelTime
         );
       } else {
+        // Basic notification with simple template
         const html = this.buildBasicEmailTemplate(
           notification.message,
           notification.recommended_place
@@ -57,10 +65,12 @@ export class EmailProcessor extends WorkerHost {
         );
       }
 
+      // Validate email sending result
       if (!emailResult.success) {
         throw new Error(emailResult.error || 'Failed to send email');
       }
 
+      // Update notification status to sent
       await this.notificationRepo.update(notificationId, { 
         status: 'sent',
         sent_at: new Date(),
@@ -72,6 +82,7 @@ export class EmailProcessor extends WorkerHost {
     } catch (error) {
       this.logger.error(`Failed to process email notification ${notificationId}: ${error.message}`);
 
+      // Update notification status to failed with error details
       await this.notificationRepo.update(notificationId, { 
         status: 'failed',
         metadata: {
@@ -81,10 +92,17 @@ export class EmailProcessor extends WorkerHost {
         },
       });
 
+      // Re-throw error to trigger BullMQ retry mechanism
       throw error;
     }
   }
 
+  /**
+   * Builds a basic HTML email template for notifications
+   * @param message - The notification message content
+   * @param placeName - The name of the recommended place
+   * @returns HTML string for the email template
+   */
   private buildBasicEmailTemplate(message: string, placeName: string): string {
     return `
 <!DOCTYPE html>
@@ -117,11 +135,20 @@ export class EmailProcessor extends WorkerHost {
 </html>`;
   }
 
+  /**
+   * Event handler for completed jobs
+   * @param job - The completed job instance
+   */
   @OnWorkerEvent('completed')
   onCompleted(job: Job) {
     this.logger.log(`Job ${job.id} completed successfully`);
   }
 
+  /**
+   * Event handler for failed jobs
+   * @param job - The failed job instance
+   * @param error - The error that caused the failure
+   */
   @OnWorkerEvent('failed')
   onFailed(job: Job, error: Error) {
     this.logger.error(`Job ${job.id} failed: ${error.message}`);

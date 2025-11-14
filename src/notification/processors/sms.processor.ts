@@ -19,11 +19,16 @@ export class SmsProcessor extends WorkerHost {
     super();
   }
 
+  /**
+   * Main processing method for SMS notification jobs
+   * Handles both enhanced tourist notifications and basic SMS notifications
+   */
   async process(job: Job<{ notificationId: string }>): Promise<any> {
     const { notificationId } = job.data;
     let notification: Notification | null = null;
 
     try {
+      // Fetch notification with user relation for SMS sending
       notification = await this.notificationRepo.findOne({
         where: { id: notificationId },
         relations: ['user'],
@@ -33,6 +38,7 @@ export class SmsProcessor extends WorkerHost {
         throw new Error(`Notification ${notificationId} not found`);
       }
 
+      // Validate user has a phone number before attempting to send SMS
       if (!notification.user.phone) {
         throw new Error(`User ${notification.user.id} has no phone number`);
       }
@@ -41,7 +47,9 @@ export class SmsProcessor extends WorkerHost {
 
       let smsResult;
       
+      // Determine SMS type based on available metadata
       if (notification.metadata?.travelTime && notification.metadata?.location) {
+        // Enhanced tourist notification with travel time and location details
         smsResult = await this.smsProvider.sendTouristNotification(
           notification.user.phone,
           notification.user.name || 'Usuario',
@@ -50,6 +58,7 @@ export class SmsProcessor extends WorkerHost {
           notification.metadata.travelTime
         );
       } else {
+        // Basic SMS notification with simplified message
         const message = this.buildBasicSmsMessage(
           notification.message, 
           notification.recommended_place
@@ -60,10 +69,12 @@ export class SmsProcessor extends WorkerHost {
         );
       }
 
+      // Validate SMS sending result
       if (!smsResult.success) {
         throw new Error(smsResult.error || 'Failed to send SMS');
       }
 
+      // Update notification status to sent
       await this.notificationRepo.update(notificationId, { 
         status: 'sent',
         sent_at: new Date(),
@@ -74,11 +85,12 @@ export class SmsProcessor extends WorkerHost {
       return { 
         success: true, 
         notificationId,
-        sid: smsResult.sid
+        sid: smsResult.sid // Return SMS provider transaction ID for tracking
       };
     } catch (error) {
       this.logger.error(`Failed SMS notification ${notificationId}:`, error.message);
 
+      // Update notification status to failed with error details
       await this.notificationRepo.update(notificationId, { 
         status: 'failed',
         metadata: {
@@ -88,19 +100,35 @@ export class SmsProcessor extends WorkerHost {
         },
       });
 
+      // Re-throw error to trigger BullMQ retry mechanism
       throw error;
     }
   }
 
+  /**
+   * Builds a basic SMS message for notifications
+   * @param message - The notification message content
+   * @param placeName - The name of the recommended place
+   * @returns Formatted SMS message string
+   */
   private buildBasicSmsMessage(message: string, placeName: string): string {
     return `BuzzCore Notification\n\n${message}\n\n📍 ${placeName}\n\n¡Disfruta tu experiencia!`;
   }
 
+  /**
+   * Event handler for completed jobs
+   * @param job - The completed job instance
+   */
   @OnWorkerEvent('completed')
   onCompleted(job: Job) {
     this.logger.log(`Job ${job.id} completed successfully`);
   }
 
+  /**
+   * Event handler for failed jobs
+   * @param job - The failed job instance
+   * @param error - The error that caused the failure
+   */
   @OnWorkerEvent('failed')
   onFailed(job: Job, error: Error) {
     this.logger.error(`Job ${job.id} failed:`, error.message);

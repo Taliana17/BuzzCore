@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Twilio from 'twilio';
-import { SmsResult, TravelTime } from '../../types/notification.types'; // ✅ IMPORT CORRECTO
+import { SmsResult, TravelTime } from '../../types/notification.types';
 
 @Injectable()
 export class SmsProvider {
@@ -13,39 +13,52 @@ export class SmsProvider {
     this.initializeTwilio();
   }
 
+  /**
+   * Initializes the Twilio SMS client with credential validation
+   * Validates account SID, auth token, and phone number format
+   */
   private initializeTwilio() {
     const accountSid = this.configService.get('TWILIO_ACCOUNT_SID');
     const authToken = this.configService.get('TWILIO_AUTH_TOKEN');
     const twilioPhone = this.configService.get('TWILIO_PHONE_NUMBER');
 
+    // Validate Twilio Account SID format
     if (!accountSid || !accountSid.startsWith('AC')) {
-      this.logger.error('TWILIO_ACCOUNT_SID NO VÁLIDA');
+      this.logger.error('INVALID TWILIO_ACCOUNT_SID');
       return;
     }
 
+    // Validate Auth Token length and presence
     if (!authToken || authToken.length < 20) {
-      this.logger.error('TWILIO_AUTH_TOKEN NO VÁLIDO');
+      this.logger.error('INVALID TWILIO_AUTH_TOKEN');
       return;
     }
 
+    // Validate Twilio phone number format
     if (!twilioPhone || !twilioPhone.startsWith('+')) {
-      this.logger.error('TWILIO_PHONE_NUMBER NO VÁLIDO');
+      this.logger.error('INVALID TWILIO_PHONE_NUMBER');
       return;
     }
 
     try {
       this.twilioClient = Twilio(accountSid, authToken);
       this.isInitialized = true;
-      this.logger.log('Twilio SMS Provider INICIALIZADO PARA PRODUCCIÓN');
-      this.logger.log(`   Número Twilio: ${twilioPhone}`);
+      this.logger.log('Twilio SMS Provider INITIALIZED FOR PRODUCTION');
+      this.logger.log(`   Twilio Number: ${twilioPhone}`);
     } catch (error) {
-      this.logger.error('FALLÓ INICIALIZACIÓN DE TWILIO:', error.message);
+      this.logger.error('TWILIO INITIALIZATION FAILED:', error.message);
     }
   }
 
+  /**
+   * Sends an SMS message using Twilio service
+   * @param to - Recipient phone number
+   * @param message - SMS message content
+   * @returns Promise with SMS sending result
+   */
   async send(to: string, message: string): Promise<SmsResult> {
     if (!this.isInitialized) {
-      const error = 'Twilio no configurado - Verifica credenciales';
+      const error = 'Twilio not configured - Please verify credentials';
       this.logger.error(error);
       return { success: false, error };
     }
@@ -55,7 +68,7 @@ export class SmsProvider {
     try {
       const formattedTo = this.formatPhoneNumber(to);
       
-      this.logger.log(`ENVIANDO SMS REAL a: ${formattedTo}`);
+      this.logger.log(`SENDING PRODUCTION SMS to: ${formattedTo}`);
       
       const result = await this.twilioClient.messages.create({
         body: message,
@@ -63,15 +76,15 @@ export class SmsProvider {
         to: formattedTo,
       });
 
-      this.logger.log(`SMS REAL ENVIADO a: ${formattedTo}`);
-      this.logger.log(`SID: ${result.sid}, Estado: ${result.status}`);
+      this.logger.log(`PRODUCTION SMS SENT to: ${formattedTo}`);
+      this.logger.log(`SID: ${result.sid}, Status: ${result.status}`);
       
       return { 
         success: true, 
         sid: result.sid 
       };
     } catch (error) {
-      this.logger.error(`FALLÓ ENVÍO DE SMS REAL a ${to}:`, error.message);
+      this.logger.error(`PRODUCTION SMS FAILED for ${to}:`, error.message);
       return { 
         success: false, 
         error: this.getErrorMessage(error) 
@@ -79,6 +92,15 @@ export class SmsProvider {
     }
   }
 
+  /**
+   * Sends a specialized tourist notification SMS with travel information
+   * @param to - Recipient phone number
+   * @param userName - Name of the recipient
+   * @param city - City where the recommendation is located
+   * @param placeName - Name of the recommended place
+   * @param travelTime - Travel time and distance information
+   * @returns Promise with SMS sending result
+   */
   async sendTouristNotification(
     to: string, 
     userName: string,
@@ -94,26 +116,35 @@ export class SmsProvider {
       travelTime
     );
     
-    this.logger.log(`ENVIANDO NOTIFICACIÓN TURÍSTICA SMS REAL a: ${to}`);
+    this.logger.log(`SENDING PRODUCTION TOURIST SMS NOTIFICATION to: ${to}`);
     return this.send(to, smsMessage);
   }
 
+  /**
+   * Builds an SMS message for tourist notifications with travel details
+   * @param userName - Name of the recipient
+   * @param city - City where the recommendation is located
+   * @param placeName - Name of the recommended place
+   * @param travelTime - Travel time and distance information
+   * @returns Formatted SMS message string
+   */
   private buildTouristNotificationMessage(
     userName: string,
     city: string,
     placeName: string,
     travelTime: TravelTime
   ): string {
-    const baseMessage = `¡Hola ${userName}! \n\nBienvenido/a a ${city}. Te recomendamos visitar:\n\n ${placeName}\n\n`;
+    const baseMessage = `Hello ${userName}! \n\nWelcome to ${city}. We recommend visiting:\n\n${placeName}\n\n`;
     
     const travelInfo = travelTime.success ? 
       `🚶 ${travelTime.duration} (${travelTime.distance})\n\n` : 
-      '📍 Cercano a tu ubicación\n\n';
+      '📍 Near your location\n\n';
     
-    const footer = `¡Disfruta tu visita a ${city}!\n\n- BuzzCore Turístico`;
+    const footer = `Enjoy your visit to ${city}!\n\n- BuzzCore Tourism`;
     
     const fullMessage = baseMessage + travelInfo + footer;
     
+    // Ensure message length doesn't exceed SMS limits
     if (fullMessage.length > 160) {
       return baseMessage.substring(0, 150) + '...\n\n- BuzzCore';
     }
@@ -121,60 +152,82 @@ export class SmsProvider {
     return fullMessage;
   }
 
+  /**
+   * Formats phone numbers to E.164 international format for Twilio
+   * @param phone - Raw phone number input
+   * @returns Formatted phone number in E.164 format
+   */
   private formatPhoneNumber(phone: string): string {
-    if (!phone) throw new Error('Número de teléfono requerido');
+    if (!phone) throw new Error('Phone number required');
 
     const cleaned = phone.replace(/[^\d+]/g, '');
 
+    // Handle already formatted numbers
     if (cleaned.startsWith('+')) {
       return cleaned;
     }
     
+    // Handle Colombian numbers with country code
     if (cleaned.startsWith('57') && cleaned.length >= 12) {
       return `+${cleaned}`;
     }
     
+    // Handle numbers starting with 0
     if (cleaned.startsWith('0')) {
       return `+57${cleaned.substring(1)}`;
     }
     
+    // Handle 10-digit local numbers
     if (/^\d{10}$/.test(cleaned)) {
       return `+57${cleaned}`;
     }
 
-    throw new Error(`Formato de teléfono no soportado: ${phone}`);
+    throw new Error(`Unsupported phone number format: ${phone}`);
   }
 
+  /**
+   * Translates Twilio error codes to user-friendly error messages
+   * @param error - Twilio error object
+   * @returns Human-readable error message
+   */
   private getErrorMessage(error: any): string {
-    if (!error) return 'Error desconocido';
+    if (!error) return 'Unknown error';
     
     switch (error.code) {
-      case 20003: return 'Autenticación fallida - Verifica Account SID y Auth Token';
-      case 21211: return 'Número de teléfono inválido';
-      case 21408: return 'Sin permisos para enviar SMS';
-      case 21610: return 'Número no verificado (modo sandbox)';
-      case 30007: return 'Entrega fallida - Verifica número';
-      default: return error.message || `Error Twilio: ${error.code}`;
+      case 20003: return 'Authentication failed - Please verify Account SID and Auth Token';
+      case 21211: return 'Invalid phone number format';
+      case 21408: return 'No SMS sending permissions';
+      case 21610: return 'Unverified phone number (sandbox mode)';
+      case 30007: return 'Delivery failed - Please verify phone number';
+      default: return error.message || `Twilio Error: ${error.code}`;
     }
   }
 
+  /**
+   * Tests Twilio credentials by making an API call to verify authentication
+   * @returns Object indicating credential validity and any error messages
+   */
   async testCredentials(): Promise<{ valid: boolean; error?: string }> {
     try {
       const accountSid = this.configService.get('TWILIO_ACCOUNT_SID');
       const testClient = Twilio(accountSid, this.configService.get('TWILIO_AUTH_TOKEN'));
       const account = await testClient.api.accounts(accountSid).fetch();
       
-      this.logger.log('CREDENCIALES TWILIO VÁLIDAS');
+      this.logger.log('TWILIO CREDENTIALS VALID');
       return { valid: true };
     } catch (error) {
-      this.logger.error('CREDENCIALES TWILIO INVÁLIDAS');
+      this.logger.error('INVALID TWILIO CREDENTIALS');
       return { 
         valid: false, 
-        error: `Autenticación fallida: ${error.message}` 
+        error: `Authentication failed: ${error.message}` 
       };
     }
   }
 
+  /**
+   * Returns the current status of the SMS provider
+   * @returns Object containing initialization status and credential validity
+   */
   getStatus() {
     const accountSid = this.configService.get('TWILIO_ACCOUNT_SID');
     const authToken = this.configService.get('TWILIO_AUTH_TOKEN');
