@@ -1,0 +1,54 @@
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+@authToken = {{authToken}}
+
+### 1. CREAR REGISTRO DE UBICACIÓN
+POST {{baseUrl}}/location-history
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "city": "Bogotá",
+  "coordinates": {
+    "lat": 4.710989,
+    "lng": -74.072092
+  }
+}
+
+> {%
+    client.test("Create location history successful", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+        client.assert(response.body.hasOwnProperty("id"), "Response should have id");
+        client.assert(response.body.city === "Bogotá", "City should be Bogotá");
+        
+        // Guardar el ID del historial
+        client.global.set("locationHistoryId", response.body.id);
+    });
+%}
+
+### 2. CREAR REGISTRO SIN COORDENADAS
+POST {{baseUrl}}/location-history
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "city": "Medellín"
+}
+
+### 3. OBTENER HISTORIAL DEL USUARIO
+GET {{baseUrl}}/location-history
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+> {%
+    client.test("Get location history successful", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(Array.isArray(response.body), "Response should be an array");
+        
+        if (response.body.length > 0) {
+            client.assert(response.body[0].hasOwnProperty("city"), "Location should have city");
+            client.assert(response.body[0].hasOwnProperty("arrival_date"), "Location should have arrival_date");
+        }
+    });
+%}

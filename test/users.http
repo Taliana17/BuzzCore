@@ -1,0 +1,51 @@
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+@authToken = {{authToken}}
+
+### 1. CREAR USUARIO (sin auth)
+POST {{baseUrl}}/users
+Content-Type: {{contentType}}
+
+{
+  "name": "Nuevo Usuario",
+  "email": "newuser@example.com",
+  "password": "password123",
+  "preferred_channel": "email"
+}
+
+### 2. OBTENER TODOS LOS USUARIOS (requiere auth)
+GET {{baseUrl}}/users
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+> {%
+    client.test("Get all users successful", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(Array.isArray(response.body), "Response should be an array");
+    });
+%}
+
+### 3. OBTENER USUARIO POR ID
+GET {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+> {%
+    client.test("Get user by ID successful", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.hasOwnProperty("id"), "User should have id");
+        client.assert(response.body.hasOwnProperty("email"), "User should have email");
+    });
+%}
+
+### 4. ELIMINAR USUARIO
+DELETE {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+> {%
+    client.test("Delete user successful", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}

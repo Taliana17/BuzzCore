@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
-import { EmailResult, TravelTime } from '../../types/notification.types'; 
+import { EmailProvider as IEmailProvider, EmailResult, ProviderStatus } from '../../interfaces/providers.interface';
+import { TravelTime } from '../../types/notification.types';
 
 @Injectable()
-export class EmailProvider {
+export class EmailProvider implements IEmailProvider {
   private readonly logger = new Logger(EmailProvider.name);
   private resend: Resend;
   private isInitialized: boolean = false;
@@ -13,11 +14,9 @@ export class EmailProvider {
     this.initializeResend();
   }
 
-
   private initializeResend() {
     const apiKey = this.configService.get('RESEND_API_KEY');
 
-    // Validate API key format for production use
     if (!apiKey || apiKey.includes('mock') || !apiKey.startsWith('re_')) {
       this.logger.error('INVALID RESEND_API_KEY for production environment');
       this.logger.error('Please obtain a valid API key from https://resend.com');
@@ -33,9 +32,7 @@ export class EmailProvider {
     }
   }
 
-
   async send(to: string, subject: string, html: string): Promise<EmailResult> {
-    // Check if provider is properly initialized before attempting to send
     if (!this.isInitialized) {
       const error = 'Resend not configured - Please verify RESEND_API_KEY';
       this.logger.error(error);
@@ -52,7 +49,6 @@ export class EmailProvider {
         html: html,
       });
 
-      // Handle Resend API error response
       if (result.error) {
         throw new Error(result.error.message);
       }
@@ -71,7 +67,6 @@ export class EmailProvider {
       };
     }
   }
-
 
   async sendTouristNotification(
     to: string, 
@@ -103,12 +98,10 @@ export class EmailProvider {
     placeDetails: any,
     travelTime: TravelTime
   ): string {
-    // Generate travel information display
     const travelInfo = travelTime.success ? 
       `<p><strong>Travel time:</strong> ${travelTime.duration} (${travelTime.distance})</p>` : 
       '<p><strong></strong> Near your current location</p>';
 
-    // Generate comprehensive place information
     const placeInfo = placeDetails ? `
       <p><strong>Address:</strong> ${placeDetails.formatted_address || 'Near your location'}</p>
       <p><strong>Rating:</strong> ${placeDetails.rating || 'N/A'} / 5 (${placeDetails.user_ratings_total || 0} reviews)</p>
@@ -120,7 +113,6 @@ export class EmailProvider {
       <p><strong>Rating:</strong> Recommended place</p>
     `;
 
-    // Generate opening hours display if available
     const openingHours = placeDetails?.opening_hours?.weekday_text ? `
       <div style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">
         <strong>Opening Hours:</strong>
@@ -174,8 +166,7 @@ export class EmailProvider {
 </html>`;
   }
 
-
-  getStatus() {
+  getStatus(): ProviderStatus {
     const apiKey = this.configService.get('RESEND_API_KEY');
     return {
       initialized: this.isInitialized,

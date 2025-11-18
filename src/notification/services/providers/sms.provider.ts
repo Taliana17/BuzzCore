@@ -1,10 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Twilio from 'twilio';
-import { SmsResult, TravelTime } from '../../types/notification.types';
+import { SmsProvider as ISmsProvider, SmsResult, ProviderStatus } from '../../interfaces/providers.interface';
+import { TravelTime } from '../../types/notification.types';
 
 @Injectable()
-export class SmsProvider {
+export class SmsProvider implements ISmsProvider {
   private readonly logger = new Logger(SmsProvider.name);
   private twilioClient: any;
   private isInitialized: boolean = false;
@@ -13,28 +14,21 @@ export class SmsProvider {
     this.initializeTwilio();
   }
 
-  /**
-   * Initializes the Twilio SMS client with credential validation
-   * Validates account SID, auth token, and phone number format
-   */
   private initializeTwilio() {
     const accountSid = this.configService.get('TWILIO_ACCOUNT_SID');
     const authToken = this.configService.get('TWILIO_AUTH_TOKEN');
     const twilioPhone = this.configService.get('TWILIO_PHONE_NUMBER');
 
-    // Validate Twilio Account SID format
     if (!accountSid || !accountSid.startsWith('AC')) {
       this.logger.error('INVALID TWILIO_ACCOUNT_SID');
       return;
     }
 
-    // Validate Auth Token length and presence
     if (!authToken || authToken.length < 20) {
       this.logger.error('INVALID TWILIO_AUTH_TOKEN');
       return;
     }
 
-    // Validate Twilio phone number format
     if (!twilioPhone || !twilioPhone.startsWith('+')) {
       this.logger.error('INVALID TWILIO_PHONE_NUMBER');
       return;
@@ -50,12 +44,6 @@ export class SmsProvider {
     }
   }
 
-  /**
-   * Sends an SMS message using Twilio service
-   * @param to - Recipient phone number
-   * @param message - SMS message content
-   * @returns Promise with SMS sending result
-   */
   async send(to: string, message: string): Promise<SmsResult> {
     if (!this.isInitialized) {
       const error = 'Twilio not configured - Please verify credentials';
@@ -92,15 +80,6 @@ export class SmsProvider {
     }
   }
 
-  /**
-   * Sends a specialized tourist notification SMS with travel information
-   * @param to - Recipient phone number
-   * @param userName - Name of the recipient
-   * @param city - City where the recommendation is located
-   * @param placeName - Name of the recommended place
-   * @param travelTime - Travel time and distance information
-   * @returns Promise with SMS sending result
-   */
   async sendTouristNotification(
     to: string, 
     userName: string,
@@ -120,14 +99,6 @@ export class SmsProvider {
     return this.send(to, smsMessage);
   }
 
-  /**
-   * Builds an SMS message for tourist notifications with travel details
-   * @param userName - Name of the recipient
-   * @param city - City where the recommendation is located
-   * @param placeName - Name of the recommended place
-   * @param travelTime - Travel time and distance information
-   * @returns Formatted SMS message string
-   */
   private buildTouristNotificationMessage(
     userName: string,
     city: string,
@@ -144,7 +115,6 @@ export class SmsProvider {
     
     const fullMessage = baseMessage + travelInfo + footer;
     
-    // Ensure message length doesn't exceed SMS limits
     if (fullMessage.length > 160) {
       return baseMessage.substring(0, 150) + '...\n\n- BuzzCore';
     }
@@ -152,32 +122,32 @@ export class SmsProvider {
     return fullMessage;
   }
 
-  /**
-   * Formats phone numbers to E.164 international format for Twilio
-   * @param phone - Raw phone number input
-   * @returns Formatted phone number in E.164 format
-   */
+  validatePhoneNumber(phone: string): boolean {
+    try {
+      this.formatPhoneNumber(phone);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   private formatPhoneNumber(phone: string): string {
     if (!phone) throw new Error('Phone number required');
 
     const cleaned = phone.replace(/[^\d+]/g, '');
 
-    // Handle already formatted numbers
     if (cleaned.startsWith('+')) {
       return cleaned;
     }
     
-    // Handle Colombian numbers with country code
     if (cleaned.startsWith('57') && cleaned.length >= 12) {
       return `+${cleaned}`;
     }
     
-    // Handle numbers starting with 0
     if (cleaned.startsWith('0')) {
       return `+57${cleaned.substring(1)}`;
     }
     
-    // Handle 10-digit local numbers
     if (/^\d{10}$/.test(cleaned)) {
       return `+57${cleaned}`;
     }
@@ -185,11 +155,6 @@ export class SmsProvider {
     throw new Error(`Unsupported phone number format: ${phone}`);
   }
 
-  /**
-   * Translates Twilio error codes to user-friendly error messages
-   * @param error - Twilio error object
-   * @returns Human-readable error message
-   */
   private getErrorMessage(error: any): string {
     if (!error) return 'Unknown error';
     
@@ -203,10 +168,6 @@ export class SmsProvider {
     }
   }
 
-  /**
-   * Tests Twilio credentials by making an API call to verify authentication
-   * @returns Object indicating credential validity and any error messages
-   */
   async testCredentials(): Promise<{ valid: boolean; error?: string }> {
     try {
       const accountSid = this.configService.get('TWILIO_ACCOUNT_SID');
@@ -224,11 +185,7 @@ export class SmsProvider {
     }
   }
 
-  /**
-   * Returns the current status of the SMS provider
-   * @returns Object containing initialization status and credential validity
-   */
-  getStatus() {
+  getStatus(): ProviderStatus {
     const accountSid = this.configService.get('TWILIO_ACCOUNT_SID');
     const authToken = this.configService.get('TWILIO_AUTH_TOKEN');
     const twilioPhone = this.configService.get('TWILIO_PHONE_NUMBER');
