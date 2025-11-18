@@ -1,0 +1,698 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>buzz-core documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">buzz-core documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AuthService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/auth/auth.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Authentication Service</p>
+<p>Handles user authentication operations including registration and login.
+Manages password hashing with bcrypt and JWT token generation.</p>
+<p>Security features:</p>
+<ul>
+<li>Password hashing with bcrypt (10 rounds)</li>
+<li>JWT token generation with user payload</li>
+<li>Email uniqueness validation</li>
+<li>Credential validation for login</li>
+</ul>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#login" >login</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#register" >register</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(userService: <a href="../injectables/UserService.html" target="_self">UserService</a>, jwtService: JwtService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/auth/auth.service.ts:25</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of AuthService</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Service for user database operations</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>jwtService</td>
+                                                  
+                                                        <td>
+                                                                    <code>JwtService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>NestJS JWT service for token generation and validation</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="login"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>login</b></span>
+                        <a href="#login"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>login(dto: <a href="../classes/LoginDto.html" target="_self">LoginDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/auth/auth.service.ts:117</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Authenticates user and generates JWT token</p>
+<p>Validates user credentials and returns JWT access token:</p>
+<ol>
+<li>Finds user by email</li>
+<li>Compares provided password with hashed password using bcrypt</li>
+<li>Generates JWT token with user payload (sub, email, role)</li>
+<li>Returns access token and user data</li>
+</ol>
+<p>Token payload structure:</p>
+<ul>
+<li>sub: User ID (UUID)</li>
+<li>email: User email address</li>
+<li>role: User role (user/admin)</li>
+</ul>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await authService.login({
+```html
+  password: &#39;SecurePass123!&#39;
+});</code></pre></div><p>console.log(result.access_token); // &#39;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&#39;
+console.log(result.user.id);      // User UUID
+console.log(result.user.role);    // &#39;user&#39; or &#39;admin&#39;</p>
+<p>// Use token in subsequent requests:
+// Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none"></code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/LoginDto.html" target="_self" >LoginDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Login credentials (email and password)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>JWT token and user information</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="register"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>register</b></span>
+                        <a href="#register"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>register(dto: <a href="../classes/RegisterDto.html" target="_self">RegisterDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/auth/auth.service.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Registers a new user in the system</p>
+<p>Creates a new user account with the following steps:</p>
+<ol>
+<li>Validates email uniqueness</li>
+<li>Hashes password using bcrypt (10 rounds)</li>
+<li>Creates user record in database</li>
+<li>Returns success message with user data (excluding password)</li>
+</ol>
+<p>Default role is &#39;user&#39; if not specified in DTO.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await authService.register({
+  name: &#39;John Doe&#39;,
+```html
+  password: &#39;SecurePass123!&#39;,
+  phone: &#39;+573001234567&#39;,
+  preferred_channel: &#39;email&#39;,
+  role: &#39;user&#39;
+});
+console.log(result.message); // &#39;User registered successfully&#39;
+console.log(result.user.id);  // New user UUID</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/RegisterDto.html" target="_self" >RegisterDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Registration data (name, email, password, phone, etc.)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Success message and created user object</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, UnauthorizedException, BadRequestException } from &#x27;@nestjs/common&#x27;;
+import { JwtService } from &#x27;@nestjs/jwt&#x27;;
+import * as bcrypt from &#x27;bcrypt&#x27;;
+import { UserService } from &#x27;src/user/user.service&#x27;;
+import { RegisterDto } from &#x27;./dto/register.dto&#x27;;
+import { LoginDto } from &#x27;./dto/login.dto&#x27;;
+
+/**
+ * Authentication Service
+ * 
+ * @description
+ * Handles user authentication operations including registration and login.
+ * Manages password hashing with bcrypt and JWT token generation.
+ * 
+ * Security features:
+ * - Password hashing with bcrypt (10 rounds)
+ * - JWT token generation with user payload
+ * - Email uniqueness validation
+ * - Credential validation for login
+ * 
+ * @export
+ * @class AuthService
+ */
+@Injectable()
+export class AuthService {
+  /**
+   * Creates an instance of AuthService
+   * 
+   * @param {UserService} userService - Service for user database operations
+   * @param {JwtService} jwtService - NestJS JWT service for token generation and validation
+   */
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
+
+  /**
+   * Registers a new user in the system
+   * 
+   * @description
+   * Creates a new user account with the following steps:
+   * 1. Validates email uniqueness
+   * 2. Hashes password using bcrypt (10 rounds)
+   * 3. Creates user record in database
+   * 4. Returns success message with user data (excluding password)
+   * 
+   * Default role is &#x27;user&#x27; if not specified in DTO.
+   * 
+   * @param {RegisterDto} dto - Registration data (name, email, password, phone, etc.)
+   * @returns {Promise&lt;{message: string, user: User}&gt;} Success message and created user object
+   * @throws {BadRequestException} If email already exists in database
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await authService.register({
+   *   name: &#x27;John Doe&#x27;,
+   *   email: &#x27;john@example.com&#x27;,
+   *   password: &#x27;SecurePass123!&#x27;,
+   *   phone: &#x27;+573001234567&#x27;,
+   *   preferred_channel: &#x27;email&#x27;,
+   *   role: &#x27;user&#x27;
+   * });
+   * console.log(result.message); // &#x27;User registered successfully&#x27;
+   * console.log(result.user.id);  // New user UUID
+   * &#x60;&#x60;&#x60;
+   */
+  async register(dto: RegisterDto) {
+    const existingUser &#x3D; await this.userService.findByEmail(dto.email);
+    if (existingUser) {
+      throw new BadRequestException(&#x27;Email already exists&#x27;);
+    }
+
+    const hashedPassword &#x3D; await bcrypt.hash(dto.password, 10);
+    const newUser &#x3D; await this.userService.create({
+      ...dto,
+      password: hashedPassword,
+      role: dto.role || &#x27;user&#x27;,
+    });
+
+    return { message: &#x27;User registered successfully&#x27;, user: newUser };
+  }
+
+  /**
+   * Authenticates user and generates JWT token
+   * 
+   * @description
+   * Validates user credentials and returns JWT access token:
+   * 1. Finds user by email
+   * 2. Compares provided password with hashed password using bcrypt
+   * 3. Generates JWT token with user payload (sub, email, role)
+   * 4. Returns access token and user data
+   * 
+   * Token payload structure:
+   * - sub: User ID (UUID)
+   * - email: User email address
+   * - role: User role (user/admin)
+   * 
+   * @param {LoginDto} dto - Login credentials (email and password)
+   * @returns {Promise&lt;{access_token: string, user: object}&gt;} JWT token and user information
+   * @throws {UnauthorizedException} If user not found or password doesn&#x27;t match
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await authService.login({
+   *   email: &#x27;john@example.com&#x27;,
+   *   password: &#x27;SecurePass123!&#x27;
+   * });
+   * 
+   * console.log(result.access_token); // &#x27;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&#x27;
+   * console.log(result.user.id);      // User UUID
+   * console.log(result.user.role);    // &#x27;user&#x27; or &#x27;admin&#x27;
+   * 
+   * // Use token in subsequent requests:
+   * // Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   * &#x60;&#x60;&#x60;
+   */
+  async login(dto: LoginDto) {
+    const user &#x3D; await this.userService.findByEmail(dto.email);
+    if (!user) throw new UnauthorizedException(&#x27;Invalid credentials&#x27;);
+
+    const isMatch &#x3D; await bcrypt.compare(dto.password, user.password);
+    if (!isMatch) throw new UnauthorizedException(&#x27;Invalid credentials&#x27;);
+
+    const payload &#x3D; { sub: user.id, email: user.email, role: user.role };
+    const access_token &#x3D; this.jwtService.sign(payload);
+
+    return {
+      access_token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    };
+  }
+}</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'AuthService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

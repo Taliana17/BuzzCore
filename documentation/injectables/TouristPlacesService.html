@@ -1,0 +1,2198 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>buzz-core documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">buzz-core documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >TouristPlacesService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/notification/services/tourist-places.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Tourist Places Service using OpenStreetMap</p>
+<p>Provides tourist place search without requiring paid Google API keys.
+Uses multiple fallback strategies:</p>
+<ol>
+<li>OpenStreetMap Overpass API (real data)</li>
+<li>Predefined places for major cities (Bogotá, Medellín)</li>
+<li>Generic placeholder places</li>
+</ol>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getElementCoordinates" >getElementCoordinates</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getGenericTouristPlaces" >getGenericTouristPlaces</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getNearbyTouristPlaces" >getNearbyTouristPlaces</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPlaceDetails" >getPlaceDetails</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPlacesFromOpenStreetMap" >getPlacesFromOpenStreetMap</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getPlaceTypes" >getPlaceTypes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getPredefinedPlaceDetails" >getPredefinedPlaceDetails</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getPredefinedPlacesByCoordinates" >getPredefinedPlacesByCoordinates</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getRealAddress" >getRealAddress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getRealOpeningHours" >getRealOpeningHours</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getRealRatingFromTags" >getRealRatingFromTags</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getRecommendedTouristPlace" >getRecommendedTouristPlace</a>
+                            </li>
+                            <li>
+                                <a href="#getStatus" >getStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTravelTime" >getTravelTime</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(configService: ConfigService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/notification/services/tourist-places.service.ts:20</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getElementCoordinates"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getElementCoordinates</b></span>
+                        <a href="#getElementCoordinates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getElementCoordinates(element: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="326"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:326</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Extracts coordinates from OSM element</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>element</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type | null</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getGenericTouristPlaces"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getGenericTouristPlaces</b></span>
+                        <a href="#getGenericTouristPlaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getGenericTouristPlaces(location: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="266"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:266</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generates generic placeholder places</p>
+<p>Creates generic tourist places with randomized coordinates near user location.
+Used as last resort fallback.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>location</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>User coordinates</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>PlaceResult[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Two generic places</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNearbyTouristPlaces"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getNearbyTouristPlaces</b></span>
+                        <a href="#getNearbyTouristPlaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getNearbyTouristPlaces(location: literal type, radius: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Searches for nearby tourist places with fallback strategies</p>
+<p>Searches using three-tier strategy:</p>
+<ol>
+<li>OpenStreetMap API (5km radius)</li>
+<li>Predefined places for known cities</li>
+<li>Generic placeholder places</li>
+</ol>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const places = await touristPlacesService.getNearbyTouristPlaces({
+  lat: 4.7110,
+  lng: -74.0721
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>location</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>User coordinates</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>radius</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>2000</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Search radius in meters (not used currently)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;PlaceResult[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Array of tourist places (max 10)</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPlaceDetails"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getPlaceDetails</b></span>
+                        <a href="#getPlaceDetails"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPlaceDetails(placeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="407"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:407</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets detailed information about a place</p>
+<p>Fetches place details from:</p>
+<ul>
+<li>OSM Overpass API (for osm_* IDs)</li>
+<li>Predefined database (for predefined_* IDs)</li>
+<li>Generic fallback</li>
+</ul>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const details = await touristPlacesService.getPlaceDetails(&#39;osm_node_123456&#39;);</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>placeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Place identifier (osm_*, predefined_*, generic_*)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Place details with address, hours, rating, etc.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPlacesFromOpenStreetMap"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getPlacesFromOpenStreetMap</b></span>
+                        <a href="#getPlacesFromOpenStreetMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPlacesFromOpenStreetMap(location: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Fetches tourist places from OpenStreetMap Overpass API</p>
+<p>Queries OSM for tourism, historic, and cultural amenities within 5km.
+Filters results to only include named places with tourist relevance.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>location</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Center point for search</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;PlaceResult[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Filtered tourist places (max 10)</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPlaceTypes"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getPlaceTypes</b></span>
+                        <a href="#getPlaceTypes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPlaceTypes(tags: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="309"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:309</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Extracts place types from OSM tags</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tags</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPredefinedPlaceDetails"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getPredefinedPlaceDetails</b></span>
+                        <a href="#getPredefinedPlaceDetails"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPredefinedPlaceDetails(placeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="457"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:457</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns predefined place details</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>placeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPredefinedPlacesByCoordinates"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getPredefinedPlacesByCoordinates</b></span>
+                        <a href="#getPredefinedPlacesByCoordinates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPredefinedPlacesByCoordinates(location: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns predefined places for known cities</p>
+<p>Provides curated tourist places for:</p>
+<ul>
+<li>Bogotá: Museo del Oro, Plaza de Bolívar, Jardín Botánico</li>
+<li>Medellín: Parque Explora</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>location</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>User coordinates</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>PlaceResult[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Predefined places or empty array</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRealAddress"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getRealAddress</b></span>
+                        <a href="#getRealAddress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRealAddress(tags: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="344"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:344</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Formats address from OSM tags</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tags</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRealOpeningHours"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getRealOpeningHours</b></span>
+                        <a href="#getRealOpeningHours"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRealOpeningHours(tags: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="374"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:374</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parses opening hours from OSM tags</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tags</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRealRatingFromTags"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getRealRatingFromTags</b></span>
+                        <a href="#getRealRatingFromTags"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRealRatingFromTags(tags: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="358"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:358</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Estimates rating from OSM tags</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tags</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRecommendedTouristPlace"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getRecommendedTouristPlace</b></span>
+                        <a href="#getRecommendedTouristPlace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRecommendedTouristPlace(location: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="577"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:577</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets best recommended tourist place with full details</p>
+<p>Combines multiple operations:</p>
+<ol>
+<li>Searches nearby places</li>
+<li>Selects highest-rated place</li>
+<li>Fetches detailed information</li>
+<li>Calculates travel time</li>
+</ol>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>location</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>User coordinates</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Complete recommendation</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStatus"></a>
+                    <span class="name">
+                        <span ><b>getStatus</b></span>
+                        <a href="#getStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getStatus()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="629"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:629</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns service initialization status</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Always returns true (no API key required)</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTravelTime"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getTravelTime</b></span>
+                        <a href="#getTravelTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTravelTime(origin: literal type, destination: literal type, mode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="524"
+                                    class="link-to-prism">src/notification/services/tourist-places.service.ts:524</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculates travel time using OSRM routing</p>
+<p>Uses Project-OSRM API for route calculation.
+Falls back to estimated values if API fails.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>origin</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Starting location</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>destination</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Destination location</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>mode</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;walking&#x27;</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Travel mode (walking, driving, cycling)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/TravelTime.html" target="_self" >Promise&lt;TravelTime&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Duration and distance</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(TouristPlacesService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/notification/services/tourist-places.service.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, Logger } from &#x27;@nestjs/common&#x27;;
+import { ConfigService } from &#x27;@nestjs/config&#x27;;
+import { PlaceResult, TravelTime } from &#x27;../types/notification.types&#x27;;
+
+/**
+ * Tourist Places Service using OpenStreetMap
+ * 
+ * @description
+ * Provides tourist place search without requiring paid Google API keys.
+ * Uses multiple fallback strategies:
+ * 1. OpenStreetMap Overpass API (real data)
+ * 2. Predefined places for major cities (Bogotá, Medellín)
+ * 3. Generic placeholder places
+ * 
+ * @export
+ * @class TouristPlacesService
+ */
+@Injectable()
+export class TouristPlacesService {
+  private readonly logger &#x3D; new Logger(TouristPlacesService.name);
+
+  constructor(private configService: ConfigService) { }
+
+  /**
+   * Searches for nearby tourist places with fallback strategies
+   * 
+   * @description
+   * Searches using three-tier strategy:
+   * 1. OpenStreetMap API (5km radius)
+   * 2. Predefined places for known cities
+   * 3. Generic placeholder places
+   * 
+   * @param {Object} location - User coordinates
+   * @param {number} location.lat - Latitude
+   * @param {number} location.lng - Longitude
+   * @param {number} [radius&#x3D;2000] - Search radius in meters (not used currently)
+   * @returns {Promise&lt;PlaceResult[]&gt;} Array of tourist places (max 10)
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const places &#x3D; await touristPlacesService.getNearbyTouristPlaces({
+   *   lat: 4.7110,
+   *   lng: -74.0721
+   * });
+   * &#x60;&#x60;&#x60;
+   */
+  async getNearbyTouristPlaces(location: { lat: number; lng: number }, radius: number &#x3D; 2000): Promise&lt;PlaceResult[]&gt; {
+    try {
+      this.logger.log(&#x60;🔍 Buscando lugares turísticos cerca de: ${location.lat}, ${location.lng}&#x60;);
+
+      // Try OpenStreetMap first
+      let osmPlaces: PlaceResult[] &#x3D; [];
+      try {
+        osmPlaces &#x3D; await this.getPlacesFromOpenStreetMap(location);
+        if (osmPlaces.length &gt; 0) {
+          this.logger.log(&#x60;OpenStreetMap: ${osmPlaces.length} lugares encontrados&#x60;);
+          return osmPlaces;
+        }
+      } catch (osmError) {
+        this.logger.warn(&#x60;OpenStreetMap no disponible: ${osmError.message}&#x60;);
+      }
+
+      // Try predefined places for known cities
+      const predefinedPlaces &#x3D; this.getPredefinedPlacesByCoordinates(location);
+      if (predefinedPlaces.length &gt; 0) {
+        this.logger.log(&#x60;Datos predefinidos: ${predefinedPlaces.length} lugares encontrados&#x60;);
+        return predefinedPlaces;
+      }
+
+      // Fallback to generic places
+      const genericPlaces &#x3D; this.getGenericTouristPlaces(location);
+      this.logger.log(&#x60;Datos genéricos: ${genericPlaces.length} lugares encontrados&#x60;);
+      return genericPlaces;
+
+    } catch (error) {
+      this.logger.error(&#x60;Error crítico: ${error.message}&#x60;);
+      return this.getGenericTouristPlaces(location);
+    }
+  }
+
+  /**
+   * Fetches tourist places from OpenStreetMap Overpass API
+   * 
+   * @private
+   * @description
+   * Queries OSM for tourism, historic, and cultural amenities within 5km.
+   * Filters results to only include named places with tourist relevance.
+   * 
+   * @param {Object} location - Center point for search
+   * @returns {Promise&lt;PlaceResult[]&gt;} Filtered tourist places (max 10)
+   * @throws {Error} If API request fails
+   */
+  private async getPlacesFromOpenStreetMap(location: { lat: number; lng: number }): Promise&lt;PlaceResult[]&gt; {
+    try {
+      const query &#x3D; &#x60;
+        [out:json][timeout:25];
+        (
+          node[&quot;tourism&quot;](around:5000,${location.lat},${location.lng});
+          way[&quot;tourism&quot;](around:5000,${location.lat},${location.lng});
+          relation[&quot;tourism&quot;](around:5000,${location.lat},${location.lng});
+          
+          node[&quot;historic&quot;](around:5000,${location.lat},${location.lng});
+          way[&quot;historic&quot;](around:5000,${location.lat},${location.lng});
+          node[&quot;amenity&quot;~&quot;museum|theatre|cinema&quot;](around:5000,${location.lat},${location.lng});
+          way[&quot;amenity&quot;~&quot;museum|theatre|cinema&quot;](around:5000,${location.lat},${location.lng});
+        );
+        out body;
+        &gt;;
+        out skel qt;
+      &#x60;;
+
+      const response &#x3D; await fetch(
+        &#x60;https://overpass-api.de/api/interpreter&#x60;,
+        {
+          method: &#x27;POST&#x27;,
+          headers: {
+            &#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded&#x27;,
+            &#x27;User-Agent&#x27;: &#x27;BuzzCore-Tourist-App/1.0&#x27;
+          },
+          body: &#x60;data&#x3D;${encodeURIComponent(query)}&#x60;
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(&#x60;OpenStreetMap API: ${response.status} ${response.statusText}&#x60;);
+      }
+      
+      const data &#x3D; await response.json();
+      
+      if (!data.elements || data.elements.length &#x3D;&#x3D;&#x3D; 0) {
+        return [];
+      }
+
+      const touristPlaces &#x3D; data.elements
+        .filter((element: any) &#x3D;&gt; {
+          const hasName &#x3D; element.tags?.name;
+          const isTouristRelated &#x3D; element.tags?.tourism || 
+                                 element.tags?.historic || 
+                                 element.tags?.amenity &#x3D;&#x3D;&#x3D; &#x27;museum&#x27; ||
+                                 element.tags?.amenity &#x3D;&#x3D;&#x3D; &#x27;theatre&#x27; ||
+                                 element.tags?.amenity &#x3D;&#x3D;&#x3D; &#x27;cinema&#x27;;
+          return hasName &amp;&amp; isTouristRelated;
+        })
+        .map((element: any) &#x3D;&gt; {
+          const coordinates &#x3D; this.getElementCoordinates(element);
+          if (!coordinates) return null;
+
+          return {
+            name: element.tags.name,
+            vicinity: this.getRealAddress(element.tags),
+            rating: this.getRealRatingFromTags(element.tags),
+            types: this.getPlaceTypes(element.tags),
+            geometry: {
+              location: coordinates
+            },
+            place_id: &#x60;osm_${element.type}_${element.id}&#x60;,
+            opening_hours: this.getRealOpeningHours(element.tags)
+          } as PlaceResult;
+        })
+        .filter((place: PlaceResult | null): place is PlaceResult &#x3D;&gt; place !&#x3D;&#x3D; null)
+        .slice(0, 10);
+
+      return touristPlaces;
+
+    } catch (error) {
+      this.logger.warn(&#x60;OpenStreetMap error: ${error.message}&#x60;);
+      throw error;
+    }
+  }
+
+  /**
+   * Returns predefined places for known cities
+   * 
+   * @private
+   * @description
+   * Provides curated tourist places for:
+   * - Bogotá: Museo del Oro, Plaza de Bolívar, Jardín Botánico
+   * - Medellín: Parque Explora
+   * 
+   * @param {Object} location - User coordinates
+   * @returns {PlaceResult[]} Predefined places or empty array
+   */
+  private getPredefinedPlacesByCoordinates(location: { lat: number; lng: number }): PlaceResult[] {
+    // Bogotá area
+    if (location.lat &gt; 4.59 &amp;&amp; location.lat &lt; 4.62 &amp;&amp; location.lng &gt; -74.08 &amp;&amp; location.lng &lt; -74.07) {
+      return [
+        {
+          name: &quot;Museo del Oro&quot;,
+          vicinity: &quot;Carrera 6 #15-88, Bogotá&quot;,
+          rating: 4.7,
+          types: [&quot;museum&quot;, &quot;attraction&quot;],
+          geometry: {
+            location: { lat: 4.601955, lng: -74.071766 }
+          },
+          place_id: &quot;predefined_museo_oro&quot;,
+          opening_hours: {
+            open_now: true,
+            weekday_text: [&quot;Martes a Domingo: 9:00-17:00&quot;]
+          }
+        } as PlaceResult,
+        {
+          name: &quot;Plaza de Bolívar&quot;,
+          vicinity: &quot;Carrera 7 #11-10, Bogotá&quot;, 
+          rating: 4.5,
+          types: [&quot;attraction&quot;, &quot;historic&quot;],
+          geometry: {
+            location: { lat: 4.595630, lng: -74.075404 }
+          },
+          place_id: &quot;predefined_plaza_bolivar&quot;,
+          opening_hours: {
+            open_now: true,
+            weekday_text: [&quot;Abierto 24 horas&quot;]
+          }
+        } as PlaceResult,
+        {
+          name: &quot;Jardín Botánico de Bogotá&quot;,
+          vicinity: &quot;Av. Esperanza #34-56, Bogotá&quot;,
+          rating: 4.4,
+          types: [&quot;park&quot;, &quot;garden&quot;],
+          geometry: {
+            location: { lat: 4.710989, lng: -74.072092 }
+          },
+          place_id: &quot;predefined_jardin_botanico&quot;,
+          opening_hours: {
+            open_now: true,
+            weekday_text: [&quot;Lunes a Domingo: 9:00-17:00&quot;]
+          }
+        } as PlaceResult
+      ];
+    }
+
+    // Medellín area
+    if (location.lat &gt; 6.24 &amp;&amp; location.lat &lt; 6.26 &amp;&amp; location.lng &gt; -75.58 &amp;&amp; location.lng &lt; -75.56) {
+      return [
+        {
+          name: &quot;Parque Explora&quot;,
+          vicinity: &quot;Carrera 52 #73-75, Medellín&quot;,
+          rating: 4.6,
+          types: [&quot;museum&quot;, &quot;attraction&quot;],
+          geometry: {
+            location: { lat: 6.27053, lng: -75.57236 }
+          },
+          place_id: &quot;predefined_parque_explora&quot;,
+          opening_hours: {
+            open_now: true,
+            weekday_text: [&quot;Miércoles a Lunes: 9:00-17:30&quot;]
+          }
+        } as PlaceResult
+      ];
+    }
+    
+    return [];
+  }
+
+  /**
+   * Generates generic placeholder places
+   * 
+   * @private
+   * @description
+   * Creates generic tourist places with randomized coordinates near user location.
+   * Used as last resort fallback.
+   * 
+   * @param {Object} location - User coordinates
+   * @returns {PlaceResult[]} Two generic places
+   */
+  private getGenericTouristPlaces(location: { lat: number; lng: number }): PlaceResult[] {
+    return [
+      {
+        name: &quot;Centro Histórico Local&quot;,
+        vicinity: &quot;Zona central de la ciudad&quot;,
+        rating: 4.2,
+        types: [&quot;attraction&quot;, &quot;historic&quot;],
+        geometry: {
+          location: { 
+            lat: location.lat + (Math.random() * 0.01 - 0.005), 
+            lng: location.lng + (Math.random() * 0.01 - 0.005) 
+          }
+        },
+        place_id: &quot;generic_historic_center&quot;,
+        opening_hours: {
+          open_now: true,
+          weekday_text: [&quot;Abierto al público&quot;]
+        }
+      } as PlaceResult,
+      {
+        name: &quot;Parque Principal&quot;,
+        vicinity: &quot;Plaza central&quot;,
+        rating: 4.0,
+        types: [&quot;park&quot;, &quot;attraction&quot;],
+        geometry: {
+          location: { 
+            lat: location.lat + (Math.random() * 0.01 - 0.005), 
+            lng: location.lng + (Math.random() * 0.01 - 0.005) 
+          }
+        },
+        place_id: &quot;generic_main_park&quot;,
+        opening_hours: {
+          open_now: true,
+          weekday_text: [&quot;Abierto 24 horas&quot;]
+        }
+      } as PlaceResult
+    ];
+  }
+
+  /**
+   * Extracts place types from OSM tags
+   * @private
+   */
+  private getPlaceTypes(tags: any): string[] {
+    const types: string[] &#x3D; [];
+    
+    if (tags.tourism) types.push(tags.tourism);
+    if (tags.historic) types.push(&#x27;historic&#x27;);
+    if (tags.amenity &#x3D;&#x3D;&#x3D; &#x27;museum&#x27;) types.push(&#x27;museum&#x27;);
+    if (tags.amenity &#x3D;&#x3D;&#x3D; &#x27;theatre&#x27;) types.push(&#x27;theatre&#x27;);
+    if (tags.amenity &#x3D;&#x3D;&#x3D; &#x27;cinema&#x27;) types.push(&#x27;cinema&#x27;);
+    if (tags.leisure) types.push(tags.leisure);
+    
+    return types.length &gt; 0 ? types : [&#x27;attraction&#x27;];
+  }
+
+  /**
+   * Extracts coordinates from OSM element
+   * @private
+   */
+  private getElementCoordinates(element: any): { lat: number; lng: number } | null {
+    if (element.lat &amp;&amp; element.lon) {
+      return { lat: element.lat, lng: element.lon };
+    }
+    if (element.center) {
+      return { lat: element.center.lat, lng: element.center.lon };
+    }
+    if (element.geometry &amp;&amp; element.geometry.length &gt; 0) {
+      const firstPoint &#x3D; element.geometry[0];
+      return { lat: firstPoint.lat, lng: firstPoint.lon };
+    }
+    return null;
+  }
+
+  /**
+   * Formats address from OSM tags
+   * @private
+   */
+  private getRealAddress(tags: any): string {
+    if (tags[&#x27;addr:street&#x27;] &amp;&amp; tags[&#x27;addr:housenumber&#x27;]) {
+      return &#x60;${tags[&#x27;addr:street&#x27;]} ${tags[&#x27;addr:housenumber&#x27;]}, ${tags[&#x27;addr:city&#x27;] || &#x27;&#x27;}&#x60;.trim();
+    }
+    if (tags[&#x27;addr:street&#x27;]) {
+      return tags[&#x27;addr:street&#x27;];
+    }
+    return &#x27;Ubicación disponible en OpenStreetMap&#x27;;
+  }
+
+  /**
+   * Estimates rating from OSM tags
+   * @private
+   */
+  private getRealRatingFromTags(tags: any): number {
+    if (tags[&#x27;review:score&#x27;]) {
+      return parseFloat(tags[&#x27;review:score&#x27;]);
+    }
+    const baseRatings: { [key: string]: number } &#x3D; {
+      &#x27;museum&#x27;: 4.3, &#x27;attraction&#x27;: 4.2, &#x27;hotel&#x27;: 4.0, &#x27;guest_house&#x27;: 4.1,
+      &#x27;viewpoint&#x27;: 4.4, &#x27;theme_park&#x27;: 4.1, &#x27;zoo&#x27;: 4.2, &#x27;aquarium&#x27;: 4.3,
+      &#x27;gallery&#x27;: 4.2, &#x27;historic&#x27;: 4.3, &#x27;theatre&#x27;: 4.1, &#x27;cinema&#x27;: 4.0
+    };
+    return baseRatings[tags.tourism] || baseRatings[tags.amenity] || 4.0;
+  }
+
+  /**
+   * Parses opening hours from OSM tags
+   * @private
+   */
+  private getRealOpeningHours(tags: any): { open_now: boolean; weekday_text?: string[] } {
+    if (tags.opening_hours) {
+      const now &#x3D; new Date();
+      const currentHour &#x3D; now.getHours();
+      return {
+        open_now: currentHour &gt;&#x3D; 9 &amp;&amp; currentHour &lt; 18,
+        weekday_text: [tags.opening_hours]
+      };
+    }
+    
+    return {
+      open_now: true,
+      weekday_text: [&#x27;Horario no especificado en OpenStreetMap&#x27;]
+    };
+  }
+
+  /**
+   * Gets detailed information about a place
+   * 
+   * @description
+   * Fetches place details from:
+   * - OSM Overpass API (for osm_* IDs)
+   * - Predefined database (for predefined_* IDs)
+   * - Generic fallback
+   * 
+   * @param {string} placeId - Place identifier (osm_*, predefined_*, generic_*)
+   * @returns {Promise&lt;any&gt;} Place details with address, hours, rating, etc.
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const details &#x3D; await touristPlacesService.getPlaceDetails(&#x27;osm_node_123456&#x27;);
+   * &#x60;&#x60;&#x60;
+   */
+  async getPlaceDetails(placeId: string): Promise&lt;any&gt; {
+    try {
+      if (placeId.startsWith(&#x27;predefined_&#x27;) || placeId.startsWith(&#x27;generic_&#x27;)) {
+        return this.getPredefinedPlaceDetails(placeId);
+      }
+
+      if (!placeId.startsWith(&#x27;osm_&#x27;)) {
+        throw new Error(&#x27;Solo se soportan lugares de OpenStreetMap&#x27;);
+      }
+
+      const parts &#x3D; placeId.split(&#x27;_&#x27;);
+      if (parts.length &lt; 3) {
+        throw new Error(&#x27;ID de lugar inválido&#x27;);
+      }
+
+      const type &#x3D; parts[1];
+      const id &#x3D; parts[2];
+      
+      const response &#x3D; await fetch(
+        &#x60;https://overpass-api.de/api/interpreter?data&#x3D;[out:json];${type}(${id});out body;&#x60;
+      );
+      
+      const data &#x3D; await response.json();
+      
+      if (!data.elements || data.elements.length &#x3D;&#x3D;&#x3D; 0) {
+        throw new Error(&#x27;Lugar no encontrado&#x27;);
+      }
+
+      const element &#x3D; data.elements[0];
+      
+      return {
+        name: element.tags?.name || &#x27;Lugar turístico&#x27;,
+        formatted_address: this.getRealAddress(element.tags),
+        rating: this.getRealRatingFromTags(element.tags),
+        opening_hours: this.getRealOpeningHours(element.tags),
+        website: element.tags?.website || element.tags?.url || null,
+        international_phone_number: element.tags?.phone || element.tags?.[&#x27;contact:phone&#x27;] || null,
+        user_ratings_total: element.tags?.[&#x27;review:count&#x27;] ? parseInt(element.tags[&#x27;review:count&#x27;]) : 0
+      };
+
+    } catch (error) {
+      this.logger.error(&#x60;❌ Error obteniendo detalles: ${error.message}&#x60;);
+      return this.getPredefinedPlaceDetails(&#x27;generic_details&#x27;);
+    }
+  }
+
+  /**
+   * Returns predefined place details
+   * @private
+   */
+  private getPredefinedPlaceDetails(placeId: string): any {
+    const detailsMap: { [key: string]: any } &#x3D; {
+      &#x27;predefined_museo_oro&#x27;: {
+        name: &quot;Museo del Oro&quot;,
+        formatted_address: &quot;Carrera 6 #15-88, Bogotá, Colombia&quot;,
+        rating: 4.7,
+        opening_hours: {
+          open_now: true,
+          weekday_text: [&quot;Martes a Sábado: 9:00-17:00&quot;, &quot;Domingo: 10:00-16:00&quot;]
+        },
+        website: &quot;https://www.banrepcultural.org/museo-del-oro&quot;,
+        international_phone_number: &quot;+57 1 3432222&quot;,
+        user_ratings_total: 12500
+      },
+      &#x27;predefined_plaza_bolivar&#x27;: {
+        name: &quot;Plaza de Bolívar&quot;,
+        formatted_address: &quot;Carrera 7 #11-10, Bogotá, Colombia&quot;, 
+        rating: 4.5,
+        opening_hours: {
+          open_now: true,
+          weekday_text: [&quot;Abierto 24 horas&quot;]
+        },
+        website: null,
+        international_phone_number: null,
+        user_ratings_total: 8900
+      },
+      &#x27;predefined_jardin_botanico&#x27;: {
+        name: &quot;Jardín Botánico de Bogotá&quot;,
+        formatted_address: &quot;Av. Esperanza #34-56, Bogotá, Colombia&quot;,
+        rating: 4.4,
+        opening_hours: {
+          open_now: true,
+          weekday_text: [&quot;Lunes a Domingo: 9:00-17:00&quot;]
+        },
+        website: &quot;https://jardinbotanicobogota.gov.co&quot;,
+        international_phone_number: &quot;+57 1 4377060&quot;,
+        user_ratings_total: 7600
+      },
+      &#x27;generic_details&#x27;: {
+        name: &quot;Lugar Turístico&quot;,
+        formatted_address: &quot;Centro de la ciudad&quot;,
+        rating: 4.0,
+        opening_hours: {
+          open_now: true,
+          weekday_text: [&quot;Horario flexible&quot;]
+        },
+        website: null,
+        international_phone_number: null,
+        user_ratings_total: 100
+      }
+    };
+
+    return detailsMap[placeId] || detailsMap[&#x27;generic_details&#x27;];
+  }
+
+  /**
+   * Calculates travel time using OSRM routing
+   * 
+   * @description
+   * Uses Project-OSRM API for route calculation.
+   * Falls back to estimated values if API fails.
+   * 
+   * @param {Object} origin - Starting location
+   * @param {Object} destination - Destination location
+   * @param {string} [mode&#x3D;&#x27;walking&#x27;] - Travel mode (walking, driving, cycling)
+   * @returns {Promise&lt;TravelTime&gt;} Duration and distance
+   */
+  async getTravelTime(
+    origin: { lat: number; lng: number },
+    destination: { lat: number; lng: number },
+    mode: string &#x3D; &#x27;walking&#x27;
+  ): Promise&lt;TravelTime&gt; {
+    try {
+      const response &#x3D; await fetch(
+        &#x60;https://router.project-osrm.org/route/v1/${mode}/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?overview&#x3D;false&#x60;
+      );
+
+      if (response.ok) {
+        const data &#x3D; await response.json();
+
+        if (data.routes &amp;&amp; data.routes.length &gt; 0) {
+          const route &#x3D; data.routes[0];
+          const duration &#x3D; Math.round(route.duration / 60);
+          const distance &#x3D; (route.distance / 1000).toFixed(1);
+
+          return {
+            duration: &#x60;${duration} min&#x60;,
+            distance: &#x60;${distance} km&#x60;,
+            success: true
+          };
+        }
+      }
+
+      throw new Error(&#x27;No se pudo calcular la ruta&#x27;);
+
+    } catch (error) {
+      this.logger.error(&#x60;Error cálculo de ruta: ${error.message}&#x60;);
+      const estimatedDuration &#x3D; Math.round(Math.random() * 30 + 10);
+      return {
+        duration: &#x60;${estimatedDuration} min&#x60;,
+        distance: &#x60;${(estimatedDuration * 0.08).toFixed(1)} km&#x60;,
+        success: true
+      };
+    }
+  }
+
+  /**
+   * Gets best recommended tourist place with full details
+   * 
+   * @description
+   * Combines multiple operations:
+   * 1. Searches nearby places
+   * 2. Selects highest-rated place
+   * 3. Fetches detailed information
+   * 4. Calculates travel time
+   * 
+   * @param {Object} location - User coordinates
+   * @returns {Promise&lt;{place: PlaceResult, details: any, travelTime: TravelTime}&gt;} Complete recommendation
+   * @throws {Error} If no places found or invalid coordinates
+   */
+  async getRecommendedTouristPlace(location: { lat: number; lng: number }) {
+    try {
+      const places &#x3D; await this.getNearbyTouristPlaces(location);
+
+      if (places.length &#x3D;&#x3D;&#x3D; 0) {
+        throw new Error(&#x27;No se encontraron lugares turísticos en esta ubicación&#x27;);
+      }
+
+      const placesWithGeometry &#x3D; places.filter(place &#x3D;&gt; place.geometry?.location);
+
+      if (placesWithGeometry.length &#x3D;&#x3D;&#x3D; 0) {
+        throw new Error(&#x27;Los lugares encontrados no tienen coordenadas válidas&#x27;);
+      }
+
+      const bestPlace &#x3D; placesWithGeometry.reduce((best, current) &#x3D;&gt;
+        (current.rating || 0) &gt; (best.rating || 0) ? current : best
+      );
+
+      const bestPlaceLocation &#x3D; bestPlace.geometry!.location;
+
+      const placeDetails &#x3D; await this.getPlaceDetails(bestPlace.place_id!);
+
+      let travelTime: TravelTime;
+      try {
+        travelTime &#x3D; await this.getTravelTime(location, bestPlaceLocation);
+      } catch (error) {
+        travelTime &#x3D; {
+          duration: &#x27;15 min&#x27;,
+          distance: &#x27;1.2 km&#x27;,
+          success: true
+        };
+      }
+
+      this.logger.log(&#x60;Lugar recomendado: ${bestPlace.name}&#x60;);
+
+      return {
+        place: bestPlace,
+        details: placeDetails,
+        travelTime: travelTime
+      };
+
+    } catch (error) {
+      this.logger.error(&#x60;Error obteniendo lugar recomendado: ${error.message}&#x60;);
+      throw error;
+    }
+  }
+
+  /**
+   * Returns service initialization status
+   * 
+   * @returns {{initialized: boolean, hasApiKey: boolean}} Always returns true (no API key required)
+   */
+  getStatus(): { initialized: boolean; hasApiKey: boolean } {
+    return {
+      initialized: true,
+      hasApiKey: true
+    };
+  }
+}</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'TouristPlacesService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

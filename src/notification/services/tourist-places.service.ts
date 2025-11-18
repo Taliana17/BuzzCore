@@ -2,17 +2,53 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PlaceResult, TravelTime } from '../types/notification.types';
 
+/**
+ * Tourist Places Service using OpenStreetMap
+ * 
+ * @description
+ * Provides tourist place search without requiring paid Google API keys.
+ * Uses multiple fallback strategies:
+ * 1. OpenStreetMap Overpass API (real data)
+ * 2. Predefined places for major cities (Bogotá, Medellín)
+ * 3. Generic placeholder places
+ * 
+ * @export
+ * @class TouristPlacesService
+ */
 @Injectable()
 export class TouristPlacesService {
   private readonly logger = new Logger(TouristPlacesService.name);
 
   constructor(private configService: ConfigService) { }
 
+  /**
+   * Searches for nearby tourist places with fallback strategies
+   * 
+   * @description
+   * Searches using three-tier strategy:
+   * 1. OpenStreetMap API (5km radius)
+   * 2. Predefined places for known cities
+   * 3. Generic placeholder places
+   * 
+   * @param {Object} location - User coordinates
+   * @param {number} location.lat - Latitude
+   * @param {number} location.lng - Longitude
+   * @param {number} [radius=2000] - Search radius in meters (not used currently)
+   * @returns {Promise<PlaceResult[]>} Array of tourist places (max 10)
+   * 
+   * @example
+   * ```typescript
+   * const places = await touristPlacesService.getNearbyTouristPlaces({
+   *   lat: 4.7110,
+   *   lng: -74.0721
+   * });
+   * ```
+   */
   async getNearbyTouristPlaces(location: { lat: number; lng: number }, radius: number = 2000): Promise<PlaceResult[]> {
     try {
       this.logger.log(`🔍 Buscando lugares turísticos cerca de: ${location.lat}, ${location.lng}`);
 
-      // PRIMERO: Intentar con OpenStreetMap
+      // Try OpenStreetMap first
       let osmPlaces: PlaceResult[] = [];
       try {
         osmPlaces = await this.getPlacesFromOpenStreetMap(location);
@@ -23,11 +59,15 @@ export class TouristPlacesService {
       } catch (osmError) {
         this.logger.warn(`OpenStreetMap no disponible: ${osmError.message}`);
       }
+
+      // Try predefined places for known cities
       const predefinedPlaces = this.getPredefinedPlacesByCoordinates(location);
       if (predefinedPlaces.length > 0) {
         this.logger.log(`Datos predefinidos: ${predefinedPlaces.length} lugares encontrados`);
         return predefinedPlaces;
       }
+
+      // Fallback to generic places
       const genericPlaces = this.getGenericTouristPlaces(location);
       this.logger.log(`Datos genéricos: ${genericPlaces.length} lugares encontrados`);
       return genericPlaces;
@@ -38,17 +78,27 @@ export class TouristPlacesService {
     }
   }
 
+  /**
+   * Fetches tourist places from OpenStreetMap Overpass API
+   * 
+   * @private
+   * @description
+   * Queries OSM for tourism, historic, and cultural amenities within 5km.
+   * Filters results to only include named places with tourist relevance.
+   * 
+   * @param {Object} location - Center point for search
+   * @returns {Promise<PlaceResult[]>} Filtered tourist places (max 10)
+   * @throws {Error} If API request fails
+   */
   private async getPlacesFromOpenStreetMap(location: { lat: number; lng: number }): Promise<PlaceResult[]> {
     try {
       const query = `
         [out:json][timeout:25];
         (
-          // Buscar lugares turísticos
           node["tourism"](around:5000,${location.lat},${location.lng});
           way["tourism"](around:5000,${location.lat},${location.lng});
           relation["tourism"](around:5000,${location.lat},${location.lng});
           
-          // También buscar lugares históricos, museos, etc.
           node["historic"](around:5000,${location.lat},${location.lng});
           way["historic"](around:5000,${location.lat},${location.lng});
           node["amenity"~"museum|theatre|cinema"](around:5000,${location.lat},${location.lng});
@@ -80,6 +130,7 @@ export class TouristPlacesService {
       if (!data.elements || data.elements.length === 0) {
         return [];
       }
+
       const touristPlaces = data.elements
         .filter((element: any) => {
           const hasName = element.tags?.name;
@@ -107,7 +158,7 @@ export class TouristPlacesService {
           } as PlaceResult;
         })
         .filter((place: PlaceResult | null): place is PlaceResult => place !== null)
-        .slice(0, 10); 
+        .slice(0, 10);
 
       return touristPlaces;
 
@@ -117,7 +168,20 @@ export class TouristPlacesService {
     }
   }
 
+  /**
+   * Returns predefined places for known cities
+   * 
+   * @private
+   * @description
+   * Provides curated tourist places for:
+   * - Bogotá: Museo del Oro, Plaza de Bolívar, Jardín Botánico
+   * - Medellín: Parque Explora
+   * 
+   * @param {Object} location - User coordinates
+   * @returns {PlaceResult[]} Predefined places or empty array
+   */
   private getPredefinedPlacesByCoordinates(location: { lat: number; lng: number }): PlaceResult[] {
+    // Bogotá area
     if (location.lat > 4.59 && location.lat < 4.62 && location.lng > -74.08 && location.lng < -74.07) {
       return [
         {
@@ -164,6 +228,8 @@ export class TouristPlacesService {
         } as PlaceResult
       ];
     }
+
+    // Medellín area
     if (location.lat > 6.24 && location.lat < 6.26 && location.lng > -75.58 && location.lng < -75.56) {
       return [
         {
@@ -186,6 +252,17 @@ export class TouristPlacesService {
     return [];
   }
 
+  /**
+   * Generates generic placeholder places
+   * 
+   * @private
+   * @description
+   * Creates generic tourist places with randomized coordinates near user location.
+   * Used as last resort fallback.
+   * 
+   * @param {Object} location - User coordinates
+   * @returns {PlaceResult[]} Two generic places
+   */
   private getGenericTouristPlaces(location: { lat: number; lng: number }): PlaceResult[] {
     return [
       {
@@ -225,6 +302,10 @@ export class TouristPlacesService {
     ];
   }
 
+  /**
+   * Extracts place types from OSM tags
+   * @private
+   */
   private getPlaceTypes(tags: any): string[] {
     const types: string[] = [];
     
@@ -238,6 +319,10 @@ export class TouristPlacesService {
     return types.length > 0 ? types : ['attraction'];
   }
 
+  /**
+   * Extracts coordinates from OSM element
+   * @private
+   */
   private getElementCoordinates(element: any): { lat: number; lng: number } | null {
     if (element.lat && element.lon) {
       return { lat: element.lat, lng: element.lon };
@@ -252,6 +337,10 @@ export class TouristPlacesService {
     return null;
   }
 
+  /**
+   * Formats address from OSM tags
+   * @private
+   */
   private getRealAddress(tags: any): string {
     if (tags['addr:street'] && tags['addr:housenumber']) {
       return `${tags['addr:street']} ${tags['addr:housenumber']}, ${tags['addr:city'] || ''}`.trim();
@@ -262,6 +351,10 @@ export class TouristPlacesService {
     return 'Ubicación disponible en OpenStreetMap';
   }
 
+  /**
+   * Estimates rating from OSM tags
+   * @private
+   */
   private getRealRatingFromTags(tags: any): number {
     if (tags['review:score']) {
       return parseFloat(tags['review:score']);
@@ -274,6 +367,10 @@ export class TouristPlacesService {
     return baseRatings[tags.tourism] || baseRatings[tags.amenity] || 4.0;
   }
 
+  /**
+   * Parses opening hours from OSM tags
+   * @private
+   */
   private getRealOpeningHours(tags: any): { open_now: boolean; weekday_text?: string[] } {
     if (tags.opening_hours) {
       const now = new Date();
@@ -290,6 +387,23 @@ export class TouristPlacesService {
     };
   }
 
+  /**
+   * Gets detailed information about a place
+   * 
+   * @description
+   * Fetches place details from:
+   * - OSM Overpass API (for osm_* IDs)
+   * - Predefined database (for predefined_* IDs)
+   * - Generic fallback
+   * 
+   * @param {string} placeId - Place identifier (osm_*, predefined_*, generic_*)
+   * @returns {Promise<any>} Place details with address, hours, rating, etc.
+   * 
+   * @example
+   * ```typescript
+   * const details = await touristPlacesService.getPlaceDetails('osm_node_123456');
+   * ```
+   */
   async getPlaceDetails(placeId: string): Promise<any> {
     try {
       if (placeId.startsWith('predefined_') || placeId.startsWith('generic_')) {
@@ -336,6 +450,10 @@ export class TouristPlacesService {
     }
   }
 
+  /**
+   * Returns predefined place details
+   * @private
+   */
   private getPredefinedPlaceDetails(placeId: string): any {
     const detailsMap: { [key: string]: any } = {
       'predefined_museo_oro': {
@@ -391,6 +509,18 @@ export class TouristPlacesService {
     return detailsMap[placeId] || detailsMap['generic_details'];
   }
 
+  /**
+   * Calculates travel time using OSRM routing
+   * 
+   * @description
+   * Uses Project-OSRM API for route calculation.
+   * Falls back to estimated values if API fails.
+   * 
+   * @param {Object} origin - Starting location
+   * @param {Object} destination - Destination location
+   * @param {string} [mode='walking'] - Travel mode (walking, driving, cycling)
+   * @returns {Promise<TravelTime>} Duration and distance
+   */
   async getTravelTime(
     origin: { lat: number; lng: number },
     destination: { lat: number; lng: number },
@@ -406,8 +536,8 @@ export class TouristPlacesService {
 
         if (data.routes && data.routes.length > 0) {
           const route = data.routes[0];
-          const duration = Math.round(route.duration / 60); 
-          const distance = (route.distance / 1000).toFixed(1); 
+          const duration = Math.round(route.duration / 60);
+          const distance = (route.distance / 1000).toFixed(1);
 
           return {
             duration: `${duration} min`,
@@ -430,6 +560,20 @@ export class TouristPlacesService {
     }
   }
 
+  /**
+   * Gets best recommended tourist place with full details
+   * 
+   * @description
+   * Combines multiple operations:
+   * 1. Searches nearby places
+   * 2. Selects highest-rated place
+   * 3. Fetches detailed information
+   * 4. Calculates travel time
+   * 
+   * @param {Object} location - User coordinates
+   * @returns {Promise<{place: PlaceResult, details: any, travelTime: TravelTime}>} Complete recommendation
+   * @throws {Error} If no places found or invalid coordinates
+   */
   async getRecommendedTouristPlace(location: { lat: number; lng: number }) {
     try {
       const places = await this.getNearbyTouristPlaces(location);
@@ -458,7 +602,7 @@ export class TouristPlacesService {
       } catch (error) {
         travelTime = {
           duration: '15 min',
-          distance: '1.2 km', 
+          distance: '1.2 km',
           success: true
         };
       }
@@ -477,10 +621,15 @@ export class TouristPlacesService {
     }
   }
 
+  /**
+   * Returns service initialization status
+   * 
+   * @returns {{initialized: boolean, hasApiKey: boolean}} Always returns true (no API key required)
+   */
   getStatus(): { initialized: boolean; hasApiKey: boolean } {
     return {
       initialized: true,
-      hasApiKey: true 
+      hasApiKey: true
     };
   }
 }

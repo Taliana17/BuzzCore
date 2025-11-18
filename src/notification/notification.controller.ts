@@ -1,5 +1,5 @@
 import { Controller, Post, Get, Body, Req, UseGuards, Query, BadRequestException, Logger } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBody } from '@nestjs/swagger';
 import { NotificationService } from './services/notification.service';
 import { NotificationQueueService } from './services/notification-queue.service';
 import { EmailProvider } from './services/providers/email.provider';
@@ -15,6 +15,7 @@ import {
   TestPlaceDetailsResponse, 
   ServiceStatusResponse 
 } from './types/notification.types';
+import { Notification } from './entities/notification.entity';
 
 @ApiTags('Notifications')
 @ApiBearerAuth()
@@ -32,10 +33,26 @@ export class NotificationController {
     private readonly locationHistoryService: LocationHistoryService,
   ) {}
 
-  @ApiOperation({ summary: 'Send a new notification' })
-  @ApiResponse({ status: 201, description: 'Notification created and queued' })
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Send a new notification',
+    description: 'Creates and queues a new tourist notification based on user location. Requires coordinates to find nearby tourist places.',
+  })
+  @ApiBody({ type: CreateNotificationDto })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Notification created and queued successfully.',
+    type: Notification,
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: 'Bad request. Location data with coordinates is required.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async sendNotification(@Body() dto: CreateNotificationDto, @Req() req) {
     if (!dto.location_data || !dto.location_data.coordinates) {
       throw new BadRequestException('Location data with coordinates is required for tourist notifications');
@@ -48,9 +65,20 @@ export class NotificationController {
     );
   }
 
-  @ApiOperation({ summary: 'Receive user location and send tourist notification' })
-  @ApiResponse({ status: 201, description: 'Location received and notification sent' })
   @Post('receive-location')
+  @ApiOperation({ 
+    summary: 'Receive user location and send tourist notification',
+    description: 'Receives user geolocation coordinates, detects city, saves location history, and automatically sends personalized tourist place recommendations.',
+  })
+  @ApiBody({ type: ReceiveLocationDto })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Location received and notification sent successfully.',
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: 'Bad request. Invalid location data.',
+  })
   async receiveLocationAndNotify(@Body() dto: ReceiveLocationDto) {
     this.logger.log(`📍 Ubicación recibida - Lat: ${dto.lat}, Lng: ${dto.lng}, Ciudad: ${dto.city}`);
     
@@ -67,23 +95,80 @@ export class NotificationController {
     }
   }
 
-  @ApiOperation({ summary: 'Get all notifications of the current user' })
-  @UseGuards(JwtAuthGuard)
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Get all notifications of the current user',
+    description: 'Retrieves all notifications (email and SMS) sent to the authenticated user, including status and metadata.',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'List of user notifications retrieved successfully.',
+    type: [Notification],
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async getUserNotifications(@Req() req) {
     return this.notificationService.findAllByUser(req.user.id);
   }
 
-  @ApiOperation({ summary: 'Get notification statistics' })
-  @UseGuards(JwtAuthGuard)
   @Get('stats')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Get notification statistics',
+    description: 'Retrieves statistics about user notifications including total sent, success rate, channel distribution, and recent activity.',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Notification statistics retrieved successfully.',
+    schema: {
+      example: {
+        total: 45,
+        sent: 40,
+        failed: 3,
+        pending: 2,
+        byChannel: { email: 30, sms: 15 },
+        successRate: 88.9
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async getNotificationStats(@Req() req) {
     return this.notificationService.getNotificationStats(req.user.id);
   }
 
-  @ApiOperation({ summary: 'Get queue statistics (Admin)' })
-  @UseGuards(JwtAuthGuard)
   @Get('queue/stats')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Get queue statistics (Admin only)',
+    description: 'Retrieves BullMQ queue statistics including active, waiting, completed, and failed jobs. Admin role required.',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Queue statistics retrieved successfully.',
+    schema: {
+      example: {
+        waiting: 5,
+        active: 2,
+        completed: 150,
+        failed: 3,
+        delayed: 0
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: 'Unauthorized. Admin role required.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async getQueueStats(@Req() req) {
     if (req.user.role !== 'admin') {
       throw new BadRequestException('No autorizado: Se requiere rol de administrador');
@@ -91,9 +176,34 @@ export class NotificationController {
     return this.queueService.getQueueStats();
   }
 
-  @ApiOperation({ summary: 'Test places API integration' })
-  @UseGuards(JwtAuthGuard)
   @Get('test-places')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Test Google Places API integration',
+    description: 'Tests the Google Places API by searching for nearby tourist places at specified coordinates. Defaults to Bogotá if no coordinates provided.',
+  })
+  @ApiQuery({
+    name: 'lat',
+    description: 'Latitude coordinate',
+    required: false,
+    type: Number,
+    example: 4.710989,
+  })
+  @ApiQuery({
+    name: 'lng',
+    description: 'Longitude coordinate',
+    required: false,
+    type: Number,
+    example: -74.072092,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Places API test completed.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async testPlaces(
     @Query('lat') lat: number, 
     @Query('lng') lng: number, 
@@ -122,9 +232,27 @@ export class NotificationController {
     }
   }
 
-  @ApiOperation({ summary: 'Test Google Place Details' })
-  @UseGuards(JwtAuthGuard)
   @Get('test-place-details')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Test Google Place Details API',
+    description: 'Tests the Google Place Details API by fetching detailed information about a specific place.',
+  })
+  @ApiQuery({
+    name: 'place',
+    description: 'Place name to search for details',
+    required: false,
+    type: String,
+    example: 'Monserrate',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Place Details API test completed.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async testPlaceDetails(
     @Query('place') placeName: string, 
     @Req() req
@@ -159,9 +287,20 @@ export class NotificationController {
     }
   }
 
-  @ApiOperation({ summary: 'Check Google Places service status' })
-  @UseGuards(JwtAuthGuard)
   @Get('service-status')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Check Google Places service status',
+    description: 'Verifies if Google Places API is properly initialized and has a valid API key configured.',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Service status retrieved successfully.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async getServiceStatus(): Promise<ServiceStatusResponse> {
     const status = this.touristPlacesService.getStatus();
     return {
@@ -172,9 +311,34 @@ export class NotificationController {
     };
   }
 
-  @ApiOperation({ summary: 'Test SMS and Email providers' })
-  @UseGuards(JwtAuthGuard)
   @Get('test-providers')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Test SMS and Email providers',
+    description: 'Sends test notifications via both SMS (Twilio) and Email (Resend) providers to verify configuration and connectivity.',
+  })
+  @ApiQuery({
+    name: 'phone',
+    description: 'Phone number for SMS test',
+    required: false,
+    type: String,
+    example: '+573147327080',
+  })
+  @ApiQuery({
+    name: 'email',
+    description: 'Email address for email test',
+    required: false,
+    type: String,
+    example: 'test@example.com',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Providers test completed.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async testProviders(
     @Query('phone') phone: string,
     @Query('email') email: string,
@@ -230,9 +394,20 @@ export class NotificationController {
     }
   }
 
-  @ApiOperation({ summary: 'Check all providers status' })
-  @UseGuards(JwtAuthGuard)
   @Get('providers-status')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Check all providers status',
+    description: 'Returns the initialization and configuration status of all external service providers (SMS, Email, Google Places).',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Providers status retrieved successfully.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async getProvidersStatus() {
     return {
       sms: this.smsProvider.getStatus(),
@@ -241,9 +416,20 @@ export class NotificationController {
     };
   }
 
-  @ApiOperation({ summary: 'Debug SMS configuration' })
-  @UseGuards(JwtAuthGuard)
   @Get('sms-debug')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Debug SMS configuration',
+    description: 'Provides detailed debugging information about SMS provider configuration including credential validation and common issues.',
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'SMS debug information retrieved successfully.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async debugSms() {
     const debugInfo = this.smsProvider.getStatus();
     const credentialTest = await this.smsProvider.testCredentials();
@@ -261,9 +447,42 @@ export class NotificationController {
     };
   }
 
-  @ApiOperation({ summary: 'Test only SMS provider' })
-  @UseGuards(JwtAuthGuard)
   @Post('test-sms')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Test SMS provider only',
+    description: 'Sends a test SMS message to verify Twilio configuration and connectivity.',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['phone'],
+      properties: {
+        phone: {
+          type: 'string',
+          description: 'Phone number in international format (E.164)',
+          example: '+573001234567'
+        },
+        message: {
+          type: 'string',
+          description: 'Custom test message (optional)',
+          example: '¡Prueba de SMS desde BuzzCore!'
+        }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'SMS sent successfully.',
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: 'Bad request. Phone number is required.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async testSms(
     @Body() body: { phone: string; message?: string },
     @Req() req
@@ -293,9 +512,43 @@ export class NotificationController {
     }
   }
 
-  @ApiOperation({ summary: 'Test only Email provider' })
-  @UseGuards(JwtAuthGuard)
   @Post('test-email')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: 'Test Email provider only',
+    description: 'Sends a test email message to verify Resend configuration and connectivity.',
+  })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['email'],
+      properties: {
+        email: {
+          type: 'string',
+          description: 'Email address to send test',
+          example: 'test@example.com',
+          format: 'email'
+        },
+        message: {
+          type: 'string',
+          description: 'Custom test message (optional)',
+          example: '¡Esta es una prueba de email desde BuzzCore!'
+        }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 201, 
+    description: 'Email sent successfully.',
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: 'Bad request. Email is required.',
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: 'Unauthorized. Valid JWT token required.',
+  })
   async testEmail(
     @Body() body: { email: string; message?: string },
     @Req() req
