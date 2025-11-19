@@ -1,0 +1,116 @@
+### Variables
+@baseUrl = http://localhost:3000
+@contentType = application/json
+@authToken = {{authToken}}
+
+### 🔄 FLUJO COMPLETO: AUTENTICACIÓN -> UBICACIÓN -> NOTIFICACIÓN
+
+### PASO 1: Registrar usuario para pruebas
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+  "name": "Usuario Notificaciones",
+  "email": "notifications@example.com",
+  "password": "password123",
+  "preferred_channel": "email",
+  "phone": "+573001234567"
+}
+
+> {%
+    client.test("Register for notifications flow", function() {
+        client.assert(response.status === 201, "Registration failed");
+    });
+%}
+
+### PASO 2: Login para obtener token
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "notifications@example.com",
+  "password": "password123"
+}
+
+> {%
+    client.test("Login for notifications flow", function() {
+        client.assert(response.status === 201, "Login failed");
+        client.global.set("notificationsToken", response.body.access_token);
+        client.global.set("notificationsUserId", response.body.user.id);
+    });
+%}
+
+### PASO 3: Procesar ubicación y crear notificación turística
+# @name processLocation
+POST {{baseUrl}}/notifications/receive-location
+Authorization: Bearer {{notificationsToken}}
+Content-Type: {{contentType}}
+
+{
+  "lat": 4.710989,
+  "lng": -74.072092,
+  "userId": "{{notificationsUserId}}"
+}
+
+> {%
+    client.test("Process location successful", function() {
+        client.assert(response.status === 201, "Location processing failed");
+        client.assert(response.body.success === true, "Location processing not successful");
+        client.assert(response.body.data.hasOwnProperty("notification"), "Should have notification data");
+        client.assert(response.body.data.hasOwnProperty("recommended_place"), "Should have recommended place");
+        
+        // Guardar IDs para pruebas posteriores
+        client.global.set("notificationId", response.body.data.notification.id);
+        client.global.set("recommendedPlace", response.body.data.recommended_place.name);
+    });
+%}
+
+### PASO 4: Obtener notificaciones del usuario
+GET {{baseUrl}}/notifications
+Authorization: Bearer {{notificationsToken}}
+Content-Type: {{contentType}}
+
+> {%
+    client.test("Get user notifications", function() {
+        client.assert(response.status === 200, "Failed to get notifications");
+        client.assert(Array.isArray(response.body), "Notifications should be an array");
+        
+        if (response.body.length > 0) {
+            client.assert(response.body[0].hasOwnProperty("message"), "Notification should have message");
+            client.assert(response.body[0].hasOwnProperty("status"), "Notification should have status");
+        }
+    });
+%}
+
+### PASO 5: Obtener estadísticas de notificaciones
+GET {{baseUrl}}/notifications/stats
+Authorization: Bearer {{notificationsToken}}
+Content-Type: {{contentType}}
+
+> {%
+    client.test("Get notification stats", function() {
+        client.assert(response.status === 200, "Failed to get stats");
+        client.assert(response.body.hasOwnProperty("total"), "Stats should have total");
+        client.assert(response.body.hasOwnProperty("success_rate"), "Stats should have success_rate");
+    });
+%}
+
+### PASO 6: Probar detección automática de ciudad (sin city)
+POST {{baseUrl}}/notifications/receive-location
+Authorization: Bearer {{notificationsToken}}
+Content-Type: {{contentType}}
+
+{
+  "lat": 6.244203,
+  "lng": -75.581215,
+  "userId": "{{notificationsUserId}}"
+}
+
+> {%
+    client.test("Auto city detection", function() {
+        client.assert(response.status === 201, "Auto city detection failed");
+        client.assert(response.body.data.location.detected === true, "City should be auto-detected");
+    });
+%}

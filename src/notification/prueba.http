@@ -1,0 +1,19 @@
+
+### 2. 🔐 LOGIN Y GUARDAR TOKEN
+# @name login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "serranocaroldayana@gmail.com",
+  "password": "carol"
+}
+
+POST http://localhost:3000/notifications/receive-location
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzE2NTQ3NSwiZXhwIjoxNzYzNjgzODc1fQ.oyeXcyDV1zEyyj5DPbnGJldLeSF-h1xiZwl8YS3uk5I
+Content-Type: application/json
+
+{
+  "lat": 4.710989,
+  "lng": -74.072092
+}
