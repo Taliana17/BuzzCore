@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notification } from '../../entities/notification.entity';
 import { User } from '../../../user/entities/user.entity';
-import type { NotificationMetadata, Coordinates } from '../../types/notification.types';
+import type { NotificationMetadata } from '../../types/notification.types';
+import type { Coordinates } from '../../types/core.types';
 
 @Injectable()
 export class NotificationFactory {
@@ -12,13 +13,13 @@ export class NotificationFactory {
     private notificationRepo: Repository<Notification>,
   ) {}
 
-  createTouristNotification(
+  async createTouristNotification(
     user: User,
     message: string,
     placeName: string,
     channel: 'email' | 'sms',
     metadata: NotificationMetadata
-  ): Notification {
+  ): Promise<Notification> {
     const notification = this.notificationRepo.create({
       user,
       message,
@@ -29,17 +30,18 @@ export class NotificationFactory {
       sent_at: new Date(),
     });
 
-    return notification;
+    // GUARDAR EN BASE DE DATOS
+    return await this.notificationRepo.save(notification);
   }
 
-  createBasicNotification(
+  async createBasicNotification(
     user: User,
     message: string,
     channel: 'email' | 'sms' = 'email'
-  ): Notification {
+  ): Promise<Notification> {
     const defaultCoordinates: Coordinates = { lat: 4.710989, lng: -74.072092 };
     
-    return this.createTouristNotification(
+    return await this.createTouristNotification(
       user,
       message,
       'Lugar de prueba',

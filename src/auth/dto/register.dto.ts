@@ -14,6 +14,10 @@ export class RegisterDto {
   @IsString()
   password: string;
 
+   @ApiProperty({ example: '+573001234567' }) 
+  @IsString()
+  phone: string;
+
   @ApiProperty({ example: 'email', enum: ['email', 'sms'] })
   @IsIn(['email', 'sms'])
   preferred_channel: 'email' | 'sms';

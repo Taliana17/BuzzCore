@@ -1,4 +1,4 @@
-import { TravelTime } from '../types/notification.types';
+import { TravelTime } from '../types/core.types';
 
 export interface EmailProvider {
   send(to: string, subject: string, html: string): Promise<EmailResult>;

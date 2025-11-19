@@ -12,6 +12,13 @@ import { TouristPlacesService } from './services/external/tourist-places.service
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { UserService } from '../user/user.service';
 import { LocationHistoryService } from '../location-history/location-history.service';
+import { 
+  NotificationCreateData, 
+  TravelTime, 
+  EmailResult,
+  TestPlacesResponse,
+  NotificationJobData 
+} from './types';
 
 @ApiTags('Notifications')
 @ApiBearerAuth()

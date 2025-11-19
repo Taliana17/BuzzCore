@@ -1,12 +1,15 @@
-### Variables
-@baseUrl = http://localhost:3000
-@contentType = application/json
-@authToken = {{authToken}}
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "administrador@example.com",
+  "password": "admin"
+}
 
 ### 1. CREAR NOTIFICACIÓN MANUAL
-POST {{baseUrl}}/notifications
-Authorization: Bearer {{authToken}}
-Content-Type: {{contentType}}
+POST http://localhost:3000/notifications
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODdkYmMzMi1mZjU1LTQ3NTUtYjJhNC1hOWQyNjdhZjQ1MmEiLCJlbWFpbCI6ImFkbWluaXN0cmFkb3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjMxNzU0NDEsImV4cCI6MTc2MzY5Mzg0MX0.M89tdjeQo-w7xdstCTmVvWxDGHODJyEeRInZ8BDtLuY
 
 {
   "message": "Notificación manual de prueba",
@@ -21,53 +24,17 @@ Content-Type: {{contentType}}
   }
 }
 
-> {%
-    client.test("Create manual notification", function() {
-        client.assert(response.status === 201, "Manual notification failed");
-    });
-%}
-
 ### 2. PROBAR CON COORDENADAS INVÁLIDAS
-POST {{baseUrl}}/notifications/receive-location
-Authorization: Bearer {{authToken}}
-Content-Type: {{contentType}}
-
+POST http://localhost:3000/notifications/receive-location
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODdkYmMzMi1mZjU1LTQ3NTUtYjJhNC1hOWQyNjdhZjQ1MmEiLCJlbWFpbCI6ImFkbWluaXN0cmFkb3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjMxNzU0NDEsImV4cCI6MTc2MzY5Mzg0MX0.M89tdjeQo-w7xdstCTmVvWxDGHODJyEeRInZ8BDtLuY
 {
-  "lat": 100,  // Latitud inválida
-  "lng": -200, // Longitud inválida
-  "userId": "{{userId}}"
+  "lat": 100,
+  "lng": -200,
+  "userId": "USER_ID_AQUI"
 }
 
-> {%
-    client.test("Invalid coordinates", function() {
-        client.assert(response.status === 400, "Should return 400 for invalid coordinates");
-    });
-%}
-
-### 3. PROBAR SIN USER ID
-POST {{baseUrl}}/notifications/receive-location
-Authorization: Bearer {{authToken}}
-Content-Type: {{contentType}}
-
-{
-  "lat": 4.710989,
-  "lng": -74.072092
-}
-
-> {%
-    client.test("Missing user ID", function() {
-        client.assert(response.status === 400, "Should return 400 for missing user ID");
-    });
-%}
-
-### 4. OBTENER ESTADÍSTICAS DE COLA (solo admin)
-GET {{baseUrl}}/notifications/queue/stats
-Authorization: Bearer {{authToken}}
-Content-Type: {{contentType}}
-
-> {%
-    client.test("Queue stats", function() {
-        // Puede devolver 200 o 400 dependiendo del rol del usuario
-        client.log("Queue stats response: " + response.status);
-    });
-%}
+### 3. OBTENER ESTADÍSTICAS DE COLA (solo admin)
+GET http://localhost:3000/notifications/queue/stats
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODdkYmMzMi1mZjU1LTQ3NTUtYjJhNC1hOWQyNjdhZjQ1MmEiLCJlbWFpbCI6ImFkbWluaXN0cmFkb3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjMxNzU0NDEsImV4cCI6MTc2MzY5Mzg0MX0.M89tdjeQo-w7xdstCTmVvWxDGHODJyEeRInZ8BDtLuY

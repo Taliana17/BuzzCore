@@ -8,7 +8,14 @@ import { NotificationQueueService } from './notification-queue.service';
 import { NotificationValidator } from './notification-validator.service';
 import { NotificationFactory } from './notification-factory.service';
 import type { LocationDetector, PlaceFinder, RecommendedPlace } from '../../interfaces/location-detector.interface';
-import type { Coordinates } from '../../types/notification.types';
+import { 
+  NotificationCreateData, 
+  TravelTime, 
+  EmailResult,
+  TestPlacesResponse,
+  NotificationJobData 
+} from './../../types';
+import { Coordinates } from '../../types/core.types';
 
 @Injectable()
 export class NotificationService {
@@ -31,14 +38,12 @@ export class NotificationService {
   ) {
     this.logger.log(`📍 Procesando ubicación - Lat: ${dto.lat}, Lng: ${dto.lng}, Ciudad: ${dto.city}`);
 
-    // Validaciones
     this.notificationValidator.validateLocationData(dto);
     
     if (!dto.userId) {
       throw new BadRequestException('userId es requerido para requests no autenticados');
     }
 
-    // Buscar usuario
     const user = await userService.findOne(dto.userId);
     if (!user) {
       throw new NotFoundException(`Usuario con ID ${dto.userId} no encontrado`);
@@ -46,28 +51,24 @@ export class NotificationService {
 
     const location: Coordinates = { lat: dto.lat, lng: dto.lng };
     
-    // Detectar ciudad si no está proporcionada
     const city = await this.detectOrUseProvidedCity(dto);
     
-    // Encontrar lugar recomendado
     const recommendedPlace: RecommendedPlace = await this.placeFinder.findRecommendedPlace(location);
 
-    // Crear notificación
+    // USAR AWAIT - ESTA ES LA LÍNEA CLAVE
     const notification = await this.createTouristNotification(
       user, 
       city, 
       location,
       recommendedPlace,
-      !!dto.city // Indica si la ciudad fue proporcionada (no detectada)
+      !!dto.city
     );
 
-    // Encolar notificación
     await this.notificationQueueService.enqueueNotification(
       notification, 
       user.preferred_channel as 'email' | 'sms'
     );
 
-    // Guardar en historial de ubicaciones
     let locationHistory = null;
     try {
       locationHistory = await locationHistoryService.create(
@@ -105,7 +106,8 @@ export class NotificationService {
     recommendedPlace: RecommendedPlace,
     cityProvided: boolean
   ): Promise<Notification> {
-    return this.notificationFactory.createTouristNotification(
+    // AQUÍ ESTÁ EL AWAIT CLAVE
+    return await this.notificationFactory.createTouristNotification(
       user,
       `Recomendación turística para ${city}`,
       recommendedPlace.place.name,
@@ -116,7 +118,7 @@ export class NotificationService {
         location: {
           city,
           coordinates,
-          cityDetected: !cityProvided // Indica si la ciudad fue detectada automáticamente
+          cityDetected: !cityProvided
         }
       }
     );
@@ -142,8 +144,8 @@ export class NotificationService {
         },
         location: {
           city,
-          coordinates: coordinates, // Usar las coordenadas del parámetro
-          detected: !cityProvided // Indica si fue detectada automáticamente
+          coordinates: coordinates,
+          detected: !cityProvided
         },
         recommended_place: {
           name: recommendedPlace.place.name,
@@ -151,7 +153,7 @@ export class NotificationService {
           travel_time: recommendedPlace.travelTime
         },
         notification: {
-          id: notification.id,
+          id: notification.id, // ✅ AHORA TENDRÁ ID
           status: notification.status,
           channel: notification.channel
         },

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Twilio from 'twilio';
 import { SmsProvider as ISmsProvider, SmsResult, ProviderStatus } from '../../interfaces/providers.interface';
-import { TravelTime } from '../../types/notification.types';
+import { TravelTime } from '../../types/core.types';
 
 @Injectable()
 export class SmsProvider implements ISmsProvider {

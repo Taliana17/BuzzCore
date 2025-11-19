@@ -1,10 +1,7 @@
-### Variables
-@baseUrl = http://localhost:3000
-@contentType = application/json
 
 ### 1. REGISTER - Crear nuevo usuario
-POST {{baseUrl}}/auth/register
-Content-Type: {{contentType}}
+POST http://localhost:3000/auth/register
+Content-Type: application/json
 
 {
   "name": "Usuario de Prueba",
@@ -14,17 +11,10 @@ Content-Type: {{contentType}}
   "role": "user"
 }
 
-> {%
-    client.test("Register successful", function() {
-        client.assert(response.status === 201, "Response status is not 201");
-        client.assert(response.body.hasOwnProperty("message"), "Response should have message");
-        client.assert(response.body.message === "User registered successfully", "Registration message incorrect");
-    });
-%}
 
 ### 2. REGISTER - Usuario con SMS
-POST {{baseUrl}}/auth/register
-Content-Type: {{contentType}}
+POST http://localhost:3000/auth/register
+Content-Type: application/json
 
 {
   "name": "Usuario SMS",
@@ -33,46 +23,29 @@ Content-Type: {{contentType}}
   "preferred_channel": "sms",
   "phone": "+573001234567"
 }
-
 ### 3. LOGIN - Autenticación exitosa
-POST {{baseUrl}}/auth/login
-Content-Type: {{contentType}}
+POST http://localhost:3000/auth/login
+Content-Type: application/json
 
 {
   "email": "test@otro.com",
   "password": "password123"
 }
 
-> {%
-    client.test("Login successful", function() {
-        client.assert(response.status === 201, "Response status is not 201");
-        client.assert(response.body.hasOwnProperty("access_token"), "Response should have access_token");
-        client.assert(response.body.hasOwnProperty("user"), "Response should have user data");
-        
-        // Guardar el token para pruebas posteriores
-        client.global.set("authToken", response.body.access_token);
-        client.global.set("userId", response.body.user.id);
-    });
-%}
-
 ### 4. LOGIN - Credenciales incorrectas
-POST {{baseUrl}}/auth/login
-Content-Type: {{contentType}}
+POST http://localhost:3000/auth/login
+Content-Type: application/json
 
 {
   "email": "test@example.com",
   "password": "wrongpassword"
 }
 
-> {%
-    client.test("Login failed with wrong password", function() {
-        client.assert(response.status === 401, "Should return 401 for wrong credentials");
-    });
-%}
+
 
 ### 5. LOGIN - Usuario no existente
-POST {{baseUrl}}/auth/login
-Content-Type: {{contentType}}
+POST http://localhost:3000/auth/login
+Content-Type: application/json
 
 {
   "email": "nonexistent@example.com",

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notification } from '../../entities/notification.entity';
-import { NotificationStats } from '../../types/notification.types';
+import { NotificationStats } from '../../types/core.types';
 
 @Injectable()
 export class NotificationStatisticsService {

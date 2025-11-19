@@ -1,0 +1,29 @@
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Carlos Rodríguez",
+  "email": "carlos.rodriguez.travel@gmail.com", 
+  "password": "Viajes2025!",
+  "phone": "+573147327080", 
+  "preferred_channel": "sms",
+  "role": "user"
+}
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos.rodriguez.travel@gmail.com",
+  "password": "Viajes2025!"
+}
+
+POST http://localhost:3000/notifications/receive-location
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZTM5Njk5My0zMWNkLTRhODItYTY1NC0wYzViNzU2OTBiYTgiLCJlbWFpbCI6ImNhcmxvcy5yb2RyaWd1ZXoudHJhdmVsQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNTEwNjczLCJleHAiOjE3NjQwMjkwNzN9.bqN2q7vzimy4ADrynQ-mfkgJwFD7VtixQFr5A8nc79Q
+
+{
+  "lat": 4.710989,
+  "lng": -74.072092,
+  "city": "Bogotá"
+}

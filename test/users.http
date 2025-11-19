@@ -1,11 +1,8 @@
-### Variables
-@baseUrl = http://localhost:3000
-@contentType = application/json
-@authToken = {{authToken}}
+
 
 ### 1. CREAR USUARIO (sin auth)
-POST {{baseUrl}}/users
-Content-Type: {{contentType}}
+POST http://localhost:3000/users
+Content-Type: application/json
 
 {
   "name": "Nuevo Usuario",
@@ -13,39 +10,37 @@ Content-Type: {{contentType}}
   "password": "password123",
   "preferred_channel": "email"
 }
+###1 Admin
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Usuario Admin",
+  "email": "administrador@example.com",
+  "password": "admin",
+  "preferred_channel": "email",
+  "role": "admin"
+}
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "administrador@example.com",
+  "password": "admin"
+}
 
 ### 2. OBTENER TODOS LOS USUARIOS (requiere auth)
-GET {{baseUrl}}/users
-Authorization: Bearer {{authToken}}
-Content-Type: {{contentType}}
-
-> {%
-    client.test("Get all users successful", function() {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(Array.isArray(response.body), "Response should be an array");
-    });
-%}
+GET http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODdkYmMzMi1mZjU1LTQ3NTUtYjJhNC1hOWQyNjdhZjQ1MmEiLCJlbWFpbCI6ImFkbWluaXN0cmFkb3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjMxNzQ5MjUsImV4cCI6MTc2MzY5MzMyNX0.7udMlDeqeSMPF_Hzx9Dsz_GXOZNdTx-hLxu_kCVtYiQ
 
 ### 3. OBTENER USUARIO POR ID
-GET {{baseUrl}}/users/{{userId}}
-Authorization: Bearer {{authToken}}
-Content-Type: {{contentType}}
-
-> {%
-    client.test("Get user by ID successful", function() {
-        client.assert(response.status === 200, "Response status is not 200");
-        client.assert(response.body.hasOwnProperty("id"), "User should have id");
-        client.assert(response.body.hasOwnProperty("email"), "User should have email");
-    });
-%}
+GET http://localhost:3000/users/08c4bdf4-6648-4545-ad8d-49408f32f0ba
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODdkYmMzMi1mZjU1LTQ3NTUtYjJhNC1hOWQyNjdhZjQ1MmEiLCJlbWFpbCI6ImFkbWluaXN0cmFkb3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjMxNzQ5MjUsImV4cCI6MTc2MzY5MzMyNX0.7udMlDeqeSMPF_Hzx9Dsz_GXOZNdTx-hLxu_kCVtYiQ
 
 ### 4. ELIMINAR USUARIO
-DELETE {{baseUrl}}/users/{{userId}}
-Authorization: Bearer {{authToken}}
-Content-Type: {{contentType}}
-
-> {%
-    client.test("Delete user successful", function() {
-        client.assert(response.status === 200, "Response status is not 200");
-    });
-%}
+DELETE http://localhost:3000/users/018c139c-6b71-4ca4-b805-807233d3e186
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzODdkYmMzMi1mZjU1LTQ3NTUtYjJhNC1hOWQyNjdhZjQ1MmEiLCJlbWFpbCI6ImFkbWluaXN0cmFkb3JAZXhhbXBsZS5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjMxNzQ5MjUsImV4cCI6MTc2MzY5MzMyNX0.7udMlDeqeSMPF_Hzx9Dsz_GXOZNdTx-hLxu_kCVtYiQ

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
 import { EmailProvider as IEmailProvider, EmailResult, ProviderStatus } from '../../interfaces/providers.interface';
-import { TravelTime } from '../../types/notification.types';
+import { TravelTime } from '../../types/core.types';
 
 @Injectable()
 export class EmailProvider implements IEmailProvider {
