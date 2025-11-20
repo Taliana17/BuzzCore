@@ -1,18 +1,14 @@
-// src/config/typeorm.config.ts
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { User } from '../user/entities/user.entity';
-import { Notification } from '../notification/entities/notification.entity';
-import { LocationHistory } from '../location-history/entities/location-history.entity';
 
-export const typeOrmConfig = async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
+export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
   type: 'postgres',
-  host: configService.get('DB_HOST'),
-  port: Number(configService.get('DB_PORT') ?? 5432),
-  username: configService.get('DB_USERNAME'),
-  password: configService.get('DB_PASSWORD'),
-  database: configService.get('DB_NAME'),
-  entities: [User, Notification, LocationHistory],
-  synchronize: true, // para desarrollo; en producción usar migraciones
-  logging: true,
+  host: configService.get('DB_HOST') || 'localhost',
+  port: configService.get('DB_PORT') || 5432,
+  username: configService.get('DB_USERNAME') || 'postgres',
+  password: configService.get('DB_PASSWORD') || 'password',
+  database: configService.get('DB_NAME') || 'buzzcore',
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  synchronize: configService.get('DB_SYNCHRONIZE') === 'true' || true,
+  logging: configService.get('DB_LOGGING') === 'true' || false,
 });

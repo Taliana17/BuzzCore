@@ -20,6 +20,17 @@ import {
   NotificationJobData 
 } from './types';
 
+/**
+ * Notification Controller
+ * Handles all notification-related operations including:
+ * - Sending notifications to users
+ * - Processing user locations
+ * - Testing provider integrations
+ * - Retrieving notification statistics
+ * 
+ * @controller notifications
+ * @apiBearerAuth JWT authentication required for all endpoints
+ */
 @ApiTags('Notifications')
 @ApiBearerAuth()
 @Controller('notifications')
@@ -38,6 +49,24 @@ export class NotificationController {
     private readonly cityDetectionService: CityDetectionService,
   ) {}
 
+  /**
+   * Send a new notification to users
+   * Creates and queues a notification based on location data
+   * 
+   * @param {CreateNotificationDto} dto - Notification creation data including location
+   * @param req - Express request object with authenticated user
+   * @returns {Promise<any>} Processing result
+   * @throws {BadRequestException} If location data is missing
+   * 
+   * @example
+   * POST /notifications
+   * {
+   *   "location_data": {
+   *     "coordinates": { "lat": 4.710989, "lng": -74.072092 },
+   *     "city": "Bogotá"
+   *   }
+   * }
+   */
   @ApiOperation({ summary: 'Send a new notification' })
   @ApiResponse({ status: 201, description: 'Notification created and queued' })
   @UseGuards(JwtAuthGuard)
@@ -54,6 +83,18 @@ export class NotificationController {
     );
   }
 
+  /**
+   * Test city detection service with coordinates
+   * Validates that city detection is working correctly
+   * 
+   * @param {number} lat - Latitude coordinate (optional)
+   * @param {number} lng - Longitude coordinate (optional)
+   * @param req - Express request object
+   * @returns {Promise<object>} Test results with detected city and provider status
+   * 
+   * @example
+   * GET /notifications/test-city-detection?lat=4.710989&lng=-74.072092
+   */
   @ApiOperation({ summary: 'Test city detection from coordinates' })
   @UseGuards(JwtAuthGuard)
   @Get('test-city-detection')
@@ -90,6 +131,23 @@ export class NotificationController {
     }
   }
 
+  /**
+   * Receive user location and automatically send tourist notifications
+   * Processes location data to find nearby tourist places and sends notifications
+   * 
+   * @param {ReceiveLocationDto} dto - Location data including coordinates and city
+   * @param req - Express request object with authenticated user
+   * @returns {Promise<any>} Notification processing result
+   * @throws {BadRequestException} If location processing fails
+   * 
+   * @example
+   * POST /notifications/receive-location
+   * {
+   *   "lat": 4.710989,
+   *   "lng": -74.072092,
+   *   "city": "Bogotá"
+   * }
+   */
   @ApiOperation({ summary: 'Receive user location and send tourist notification' })
   @ApiResponse({ status: 201, description: 'Location received and notification sent' })
   @UseGuards(JwtAuthGuard) 
@@ -112,6 +170,16 @@ export class NotificationController {
     }
   }
 
+  /**
+   * Get all notifications for the authenticated user
+   * Retrieves notification history for the current user
+   * 
+   * @param req - Express request object with authenticated user
+   * @returns {Promise<any[]>} List of user notifications
+   * 
+   * @example
+   * GET /notifications
+   */
   @ApiOperation({ summary: 'Get all notifications of the current user' })
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -119,6 +187,16 @@ export class NotificationController {
     return this.notificationService.findAllByUser(req.user.id);
   }
 
+  /**
+   * Get notification statistics for the authenticated user
+   * Provides metrics and analytics about user notifications
+   * 
+   * @param req - Express request object with authenticated user
+   * @returns {Promise<any>} Notification statistics data
+   * 
+   * @example
+   * GET /notifications/stats
+   */
   @ApiOperation({ summary: 'Get notification statistics' })
   @UseGuards(JwtAuthGuard)
   @Get('stats')
@@ -126,6 +204,18 @@ export class NotificationController {
     return this.statisticsService.getNotificationStats(req.user.id);
   }
 
+  /**
+   * Get queue statistics (Admin only)
+   * Retrieves metrics about the notification queue system
+   * Requires admin role
+   * 
+   * @param req - Express request object with authenticated user
+   * @returns {Promise<any>} Queue statistics
+   * @throws {BadRequestException} If user is not admin
+   * 
+   * @example
+   * GET /notifications/queue/stats
+   */
   @ApiOperation({ summary: 'Get queue statistics (Admin)' })
   @UseGuards(JwtAuthGuard)
   @Get('queue/stats')
@@ -136,6 +226,18 @@ export class NotificationController {
     return this.queueService.getQueueStats();
   }
 
+  /**
+   * Test tourist places API integration
+   * Validates that the places service is working and returns nearby places
+   * 
+   * @param {number} lat - Latitude coordinate (optional)
+   * @param {number} lng - Longitude coordinate (optional)
+   * @param req - Express request object
+   * @returns {Promise<TestPlacesResponse>} Test results with nearby places
+   * 
+   * @example
+   * GET /notifications/test-places?lat=4.710989&lng=-74.072092
+   */
   @ApiOperation({ summary: 'Test places API integration' })
   @UseGuards(JwtAuthGuard)
   @Get('test-places')
@@ -167,6 +269,18 @@ export class NotificationController {
     }
   }
 
+  /**
+   * Test all notification providers (SMS and Email)
+   * Sends test notifications to verify provider functionality
+   * 
+   * @param {string} phone - Test phone number (optional)
+   * @param {string} email - Test email address (optional)
+   * @param req - Express request object
+   * @returns {Promise<object>} Test results for all providers
+   * 
+   * @example
+   * GET /notifications/test-providers?phone=+573147327080&email=test@example.com
+   */
   @ApiOperation({ summary: 'Test all providers' })
   @UseGuards(JwtAuthGuard)
   @Get('test-providers')
@@ -226,6 +340,15 @@ export class NotificationController {
     }
   }
 
+  /**
+   * Check status of all notification providers
+   * Returns operational status and configuration for all integrated services
+   * 
+   * @returns {Promise<object>} Status information for all providers
+   * 
+   * @example
+   * GET /notifications/providers-status
+   */
   @ApiOperation({ summary: 'Check all providers status' })
   @UseGuards(JwtAuthGuard)
   @Get('providers-status')

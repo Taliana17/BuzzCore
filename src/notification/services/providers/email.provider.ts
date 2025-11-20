@@ -4,6 +4,17 @@ import { Resend } from 'resend';
 import { EmailProvider as IEmailProvider, EmailResult, ProviderStatus } from '../../interfaces/providers.interface';
 import { TravelTime } from '../../types/core.types';
 
+/**
+ * Email Provider using Resend API
+ * 
+ * @description
+ * Handles email sending operations using Resend service.
+ * Provides specialized methods for tourist notifications with rich HTML templates.
+ * Validates API key on initialization and provides status checking.
+ * 
+ * @export
+ * @class EmailProvider
+ */
 @Injectable()
 export class EmailProvider implements IEmailProvider {
   private readonly logger = new Logger(EmailProvider.name);
@@ -14,6 +25,16 @@ export class EmailProvider implements IEmailProvider {
     this.initializeResend();
   }
 
+  /**
+   * Initializes Resend client with API key validation
+   * 
+   * @private
+   * @description
+   * Validates RESEND_API_KEY from environment:
+   * - Must start with 're_' prefix
+   * - Cannot contain 'mock' string
+   * Sets isInitialized flag based on validation result
+   */
   private initializeResend() {
     const apiKey = this.configService.get('RESEND_API_KEY');
 
@@ -32,6 +53,24 @@ export class EmailProvider implements IEmailProvider {
     }
   }
 
+  /**
+   * Sends an email using Resend API
+   * 
+   * @param {string} to - Recipient email address
+   * @param {string} subject - Email subject line
+   * @param {string} html - Email HTML content
+   * @returns {Promise<EmailResult>} Result with success status and email ID or error
+   * 
+   * @example
+   * ```typescript
+   * const result = await emailProvider.send(
+   *   'user@example.com',
+   *   'Welcome!',
+   *   '<h1>Hello World</h1>'
+   * );
+   * if (result.success) console.log('Email ID:', result.id);
+   * ```
+   */
   async send(to: string, subject: string, html: string): Promise<EmailResult> {
     if (!this.isInitialized) {
       const error = 'Resend not configured - Please verify RESEND_API_KEY';
@@ -68,6 +107,37 @@ export class EmailProvider implements IEmailProvider {
     }
   }
 
+  /**
+   * Sends a tourist place recommendation email
+   * 
+   * @description
+   * Sends a beautifully formatted email with:
+   * - Place details (address, rating, hours)
+   * - Travel time and distance
+   * - Opening hours schedule
+   * - Google Maps link
+   * - Responsive HTML template with gradient design
+   * 
+   * @param {string} to - Recipient email address
+   * @param {string} userName - User's name for personalization
+   * @param {string} city - Detected city name
+   * @param {string} placeName - Tourist place name
+   * @param {any} placeDetails - Google Place Details API response
+   * @param {TravelTime} travelTime - Travel duration and distance
+   * @returns {Promise<EmailResult>} Email sending result
+   * 
+   * @example
+   * ```typescript
+   * await emailProvider.sendTouristNotification(
+   *   'user@example.com',
+   *   'John Doe',
+   *   'Bogotá',
+   *   'Monserrate',
+   *   placeDetailsObject,
+   *   { duration: '15 min', distance: '2.5 km', success: true }
+   * );
+   * ```
+   */
   async sendTouristNotification(
     to: string, 
     userName: string,
@@ -91,6 +161,26 @@ export class EmailProvider implements IEmailProvider {
     return this.send(to, subject, html);
   }
 
+  /**
+   * Builds HTML template for tourist notification email
+   * 
+   * @private
+   * @description
+   * Creates responsive HTML email with:
+   * - Gradient header with city name
+   * - Place card with details
+   * - Travel time information
+   * - Weekly opening hours
+   * - Google Maps button
+   * - Styled footer
+   * 
+   * @param {string} userName - User name for greeting
+   * @param {string} city - City name
+   * @param {string} placeName - Place name
+   * @param {any} placeDetails - Place details from Google API
+   * @param {TravelTime} travelTime - Travel information
+   * @returns {string} Complete HTML email template
+   */
   private buildTouristNotificationTemplate(
     userName: string,
     city: string,

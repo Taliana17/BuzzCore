@@ -29,8 +29,7 @@ Content-Type: application/json
 ### PASO 3: Procesar ubicación y crear notificación turística
 POST http://localhost:3000/notifications/receive-location
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ODNiOGQ4My0wMTMwLTRhYmItYTA4Ni05YmM0MWYxNTMyN2QiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzUxMTUyNywiZXhwIjoxNzY0MDI5OTI3fQ.OpP_R-sFJF2dXIlUGYOEkdOjPSYx5XZ25b_bagHuSMA
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0ODNiOGQ4My0wMTMwLTRhYmItYTA4Ni05YmM0MWYxNTMyN2QiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzYwMDEyNCwiZXhwIjoxNzY0MTE4NTI0fQ.5XNyNPZAcY0LPv2GqY2pc1FXHiGtvgJXMYHbnWIPbns
 {
   "lat": 4.710989,
   "lng": -74.072092
