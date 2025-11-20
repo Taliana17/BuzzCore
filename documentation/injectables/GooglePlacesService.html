@@ -1,0 +1,1065 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>buzz-core documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">buzz-core documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >GooglePlacesService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/notification/services/google-places.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Google Places API Service</p>
+<p>Provides tourist place search, place details, and travel time calculations
+using Google Maps Places API and Directions API.
+Requires GOOGLE_API_KEY environment variable.</p>
+
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#apiKey" >apiKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#client" >client</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getNearbyTouristPlaces" >getNearbyTouristPlaces</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPlaceDetails" >getPlaceDetails</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getRecommendedTouristPlace" >getRecommendedTouristPlace</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTravelTime" >getTravelTime</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(configService: ConfigService)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/notification/services/google-places.service.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of GooglePlacesService</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>configService</td>
+                                                  
+                                                        <td>
+                                                                    <code>ConfigService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>NestJS config service</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNearbyTouristPlaces"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getNearbyTouristPlaces</b></span>
+                        <a href="#getNearbyTouristPlaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getNearbyTouristPlaces(coords: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/notification/services/google-places.service.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Searches for nearby tourist attractions</p>
+<p>Finds tourist places within 3km radius using Google Places Nearby Search.
+Results are returned in Spanish language.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const places = await googlePlacesService.getNearbyTouristPlaces({
+  lat: 4.7110,
+  lng: -74.0721
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>coords</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Location coordinates</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Array of tourist place objects</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPlaceDetails"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getPlaceDetails</b></span>
+                        <a href="#getPlaceDetails"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPlaceDetails(placeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/notification/services/google-places.service.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets detailed information about a place</p>
+<p>Retrieves full place details including address, hours, rating, photos, etc.
+using Google Place Details API.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const details = await googlePlacesService.getPlaceDetails(&#39;ChIJ...&#39;);
+console.log(details.formatted_address);
+console.log(details.opening_hours);</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>placeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Google Place ID</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Place details object</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRecommendedTouristPlace"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getRecommendedTouristPlace</b></span>
+                        <a href="#getRecommendedTouristPlace"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRecommendedTouristPlace(coords: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="203"
+                                    class="link-to-prism">src/notification/services/google-places.service.ts:203</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets best recommended tourist place with full details</p>
+<p>Combines multiple API calls to provide comprehensive place recommendation:</p>
+<ol>
+<li>Searches nearby tourist attractions</li>
+<li>Selects place with highest rating</li>
+<li>Fetches detailed place information</li>
+<li>Calculates walking travel time from user location</li>
+</ol>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const recommendation = await googlePlacesService.getRecommendedTouristPlace({
+  lat: 4.7110,
+  lng: -74.0721
+});
+console.log(recommendation.place.name);
+console.log(recommendation.details.rating);
+console.log(recommendation.travelTime.duration);</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>coords</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>User location coordinates</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Complete recommendation</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTravelTime"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getTravelTime</b></span>
+                        <a href="#getTravelTime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTravelTime(origin: literal type, destination: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="146"
+                                    class="link-to-prism">src/notification/services/google-places.service.ts:146</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculates walking travel time and distance</p>
+<p>Uses Google Directions API to calculate walking route between two points.
+Returns localized duration and distance strings in Spanish.
+Falls back to &#39;No disponible&#39; if calculation fails.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const travel = await googlePlacesService.getTravelTime(
+  { lat: 4.7110, lng: -74.0721 },
+  { lat: 4.6097, lng: -74.0817 }
+);
+console.log(travel.duration); // &quot;15 minutos&quot;
+console.log(travel.distance); // &quot;1.2 km&quot;</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>origin</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Starting location</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>destination</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Destination location</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Travel time and distance</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="apiKey"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>apiKey</b></span>
+                        <a href="#apiKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/notification/services/google-places.service.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="client"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>client</b></span>
+                        <a href="#client"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Client</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/notification/services/google-places.service.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(GooglePlacesService.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/notification/services/google-places.service.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, Logger } from &#x27;@nestjs/common&#x27;;
+import { ConfigService } from &#x27;@nestjs/config&#x27;;
+import {
+  Client,
+  Language,
+  TravelMode
+} from &#x27;@googlemaps/google-maps-services-js&#x27;;
+
+/**
+ * Google Places API Service
+ * 
+ * @description
+ * Provides tourist place search, place details, and travel time calculations
+ * using Google Maps Places API and Directions API.
+ * Requires GOOGLE_API_KEY environment variable.
+ * 
+ * @export
+ * @class GooglePlacesService
+ */
+@Injectable()
+export class GooglePlacesService {
+  private readonly logger &#x3D; new Logger(GooglePlacesService.name);
+  private client: Client;
+  private apiKey!: string;
+
+  /**
+   * Creates an instance of GooglePlacesService
+   * 
+   * @param {ConfigService} configService - NestJS config service
+   * @throws {Error} If GOOGLE_API_KEY is not configured
+   */
+  constructor(private readonly configService: ConfigService) {
+    this.client &#x3D; new Client({});
+
+    const key &#x3D; this.configService.get&lt;string&gt;(&#x27;GOOGLE_API_KEY&#x27;);
+
+    if (!key) {
+      this.logger.error(&#x27;GOOGLE_API_KEY faltante en el .env&#x27;);
+      throw new Error(&#x27;GOOGLE_API_KEY es obligatoria&#x27;);
+    }
+
+    this.apiKey &#x3D; key;
+  }
+
+  /**
+   * Searches for nearby tourist attractions
+   * 
+   * @description
+   * Finds tourist places within 3km radius using Google Places Nearby Search.
+   * Results are returned in Spanish language.
+   * 
+   * @param {Object} coords - Location coordinates
+   * @param {number} coords.lat - Latitude
+   * @param {number} coords.lng - Longitude
+   * @returns {Promise&lt;any[]&gt;} Array of tourist place objects
+   * @throws {Error} If API call fails
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const places &#x3D; await googlePlacesService.getNearbyTouristPlaces({
+   *   lat: 4.7110,
+   *   lng: -74.0721
+   * });
+   * &#x60;&#x60;&#x60;
+   */
+  async getNearbyTouristPlaces(coords: { lat: number; lng: number }) {
+    try {
+      const response &#x3D; await this.client.placesNearby({
+        params: {
+          key: this.apiKey,
+          location: coords,
+          radius: 3000,
+          type: &#x27;tourist_attraction&#x27;,
+          language: Language.es
+        }
+      });
+
+      return response.data.results;
+    } catch (err: any) {
+      this.logger.error(&#x60;Error en Places API: ${err.message}&#x60;);
+      throw new Error(&#x27;Error consultando lugares turísticos&#x27;);
+    }
+  }
+
+  /**
+   * Gets detailed information about a place
+   * 
+   * @description
+   * Retrieves full place details including address, hours, rating, photos, etc.
+   * using Google Place Details API.
+   * 
+   * @param {string} placeId - Google Place ID
+   * @returns {Promise&lt;any&gt;} Place details object
+   * @throws {Error} If API call fails
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const details &#x3D; await googlePlacesService.getPlaceDetails(&#x27;ChIJ...&#x27;);
+   * console.log(details.formatted_address);
+   * console.log(details.opening_hours);
+   * &#x60;&#x60;&#x60;
+   */
+  async getPlaceDetails(placeId: string) {
+    try {
+      const res &#x3D; await this.client.placeDetails({
+        params: {
+          key: this.apiKey,
+          place_id: placeId,
+          language: Language.es
+        }
+      });
+
+      return res.data.result;
+    } catch (err: any) {
+      this.logger.error(&#x60;Error al obtener detalles del lugar: ${err.message}&#x60;);
+      throw new Error(&#x27;Error obteniendo detalles del lugar&#x27;);
+    }
+  }
+
+  /**
+   * Calculates walking travel time and distance
+   * 
+   * @description
+   * Uses Google Directions API to calculate walking route between two points.
+   * Returns localized duration and distance strings in Spanish.
+   * Falls back to &#x27;No disponible&#x27; if calculation fails.
+   * 
+   * @param {Object} origin - Starting location
+   * @param {number} origin.lat - Origin latitude
+   * @param {number} origin.lng - Origin longitude
+   * @param {Object} destination - Destination location
+   * @param {number} destination.lat - Destination latitude
+   * @param {number} destination.lng - Destination longitude
+   * @returns {Promise&lt;{duration: string, distance: string}&gt;} Travel time and distance
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const travel &#x3D; await googlePlacesService.getTravelTime(
+   *   { lat: 4.7110, lng: -74.0721 },
+   *   { lat: 4.6097, lng: -74.0817 }
+   * );
+   * console.log(travel.duration); // &quot;15 minutos&quot;
+   * console.log(travel.distance); // &quot;1.2 km&quot;
+   * &#x60;&#x60;&#x60;
+   */
+  async getTravelTime(
+    origin: { lat: number; lng: number },
+    destination: { lat: number; lng: number }
+  ) {
+    try {
+      const res &#x3D; await this.client.directions({
+        params: {
+          key: this.apiKey,
+          origin,
+          destination,
+          mode: TravelMode.walking,
+          language: Language.es
+        }
+      });
+
+      const leg &#x3D; res.data.routes[0].legs[0];
+
+      return {
+        duration: leg.duration.text,
+        distance: leg.distance.text
+      };
+    } catch (err: any) {
+      this.logger.error(&#x60;Error en Directions API: ${err.message}&#x60;);
+      return {
+        duration: &#x27;No disponible&#x27;,
+        distance: &#x27;No disponible&#x27;
+      };
+    }
+  }
+
+  /**
+   * Gets best recommended tourist place with full details
+   * 
+   * @description
+   * Combines multiple API calls to provide comprehensive place recommendation:
+   * 1. Searches nearby tourist attractions
+   * 2. Selects place with highest rating
+   * 3. Fetches detailed place information
+   * 4. Calculates walking travel time from user location
+   * 
+   * @param {Object} coords - User location coordinates
+   * @param {number} coords.lat - Latitude
+   * @param {number} coords.lng - Longitude
+   * @returns {Promise&lt;{place: any, details: any, travelTime: {duration: string, distance: string}}&gt;} Complete recommendation
+   * @throws {Error} If no places found or place_id invalid
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const recommendation &#x3D; await googlePlacesService.getRecommendedTouristPlace({
+   *   lat: 4.7110,
+   *   lng: -74.0721
+   * });
+   * console.log(recommendation.place.name);
+   * console.log(recommendation.details.rating);
+   * console.log(recommendation.travelTime.duration);
+   * &#x60;&#x60;&#x60;
+   */
+  async getRecommendedTouristPlace(coords: { lat: number; lng: number }) {
+    const places &#x3D; await this.getNearbyTouristPlaces(coords);
+
+    if (!places || places.length &#x3D;&#x3D;&#x3D; 0) {
+      throw new Error(&#x27;No se encontraron lugares cercanos.&#x27;);
+    }
+
+    const best &#x3D; places.reduce((a, b) &#x3D;&gt;
+      (b.rating || 0) &gt; (a.rating || 0) ? b : a
+    );
+
+    if (!best.place_id) {
+      throw new Error(&#x27;El lugar no tiene place_id válido&#x27;);
+    }
+
+    const details &#x3D; await this.getPlaceDetails(best.place_id);
+
+    let travelTime &#x3D; {
+      duration: &#x27;No disponible&#x27;,
+      distance: &#x27;No disponible&#x27;
+    };
+
+    if (best.geometry?.location) {
+      travelTime &#x3D; await this.getTravelTime(coords, best.geometry.location);
+    }
+
+    return {
+      place: best,
+      details,
+      travelTime
+    };
+  }
+}</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'GooglePlacesService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

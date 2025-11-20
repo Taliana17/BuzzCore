@@ -3,7 +3,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { User } from '../user/entities/user.entity';
 import { Notification } from '../notification/entities/notification.entity';
-import { LocationHistory } from '../location-history/entities/location-history.entity';
+import { LocationHistory } from 'src/location-history/entities/location-history.entity';
 
 export const typeOrmConfig = async (configService: ConfigService): Promise<TypeOrmModuleOptions> => ({
   type: 'postgres',

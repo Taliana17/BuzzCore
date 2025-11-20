@@ -1,0 +1,1044 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>buzz-core documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">buzz-core documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >EmailProcessor</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/notification/processors/email.processor.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>BullMQ Email Processor</p>
+<p>Processes email notification jobs from the &#39;email-queue&#39;.
+Handles two types of email notifications:</p>
+<ol>
+<li>Rich tourist notifications with place details and travel time</li>
+<li>Basic notifications with simple HTML template</li>
+</ol>
+<p>Features:</p>
+<ul>
+<li>Automatic retry on failure (configured in queue)</li>
+<li>Status tracking (pending → sent/failed)</li>
+<li>Error logging with retry count</li>
+<li>Event hooks for completed/failed jobs</li>
+</ul>
+
+            </p>
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code>WorkerHost</code>
+            </p>
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#buildBasicEmailTemplate" >buildBasicEmailTemplate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#onCompleted" >onCompleted</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#onFailed" >onFailed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#process" >process</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(notificationRepo: <a href="../entitys/Notification.html" target="_self">Repository&lt;Notification&gt;</a>, emailProvider: <a href="../injectables/EmailProvider.html" target="_self">EmailProvider</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/notification/processors/email.processor.ts:31</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of EmailProcessor</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>notificationRepo</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../entitys/Notification.html" target="_self" >Repository&lt;Notification&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Notification repository for status updates</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>emailProvider</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/EmailProvider.html" target="_self" >EmailProvider</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Email sending provider (Resend)</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buildBasicEmailTemplate"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>buildBasicEmailTemplate</b></span>
+                        <a href="#buildBasicEmailTemplate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>buildBasicEmailTemplate(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, placeName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/notification/processors/email.processor.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Builds basic HTML email template</p>
+<p>Creates simple responsive email with:</p>
+<ul>
+<li>Gradient header</li>
+<li>Message content</li>
+<li>Place name card</li>
+<li>Styled layout</li>
+</ul>
+<p>Used when full tourist notification metadata is not available.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Notification message</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>placeName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Recommended place name</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Complete HTML email template</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCompleted"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>onCompleted</b></span>
+                        <a href="#onCompleted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onCompleted(job: Job)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnWorkerEvent(&#x27;completed&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">src/notification/processors/email.processor.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Event hook for completed jobs</p>
+<p>Called automatically by BullMQ when a job completes successfully.
+Logs job completion for monitoring.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>job</td>
+                                            <td>
+                                                        <code>Job</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Completed job</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFailed"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>onFailed</b></span>
+                        <a href="#onFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onFailed(job: Job, error: Error)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnWorkerEvent(&#x27;failed&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="216"
+                                    class="link-to-prism">src/notification/processors/email.processor.ts:216</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Event hook for failed jobs</p>
+<p>Called automatically by BullMQ when a job fails after all retry attempts.
+Logs failure details for debugging.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>job</td>
+                                            <td>
+                                                        <code>Job</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Failed job</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                        <code>Error</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Error that caused the failure</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="process"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>process</b></span>
+                        <a href="#process"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>process(job: Job<literal type>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/notification/processors/email.processor.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Processes email notification job</p>
+<p>Main processing logic:</p>
+<ol>
+<li>Fetches notification with user relation</li>
+<li>Determines email type (tourist vs basic)</li>
+<li>Sends email via EmailProvider</li>
+<li>Updates notification status to &#39;sent&#39;</li>
+<li>Logs error and updates status to &#39;failed&#39; on failure</li>
+</ol>
+<p>If job fails, BullMQ will automatically retry based on queue configuration
+(3 attempts with exponential backoff).</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">// This method is called automatically by BullMQ
+// Job data: { notificationId: &#39;123&#39;, channel: &#39;email&#39; }</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>job</td>
+                                            <td>
+                                                        <code>Job&lt;literal type&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>BullMQ job containing notification ID</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Processing result</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Logger(EmailProcessor.name)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/notification/processors/email.processor.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Processor, WorkerHost, OnWorkerEvent } from &#x27;@nestjs/bullmq&#x27;;
+import { Job } from &#x27;bullmq&#x27;;
+import { Injectable, Logger } from &#x27;@nestjs/common&#x27;;
+import { InjectRepository } from &#x27;@nestjs/typeorm&#x27;;
+import { Repository } from &#x27;typeorm&#x27;;
+import { Notification } from &#x27;../entities/notification.entity&#x27;;
+import { EmailProvider } from &#x27;../services/providers/email.provider&#x27;;
+
+/**
+ * BullMQ Email Processor
+ * 
+ * @description
+ * Processes email notification jobs from the &#x27;email-queue&#x27;.
+ * Handles two types of email notifications:
+ * 1. Rich tourist notifications with place details and travel time
+ * 2. Basic notifications with simple HTML template
+ * 
+ * Features:
+ * - Automatic retry on failure (configured in queue)
+ * - Status tracking (pending → sent/failed)
+ * - Error logging with retry count
+ * - Event hooks for completed/failed jobs
+ * 
+ * @export
+ * @class EmailProcessor
+ * @extends {WorkerHost}
+ */
+@Injectable()
+@Processor(&#x27;email-queue&#x27;)
+export class EmailProcessor extends WorkerHost {
+  private readonly logger &#x3D; new Logger(EmailProcessor.name);
+
+  /**
+   * Creates an instance of EmailProcessor
+   * 
+   * @param {Repository&lt;Notification&gt;} notificationRepo - Notification repository for status updates
+   * @param {EmailProvider} emailProvider - Email sending provider (Resend)
+   */
+  constructor(
+    @InjectRepository(Notification)
+    private notificationRepo: Repository&lt;Notification&gt;,
+    private emailProvider: EmailProvider,
+  ) {
+    super();
+  }
+
+  /**
+   * Processes email notification job
+   * 
+   * @description
+   * Main processing logic:
+   * 1. Fetches notification with user relation
+   * 2. Determines email type (tourist vs basic)
+   * 3. Sends email via EmailProvider
+   * 4. Updates notification status to &#x27;sent&#x27;
+   * 5. Logs error and updates status to &#x27;failed&#x27; on failure
+   * 
+   * If job fails, BullMQ will automatically retry based on queue configuration
+   * (3 attempts with exponential backoff).
+   * 
+   * @param {Job&lt;{notificationId: string, channel: string}&gt;} job - BullMQ job containing notification ID
+   * @returns {Promise&lt;{success: boolean, notificationId: string}&gt;} Processing result
+   * @throws {Error} If notification not found or email sending fails
+   * 
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * // This method is called automatically by BullMQ
+   * // Job data: { notificationId: &#x27;123&#x27;, channel: &#x27;email&#x27; }
+   * &#x60;&#x60;&#x60;
+   */
+  async process(job: Job&lt;{ notificationId: string; channel: string }&gt;): Promise&lt;any&gt; {
+    const { notificationId } &#x3D; job.data;
+    let notification: Notification | null &#x3D; null;
+
+    try {
+      // Fetch notification with user data
+      notification &#x3D; await this.notificationRepo.findOne({
+        where: { id: notificationId },
+        relations: [&#x27;user&#x27;],
+      });
+
+      if (!notification) {
+        throw new Error(&#x60;Notification ${notificationId} not found&#x60;);
+      }
+
+      let emailResult;
+      
+      // Send tourist notification if metadata available
+      if (notification.metadata?.travelTime &amp;&amp; notification.metadata?.location &amp;&amp; notification.metadata?.placeDetails) {
+        emailResult &#x3D; await this.emailProvider.sendTouristNotification(
+          notification.user.email,
+          notification.user.name || &#x27;Usuario&#x27;,
+          notification.metadata.location.city || &#x27;Ciudad&#x27;,
+          notification.recommended_place,
+          notification.metadata.placeDetails,
+          notification.metadata.travelTime
+        );
+      } else {
+        // Send basic notification
+        const html &#x3D; this.buildBasicEmailTemplate(
+          notification.message,
+          notification.recommended_place
+        );
+      
+        emailResult &#x3D; await this.emailProvider.send(
+          notification.user.email,
+          &#x60;${notification.recommended_place} - BuzzCore&#x60;,
+          html
+        );
+      }
+
+      if (!emailResult.success) {
+        throw new Error(emailResult.error || &#x27;Failed to send email&#x27;);
+      }
+
+      // Update status to sent
+      await this.notificationRepo.update(notificationId, { 
+        status: &#x27;sent&#x27;,
+        sent_at: new Date(),
+      });
+
+      this.logger.log(&#x60;Email notification ${notificationId} sent successfully&#x60;);
+      
+      return { success: true, notificationId };
+    } catch (error) {
+      this.logger.error(&#x60;Failed to process email notification ${notificationId}: ${error.message}&#x60;);
+
+      // Update status to failed with error details
+      await this.notificationRepo.update(notificationId, { 
+        status: &#x27;failed&#x27;,
+        metadata: {
+          ...(notification?.metadata || {}),
+          errorMessage: error.message,
+          retryCount: job.attemptsMade,
+        },
+      });
+
+      throw error; // Re-throw for BullMQ retry logic
+    }
+  }
+
+  /**
+   * Builds basic HTML email template
+   * 
+   * @private
+   * @description
+   * Creates simple responsive email with:
+   * - Gradient header
+   * - Message content
+   * - Place name card
+   * - Styled layout
+   * 
+   * Used when full tourist notification metadata is not available.
+   * 
+   * @param {string} message - Notification message
+   * @param {string} placeName - Recommended place name
+   * @returns {string} Complete HTML email template
+   */
+  private buildBasicEmailTemplate(message: string, placeName: string): string {
+    return &#x60;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset&#x3D;&quot;utf-8&quot;&gt;
+  &lt;style&gt;
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+    .content { padding: 30px; background: #f9f9f9; border-radius: 0 0 10px 10px; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class&#x3D;&quot;header&quot;&gt;
+    &lt;h1&gt;BuzzCore Notification&lt;/h1&gt;
+  &lt;/div&gt;
+  
+  &lt;div class&#x3D;&quot;content&quot;&gt;
+    &lt;h2&gt;¡Hola!&lt;/h2&gt;
+    &lt;p&gt;${message}&lt;/p&gt;
+    
+    &lt;div style&#x3D;&quot;background: white; padding: 20px; border-radius: 8px; margin: 20px 0;&quot;&gt;
+      &lt;h3 style&#x3D;&quot;color: #667eea; margin-top: 0;&quot;&gt;📍 ${placeName}&lt;/h3&gt;
+      &lt;p&gt;&lt;strong&gt;Ubicación:&lt;/strong&gt; Próxima a tu área actual&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;¡Esperamos que disfrutes esta recomendación!&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;&#x60;;
+  }
+
+  /**
+   * Event hook for completed jobs
+   * 
+   * @description
+   * Called automatically by BullMQ when a job completes successfully.
+   * Logs job completion for monitoring.
+   * 
+   * @param {Job} job - Completed job
+   */
+  @OnWorkerEvent(&#x27;completed&#x27;)
+  onCompleted(job: Job) {
+    this.logger.log(&#x60;Job ${job.id} completed successfully&#x60;);
+  }
+
+  /**
+   * Event hook for failed jobs
+   * 
+   * @description
+   * Called automatically by BullMQ when a job fails after all retry attempts.
+   * Logs failure details for debugging.
+   * 
+   * @param {Job} job - Failed job
+   * @param {Error} error - Error that caused the failure
+   */
+  @OnWorkerEvent(&#x27;failed&#x27;)
+  onFailed(job: Job, error: Error) {
+    this.logger.error(&#x60;Job ${job.id} failed: ${error.message}&#x60;);
+  }
+}</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'EmailProcessor.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,3 +1,47 @@
+### 🎯 CONFIGURACIÓN INICIAL
+# Base URL - ajusta según tu entorno
+@baseUrl = http://localhost:3000
+@authToken = {{login.response.body.$.access_token}}
+
+### 1. 🔐 REGISTRAR USUARIO NUEVO
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Usuario Prueba Real",
+  "email": "test.real@example.com",
+  "password": "password123",
+  "phone": "3147327080",
+  "preferred_channel": "email"
+}
+
+
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test SMS User",
+  "email": "test.sms@example.com", 
+  "password": "password123",
+  "phone": "+573147327080",
+  "preferred_channel": "sms"
+}
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "test.sms@example.com",
+  "password": "password123"
+}
+POST http://localhost:3000/notifications/test-sms
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNjE2ZGE3OC0zOThiLTQ4YWYtOWRiMC04NjJjOTlhMTUzMjgiLCJlbWFpbCI6InRlc3Quc21zQGV4YW1wbGUuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3NjMwNDMxNzYsImV4cCI6MTc2MzU2MTU3Nn0.ScvzrGuqPtARBBuYya84aNnimBNFIqMFGWlRwrLLN8c
+Content-Type: application/json
+
+{
+  "phone": "+573147327080",
+  "message": "🚀 ¡Prueba de SMS desde BuzzCore! Te recomendamos visitar el Museo del Oro. Tiempo estimado: 15 min caminando. ¡Disfruta tu visita!"
+}
 
 ### 2. 🔐 LOGIN Y GUARDAR TOKEN
 # @name login
@@ -9,11 +53,79 @@ Content-Type: application/json
   "password": "carol"
 }
 
-POST http://localhost:3000/notifications/receive-location
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzE2NTQ3NSwiZXhwIjoxNzYzNjgzODc1fQ.oyeXcyDV1zEyyj5DPbnGJldLeSF-h1xiZwl8YS3uk5I
+> {%
+    client.global.set("auth_token", response.body.access_token);
+    client.log("✅ Token guardado: " + response.body.access_token);
+%}
+
+### 3. 📊 VER ESTADO DE TODOS LOS PROVIDERS
+GET http://localhost:3000/notifications/providers-status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzMzI0MiwiZXhwIjoxNzYzNTUxNjQyfQ.Dn31jGMTE3Gya2gWjLvpSPGSx3FrtBzbaid8sermbdk
+
+
+### Prueba con coordenadas del Museo del Oro
+GET http://localhost:3000/notifications/test-places?lat=4.601955&lng=-74.071766
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0
+
+### Prueba con coordenadas de Plaza Bolívar  
+GET http://localhost:3000/notifications/test-places?lat=4.595630&lng=-74.075404
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0
+
+### Prueba con cualquier ubicación (ahora SIEMPRE funciona)
+GET http://localhost:3000/notifications/test-places?lat=4.610&lng=-74.072
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0
+
+GET http://localhost:3000/notifications/test-places?lat=4.601955&lng=-74.071766
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0
+
+
+### 🗺️ 4.2 PROBAR OPENSTREETMAP - PLAZA BOLÍVAR (Bogotá)
+GET http://localhost:3000/notifications/test-places?lat=4.595630&lng=-74.075404
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0
+
+POST http://localhost:3000/notifications/test-email
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0
 Content-Type: application/json
 
 {
-  "lat": 4.710989,
-  "lng": -74.072092
+  "email": "serranocaroldayana@gmail.com",
+  "message": "¡Esta es una prueba de email desde BuzzCore! 🚀"
 }
+
+POST http://localhost:3000/notifications/receive-location
+Content-Type: application/json
+
+{
+  "lat": 4.601955,
+  "lng": -74.071766,
+  "city": "Bogotá",
+  "userId": "82ea387a-88e9-433d-98b4-e26935892813"
+}
+
+POST http://localhost:3000/notifications/receive-location
+Content-Type: application/json
+
+{
+  "lat": 6.244,
+  "lng": -75.573,
+  "city": "Medellín",
+  "userId": "82ea387a-88e9-433d-98b4-e26935892813"
+}
+
+
+
+GET http://localhost:3000/notifications
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0
+
+POST http://localhost:3000/notifications/receive-location
+Content-Type: application/json
+
+{
+  "lat": 4.601955,
+  "lng": -74.071766,
+  "city": "Bogotá",
+  "userId": "82ea387a-88e9-433d-98b4-e26935892813"
+}
+
+GET http://localhost:3000/notifications
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MmVhMzg3YS04OGU5LTQzM2QtOThiNC1lMjY5MzU4OTI4MTMiLCJlbWFpbCI6InNlcnJhbm9jYXJvbGRheWFuYUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc2MzAzNDQxOCwiZXhwIjoxNzYzNTUyODE4fQ.I-e30muIeDOE4IC7uTHkgnZGnMrIf4A3xaF3v8L2KJ0

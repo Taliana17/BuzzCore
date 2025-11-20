@@ -1,0 +1,2074 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>buzz-core documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">buzz-core documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content controller">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >NotificationController</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/notification/notification.controller.ts</code>
+        </p>
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>notifications</code>
+            </p>
+
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#debugSms" >debugSms</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getNotificationStats" >getNotificationStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getProvidersStatus" >getProvidersStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getQueueStats" >getQueueStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getServiceStatus" >getServiceStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUserNotifications" >getUserNotifications</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#receiveLocationAndNotify" >receiveLocationAndNotify</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendNotification" >sendNotification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#testEmail" >testEmail</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#testPlaceDetails" >testPlaceDetails</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#testPlaces" >testPlaces</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#testProviders" >testProviders</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#testSms" >testSms</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="debugSms"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>debugSms</b></span>
+                        <a href="#debugSms"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>debugSms()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;sms-debug&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Debug SMS configuration&#x27;, description: &#x27;Provides detailed debugging information about SMS provider configuration including credential validation and common issues.&#x27;})<br />@ApiResponse({status: 200, description: &#x27;SMS debug information retrieved successfully.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="433"
+                                    class="link-to-prism">src/notification/notification.controller.ts:433</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getNotificationStats"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getNotificationStats</b></span>
+                        <a href="#getNotificationStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getNotificationStats(req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;stats&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Get notification statistics&#x27;, description: &#x27;Retrieves statistics about user notifications including total sent, success rate, channel distribution, and recent activity.&#x27;})<br />@ApiResponse({status: 200, description: &#x27;Notification statistics retrieved successfully.&#x27;, schema: undefined})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="141"
+                                    class="link-to-prism">src/notification/notification.controller.ts:141</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getProvidersStatus"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getProvidersStatus</b></span>
+                        <a href="#getProvidersStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getProvidersStatus()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;providers-status&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Check all providers status&#x27;, description: &#x27;Returns the initialization and configuration status of all external service providers (SMS, Email, Google Places).&#x27;})<br />@ApiResponse({status: 200, description: &#x27;Providers status retrieved successfully.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="411"
+                                    class="link-to-prism">src/notification/notification.controller.ts:411</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getQueueStats"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getQueueStats</b></span>
+                        <a href="#getQueueStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getQueueStats(req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;queue/stats&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Get queue statistics (Admin only)&#x27;, description: &#x27;Retrieves BullMQ queue statistics including active, waiting, completed, and failed jobs. Admin role required.&#x27;})<br />@ApiResponse({status: 200, description: &#x27;Queue statistics retrieved successfully.&#x27;, schema: undefined})<br />@ApiResponse({status: 400, description: &#x27;Unauthorized. Admin role required.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="172"
+                                    class="link-to-prism">src/notification/notification.controller.ts:172</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getServiceStatus"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getServiceStatus</b></span>
+                        <a href="#getServiceStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getServiceStatus()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;service-status&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Check Google Places service status&#x27;, description: &#x27;Verifies if Google Places API is properly initialized and has a valid API key configured.&#x27;})<br />@ApiResponse({status: 200, description: &#x27;Service status retrieved successfully.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="304"
+                                    class="link-to-prism">src/notification/notification.controller.ts:304</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ServiceStatusResponse.html" target="_self" >Promise&lt;ServiceStatusResponse&gt;</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserNotifications"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getUserNotifications</b></span>
+                        <a href="#getUserNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserNotifications(req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get()<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Get all notifications of the current user&#x27;, description: &#x27;Retrieves all notifications (email and SMS) sent to the authenticated user, including status and metadata.&#x27;})<br />@ApiResponse({status: 200, description: &#x27;List of user notifications retrieved successfully.&#x27;, type: undefined})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/notification/notification.controller.ts:113</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="receiveLocationAndNotify"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>receiveLocationAndNotify</b></span>
+                        <a href="#receiveLocationAndNotify"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>receiveLocationAndNotify(dto: <a href="../classes/ReceiveLocationDto.html" target="_self">ReceiveLocationDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;receive-location&#x27;)<br />@ApiOperation({summary: &#x27;Receive user location and send tourist notification&#x27;, description: &#x27;Receives user geolocation coordinates, detects city, saves location history, and automatically sends personalized tourist place recommendations.&#x27;})<br />@ApiBody({type: ReceiveLocationDto})<br />@ApiResponse({status: 201, description: &#x27;Location received and notification sent successfully.&#x27;})<br />@ApiResponse({status: 400, description: &#x27;Bad request. Invalid location data.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="82"
+                                    class="link-to-prism">src/notification/notification.controller.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/ReceiveLocationDto.html" target="_self" >ReceiveLocationDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendNotification"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>sendNotification</b></span>
+                        <a href="#sendNotification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendNotification(dto: <a href="../classes/CreateNotificationDto.html" target="_self">CreateNotificationDto</a>, req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post()<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Send a new notification&#x27;, description: &#x27;Creates and queues a new tourist notification based on user location. Requires coordinates to find nearby tourist places.&#x27;})<br />@ApiBody({type: CreateNotificationDto})<br />@ApiResponse({status: 201, description: &#x27;Notification created and queued successfully.&#x27;, type: Notification})<br />@ApiResponse({status: 400, description: &#x27;Bad request. Location data with coordinates is required.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/notification/notification.controller.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateNotificationDto.html" target="_self" >CreateNotificationDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="testEmail"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>testEmail</b></span>
+                        <a href="#testEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>testEmail(body: literal type, req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;test-email&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Test Email provider only&#x27;, description: &#x27;Sends a test email message to verify Resend configuration and connectivity.&#x27;})<br />@ApiBody({schema: undefined})<br />@ApiResponse({status: 201, description: &#x27;Email sent successfully.&#x27;})<br />@ApiResponse({status: 400, description: &#x27;Bad request. Email is required.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="552"
+                                    class="link-to-prism">src/notification/notification.controller.ts:552</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>body</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="testPlaceDetails"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>testPlaceDetails</b></span>
+                        <a href="#testPlaceDetails"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>testPlaceDetails(placeName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;test-place-details&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Test Google Place Details API&#x27;, description: &#x27;Tests the Google Place Details API by fetching detailed information about a specific place.&#x27;})<br />@ApiQuery({name: &#x27;place&#x27;, description: &#x27;Place name to search for details&#x27;, required: false, type: String, example: &#x27;Monserrate&#x27;})<br />@ApiResponse({status: 200, description: &#x27;Place Details API test completed.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="256"
+                                    class="link-to-prism">src/notification/notification.controller.ts:256</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>placeName</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/TestPlaceDetailsResponse.html" target="_self" >Promise&lt;TestPlaceDetailsResponse&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="testPlaces"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>testPlaces</b></span>
+                        <a href="#testPlaces"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>testPlaces(lat: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, lng: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;test-places&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Test Google Places API integration&#x27;, description: &#x27;Tests the Google Places API by searching for nearby tourist places at specified coordinates. Defaults to Bogotá if no coordinates provided.&#x27;})<br />@ApiQuery({name: &#x27;lat&#x27;, description: &#x27;Latitude coordinate&#x27;, required: false, type: Number, example: 4.710989})<br />@ApiQuery({name: &#x27;lng&#x27;, description: &#x27;Longitude coordinate&#x27;, required: false, type: Number, example: undefined})<br />@ApiResponse({status: 200, description: &#x27;Places API test completed.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="207"
+                                    class="link-to-prism">src/notification/notification.controller.ts:207</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>lat</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>lng</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/TestPlacesResponse.html" target="_self" >Promise&lt;TestPlacesResponse&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="testProviders"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>testProviders</b></span>
+                        <a href="#testProviders"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>testProviders(phone: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;test-providers&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Test SMS and Email providers&#x27;, description: &#x27;Sends test notifications via both SMS (Twilio) and Email (Resend) providers to verify configuration and connectivity.&#x27;})<br />@ApiQuery({name: &#x27;phone&#x27;, description: &#x27;Phone number for SMS test&#x27;, required: false, type: String, example: &#x27;+573147327080&#x27;})<br />@ApiQuery({name: &#x27;email&#x27;, description: &#x27;Email address for email test&#x27;, required: false, type: String, example: &#x27;test@example.com&#x27;})<br />@ApiResponse({status: 200, description: &#x27;Providers test completed.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="342"
+                                    class="link-to-prism">src/notification/notification.controller.ts:342</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>phone</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>email</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="testSms"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>testSms</b></span>
+                        <a href="#testSms"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>testSms(body: literal type, req: unknown)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;test-sms&#x27;)<br />@UseGuards(JwtAuthGuard)<br />@ApiOperation({summary: &#x27;Test SMS provider only&#x27;, description: &#x27;Sends a test SMS message to verify Twilio configuration and connectivity.&#x27;})<br />@ApiBody({schema: undefined})<br />@ApiResponse({status: 201, description: &#x27;SMS sent successfully.&#x27;})<br />@ApiResponse({status: 400, description: &#x27;Bad request. Phone number is required.&#x27;})<br />@ApiResponse({status: 401, description: &#x27;Unauthorized. Valid JWT token required.&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="486"
+                                    class="link-to-prism">src/notification/notification.controller.ts:486</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>body</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>req</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Controller, Post, Get, Body, Req, UseGuards, Query, BadRequestException, Logger } from &#x27;@nestjs/common&#x27;;
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBody } from &#x27;@nestjs/swagger&#x27;;
+import { NotificationService } from &#x27;./services/notification.service&#x27;;
+import { NotificationQueueService } from &#x27;./services/notification-queue.service&#x27;;
+import { EmailProvider } from &#x27;./services/providers/email.provider&#x27;;
+import { SmsProvider } from &#x27;./services/providers/sms.provider&#x27;;
+import { CreateNotificationDto } from &#x27;./dto/create-notification.dto&#x27;;
+import { ReceiveLocationDto } from &#x27;./dto/receive-location.dto&#x27;;
+import { JwtAuthGuard } from &#x27;src/auth/jwt.guard&#x27;;
+import { TouristPlacesService } from &#x27;./services/tourist-places.service&#x27;;
+import { UserService } from &#x27;src/user/user.service&#x27;;
+import { LocationHistoryService } from &#x27;src/location-history/location-history.service&#x27;;
+import { 
+  TestPlacesResponse, 
+  TestPlaceDetailsResponse, 
+  ServiceStatusResponse 
+} from &#x27;./types/notification.types&#x27;;
+import { Notification } from &#x27;./entities/notification.entity&#x27;;
+
+@ApiTags(&#x27;Notifications&#x27;)
+@ApiBearerAuth()
+@Controller(&#x27;notifications&#x27;)
+export class NotificationController {
+  private readonly logger &#x3D; new Logger(NotificationController.name);
+
+  constructor(
+    private readonly notificationService: NotificationService,
+    private readonly queueService: NotificationQueueService,
+    private readonly touristPlacesService: TouristPlacesService,
+    private readonly emailProvider: EmailProvider, 
+    private readonly smsProvider: SmsProvider,
+    private readonly userService: UserService,
+    private readonly locationHistoryService: LocationHistoryService,
+  ) {}
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Send a new notification&#x27;,
+    description: &#x27;Creates and queues a new tourist notification based on user location. Requires coordinates to find nearby tourist places.&#x27;,
+  })
+  @ApiBody({ type: CreateNotificationDto })
+  @ApiResponse({ 
+    status: 201, 
+    description: &#x27;Notification created and queued successfully.&#x27;,
+    type: Notification,
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: &#x27;Bad request. Location data with coordinates is required.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async sendNotification(@Body() dto: CreateNotificationDto, @Req() req) {
+    if (!dto.location_data || !dto.location_data.coordinates) {
+      throw new BadRequestException(&#x27;Location data with coordinates is required for tourist notifications&#x27;);
+    } 
+
+    return this.notificationService.createTouristNotification(
+      req.user, 
+      dto.location_data.city, 
+      dto.location_data.coordinates
+    );
+  }
+
+  @Post(&#x27;receive-location&#x27;)
+  @ApiOperation({ 
+    summary: &#x27;Receive user location and send tourist notification&#x27;,
+    description: &#x27;Receives user geolocation coordinates, detects city, saves location history, and automatically sends personalized tourist place recommendations.&#x27;,
+  })
+  @ApiBody({ type: ReceiveLocationDto })
+  @ApiResponse({ 
+    status: 201, 
+    description: &#x27;Location received and notification sent successfully.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: &#x27;Bad request. Invalid location data.&#x27;,
+  })
+  async receiveLocationAndNotify(@Body() dto: ReceiveLocationDto) {
+    this.logger.log(&#x60;📍 Ubicación recibida - Lat: ${dto.lat}, Lng: ${dto.lng}, Ciudad: ${dto.city}&#x60;);
+    
+    try {
+      const result &#x3D; await this.notificationService.processLocationAndNotify(
+        dto,
+        this.userService,
+        this.locationHistoryService
+      );
+      return result;
+    } catch (error) {
+      this.logger.error(&#x60;❌ Error procesando ubicación: ${error.message}&#x60;);
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Get all notifications of the current user&#x27;,
+    description: &#x27;Retrieves all notifications (email and SMS) sent to the authenticated user, including status and metadata.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;List of user notifications retrieved successfully.&#x27;,
+    type: [Notification],
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async getUserNotifications(@Req() req) {
+    return this.notificationService.findAllByUser(req.user.id);
+  }
+
+  @Get(&#x27;stats&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Get notification statistics&#x27;,
+    description: &#x27;Retrieves statistics about user notifications including total sent, success rate, channel distribution, and recent activity.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;Notification statistics retrieved successfully.&#x27;,
+    schema: {
+      example: {
+        total: 45,
+        sent: 40,
+        failed: 3,
+        pending: 2,
+        byChannel: { email: 30, sms: 15 },
+        successRate: 88.9
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async getNotificationStats(@Req() req) {
+    return this.notificationService.getNotificationStats(req.user.id);
+  }
+
+  @Get(&#x27;queue/stats&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Get queue statistics (Admin only)&#x27;,
+    description: &#x27;Retrieves BullMQ queue statistics including active, waiting, completed, and failed jobs. Admin role required.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;Queue statistics retrieved successfully.&#x27;,
+    schema: {
+      example: {
+        waiting: 5,
+        active: 2,
+        completed: 150,
+        failed: 3,
+        delayed: 0
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: &#x27;Unauthorized. Admin role required.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async getQueueStats(@Req() req) {
+    if (req.user.role !&#x3D;&#x3D; &#x27;admin&#x27;) {
+      throw new BadRequestException(&#x27;No autorizado: Se requiere rol de administrador&#x27;);
+    }
+    return this.queueService.getQueueStats();
+  }
+
+  @Get(&#x27;test-places&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Test Google Places API integration&#x27;,
+    description: &#x27;Tests the Google Places API by searching for nearby tourist places at specified coordinates. Defaults to Bogotá if no coordinates provided.&#x27;,
+  })
+  @ApiQuery({
+    name: &#x27;lat&#x27;,
+    description: &#x27;Latitude coordinate&#x27;,
+    required: false,
+    type: Number,
+    example: 4.710989,
+  })
+  @ApiQuery({
+    name: &#x27;lng&#x27;,
+    description: &#x27;Longitude coordinate&#x27;,
+    required: false,
+    type: Number,
+    example: -74.072092,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;Places API test completed.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async testPlaces(
+    @Query(&#x27;lat&#x27;) lat: number, 
+    @Query(&#x27;lng&#x27;) lng: number, 
+    @Req() req
+  ): Promise&lt;TestPlacesResponse&gt; {
+    const testLocation &#x3D; { 
+      lat: lat || 4.710989, 
+      lng: lng || -74.072092 
+    };
+    
+    try {
+      const places &#x3D; await this.touristPlacesService.getNearbyTouristPlaces(testLocation, 1000);
+      return {
+        success: true,
+        message: &#x27;Places API is working!&#x27;,
+        location: testLocation,
+        places: places
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: &#x27;Error with Places API&#x27;,
+        error: error.message,
+        location: testLocation
+      };
+    }
+  }
+
+  @Get(&#x27;test-place-details&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Test Google Place Details API&#x27;,
+    description: &#x27;Tests the Google Place Details API by fetching detailed information about a specific place.&#x27;,
+  })
+  @ApiQuery({
+    name: &#x27;place&#x27;,
+    description: &#x27;Place name to search for details&#x27;,
+    required: false,
+    type: String,
+    example: &#x27;Monserrate&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;Place Details API test completed.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async testPlaceDetails(
+    @Query(&#x27;place&#x27;) placeName: string, 
+    @Req() req
+  ): Promise&lt;TestPlaceDetailsResponse&gt; {
+    const testLocation &#x3D; { lat: 4.710989, lng: -74.072092 };
+    
+    try {
+      const places &#x3D; await this.touristPlacesService.getNearbyTouristPlaces(testLocation, 1000);
+      
+      if (places.length &gt; 0 &amp;&amp; places[0].place_id) {
+        const placeDetails &#x3D; await this.touristPlacesService.getPlaceDetails(places[0].place_id);
+        
+        return {
+          success: true,
+          message: &#x27;Google Place Details API is working!&#x27;,
+          placeName: places[0].name,
+          details: placeDetails
+        };
+      } else {
+        return {
+          success: false,
+          message: &#x27;No places found to test details&#x27;,
+          error: &#x27;No place_id available&#x27;
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: &#x27;Error with Google Place Details API&#x27;,
+        error: error.message
+      };
+    }
+  }
+
+  @Get(&#x27;service-status&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Check Google Places service status&#x27;,
+    description: &#x27;Verifies if Google Places API is properly initialized and has a valid API key configured.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;Service status retrieved successfully.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async getServiceStatus(): Promise&lt;ServiceStatusResponse&gt; {
+    const status &#x3D; this.touristPlacesService.getStatus();
+    return {
+      touristPlaces: {
+        initialized: status.initialized,
+        hasApiKey: status.hasApiKey 
+      }
+    };
+  }
+
+  @Get(&#x27;test-providers&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Test SMS and Email providers&#x27;,
+    description: &#x27;Sends test notifications via both SMS (Twilio) and Email (Resend) providers to verify configuration and connectivity.&#x27;,
+  })
+  @ApiQuery({
+    name: &#x27;phone&#x27;,
+    description: &#x27;Phone number for SMS test&#x27;,
+    required: false,
+    type: String,
+    example: &#x27;+573147327080&#x27;,
+  })
+  @ApiQuery({
+    name: &#x27;email&#x27;,
+    description: &#x27;Email address for email test&#x27;,
+    required: false,
+    type: String,
+    example: &#x27;test@example.com&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;Providers test completed.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async testProviders(
+    @Query(&#x27;phone&#x27;) phone: string,
+    @Query(&#x27;email&#x27;) email: string,
+    @Req() req
+  ) {
+    const testPhone &#x3D; phone || &#x27;+573147327080&#x27;; 
+    const testEmail &#x3D; email || &#x27;test@example.com&#x27;;
+    
+    try {
+      const smsResult &#x3D; await this.smsProvider.sendTouristNotification(
+        testPhone,
+        &#x27;Usuario Prueba&#x27;,
+        &#x27;Bogotá&#x27;,
+        &#x27;Jardín Botánico de Bogotá&#x27;,
+        { duration: &#x27;15 min&#x27;, distance: &#x27;1.2 km&#x27;, success: true }
+      );
+
+      const emailResult &#x3D; await this.emailProvider.sendTouristNotification(
+        testEmail,
+        &#x27;Usuario Prueba&#x27;,
+        &#x27;Bogotá&#x27;,
+        &#x27;Jardín Botánico de Bogotá&#x27;,
+        {
+          formatted_address: &#x27;Av. Esperanza #34-56, Bogotá&#x27;,
+          rating: 4.7,
+          opening_hours: { open_now: true, weekday_text: [&#x27;Lunes a Domingo: 9:00-17:00&#x27;] },
+          website: &#x27;https://jardinbotanicobogota.gov.co&#x27;
+        },
+        { duration: &#x27;15 min&#x27;, distance: &#x27;1.2 km&#x27;, success: true }
+      );
+
+      return {
+        success: true,
+        message: &#x27;Providers test completed&#x27;,
+        test_data: {
+          phone: testPhone,
+          email: testEmail
+        },
+        sms: smsResult,
+        email: emailResult,
+        providersStatus: {
+          sms: this.smsProvider.getStatus(),
+          email: this.emailProvider.getStatus(),
+          googlePlaces: this.touristPlacesService.getStatus(),
+        }
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: &#x27;Error testing providers&#x27;,
+        error: error.message
+      };
+    }
+  }
+
+  @Get(&#x27;providers-status&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Check all providers status&#x27;,
+    description: &#x27;Returns the initialization and configuration status of all external service providers (SMS, Email, Google Places).&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;Providers status retrieved successfully.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async getProvidersStatus() {
+    return {
+      sms: this.smsProvider.getStatus(),
+      email: this.emailProvider.getStatus(),
+      googlePlaces: this.touristPlacesService.getStatus(),
+    };
+  }
+
+  @Get(&#x27;sms-debug&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Debug SMS configuration&#x27;,
+    description: &#x27;Provides detailed debugging information about SMS provider configuration including credential validation and common issues.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: &#x27;SMS debug information retrieved successfully.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async debugSms() {
+    const debugInfo &#x3D; this.smsProvider.getStatus();
+    const credentialTest &#x3D; await this.smsProvider.testCredentials();
+    
+    return {
+      timestamp: new Date().toISOString(),
+      providerStatus: debugInfo,
+      credentialTest,
+      commonIssues: [
+        &#x27;1. Check TWILIO_ACCOUNT_SID starts with &quot;AC&quot;&#x27;,
+        &#x27;2. Check TWILIO_AUTH_TOKEN is correct&#x27;, 
+        &#x27;3. Verify credentials in Twilio Console&#x27;,
+        &#x27;4. Ensure account is active and has balance&#x27;
+      ]
+    };
+  }
+
+  @Post(&#x27;test-sms&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Test SMS provider only&#x27;,
+    description: &#x27;Sends a test SMS message to verify Twilio configuration and connectivity.&#x27;,
+  })
+  @ApiBody({
+    schema: {
+      type: &#x27;object&#x27;,
+      required: [&#x27;phone&#x27;],
+      properties: {
+        phone: {
+          type: &#x27;string&#x27;,
+          description: &#x27;Phone number in international format (E.164)&#x27;,
+          example: &#x27;+573001234567&#x27;
+        },
+        message: {
+          type: &#x27;string&#x27;,
+          description: &#x27;Custom test message (optional)&#x27;,
+          example: &#x27;¡Prueba de SMS desde BuzzCore!&#x27;
+        }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 201, 
+    description: &#x27;SMS sent successfully.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: &#x27;Bad request. Phone number is required.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async testSms(
+    @Body() body: { phone: string; message?: string },
+    @Req() req
+  ) {
+    const { phone, message } &#x3D; body;
+    
+    if (!phone) {
+      throw new BadRequestException(&#x27;Phone number is required&#x27;);
+    }
+
+    try {
+      const result &#x3D; await this.smsProvider.send(
+        phone,
+        message || &#x27;¡Prueba de SMS desde BuzzCore!&#x27;
+      );
+
+      return {
+        success: result.success,
+        message: result.success ? &#x27;SMS sent successfully&#x27; : &#x27;Failed to send SMS&#x27;,
+        result: result
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  @Post(&#x27;test-email&#x27;)
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ 
+    summary: &#x27;Test Email provider only&#x27;,
+    description: &#x27;Sends a test email message to verify Resend configuration and connectivity.&#x27;,
+  })
+  @ApiBody({
+    schema: {
+      type: &#x27;object&#x27;,
+      required: [&#x27;email&#x27;],
+      properties: {
+        email: {
+          type: &#x27;string&#x27;,
+          description: &#x27;Email address to send test&#x27;,
+          example: &#x27;test@example.com&#x27;,
+          format: &#x27;email&#x27;
+        },
+        message: {
+          type: &#x27;string&#x27;,
+          description: &#x27;Custom test message (optional)&#x27;,
+          example: &#x27;¡Esta es una prueba de email desde BuzzCore!&#x27;
+        }
+      }
+    }
+  })
+  @ApiResponse({ 
+    status: 201, 
+    description: &#x27;Email sent successfully.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 400, 
+    description: &#x27;Bad request. Email is required.&#x27;,
+  })
+  @ApiResponse({ 
+    status: 401, 
+    description: &#x27;Unauthorized. Valid JWT token required.&#x27;,
+  })
+  async testEmail(
+    @Body() body: { email: string; message?: string },
+    @Req() req
+  ) {
+    const { email, message } &#x3D; body;
+    
+    if (!email) {
+      throw new BadRequestException(&#x27;Email is required&#x27;);
+    }
+
+    try {
+      const html &#x3D; &#x60;
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        &lt;head&gt;
+          &lt;meta charset&#x3D;&quot;utf-8&quot;&gt;
+          &lt;style&gt;
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #667eea; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { padding: 20px; background: #f9f9f9; border-radius: 0 0 10px 10px; }
+          &lt;/style&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+          &lt;div class&#x3D;&quot;header&quot;&gt;
+            &lt;h1&gt;BuzzCore Test&lt;/h1&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;content&quot;&gt;
+            &lt;h2&gt;¡Hola!&lt;/h2&gt;
+            &lt;p&gt;${message || &#x27;¡Esta es una prueba de email desde BuzzCore!&#x27;}&lt;/p&gt;
+            &lt;p&gt;Si recibes este email, el sistema de notificaciones está funcionando correctamente.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+      &#x60;;
+      
+      const result &#x3D; await this.emailProvider.send(
+        email,
+        &#x27;Prueba de BuzzCore 📧&#x27;,
+        html
+      );
+
+      return {
+        success: result.success,
+        message: result.success ? &#x27;Email sent successfully&#x27; : &#x27;Failed to send email&#x27;,
+        result: result
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+}</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'NotificationController.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
