@@ -1,11 +1,21 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
-import { EmailProvider as IEmailProvider, EmailResult, ProviderStatus } from '../../interfaces/providers.interface';
-import { TravelTime } from '../../types/core.types';
+import { EmailResult, TravelTime } from '../../types/notification.types'; 
 
+/**
+ * Email Provider using Resend API
+ * 
+ * @description
+ * Handles email sending operations using Resend service.
+ * Provides specialized methods for tourist notifications with rich HTML templates.
+ * Validates API key on initialization and provides status checking.
+ * 
+ * @export
+ * @class EmailProvider
+ */
 @Injectable()
-export class EmailProvider implements IEmailProvider {
+export class EmailProvider {
   private readonly logger = new Logger(EmailProvider.name);
   private resend: Resend;
   private isInitialized: boolean = false;
@@ -14,36 +24,64 @@ export class EmailProvider implements IEmailProvider {
     this.initializeResend();
   }
 
+  /**
+   * Initializes Resend client with API key validation
+   * 
+   * @private
+   * @description
+   * Validates RESEND_API_KEY from environment:
+   * - Must start with 're_' prefix
+   * - Cannot contain 'mock' string
+   * Sets isInitialized flag based on validation result
+   */
   private initializeResend() {
     const apiKey = this.configService.get('RESEND_API_KEY');
 
     if (!apiKey || apiKey.includes('mock') || !apiKey.startsWith('re_')) {
-      this.logger.error('INVALID RESEND_API_KEY for production environment');
-      this.logger.error('Please obtain a valid API key from https://resend.com');
+      this.logger.error('RESEND_API_KEY NO VÁLIDA para producción');
+      this.logger.error('Obtén una API key real en https://resend.com');
       return;
     }
 
     try {
       this.resend = new Resend(apiKey);
       this.isInitialized = true;
-      this.logger.log('Resend Email Provider INITIALIZED FOR PRODUCTION');
+      this.logger.log('Resend Email Provider INICIALIZADO PARA PRODUCCIÓN');
     } catch (error) {
-      this.logger.error('RESEND INITIALIZATION FAILED:', error.message);
+      this.logger.error('FALLÓ INICIALIZACIÓN DE RESEND:', error.message);
     }
   }
 
+  /**
+   * Sends an email using Resend API
+   * 
+   * @param {string} to - Recipient email address
+   * @param {string} subject - Email subject line
+   * @param {string} html - Email HTML content
+   * @returns {Promise<EmailResult>} Result with success status and email ID or error
+   * 
+   * @example
+   * ```typescript
+   * const result = await emailProvider.send(
+   *   'user@example.com',
+   *   'Welcome!',
+   *   '<h1>Hello World</h1>'
+   * );
+   * if (result.success) console.log('Email ID:', result.id);
+   * ```
+   */
   async send(to: string, subject: string, html: string): Promise<EmailResult> {
     if (!this.isInitialized) {
-      const error = 'Resend not configured - Please verify RESEND_API_KEY';
+      const error = 'Resend no configurado - Verifica RESEND_API_KEY';
       this.logger.error(error);
       return { success: false, error };
     }
 
     try {
-      this.logger.log(`SENDING PRODUCTION EMAIL to: ${to}`);
+      this.logger.log(`ENVIANDO EMAIL REAL a: ${to}`);
       
       const result = await this.resend.emails.send({
-        from: 'BuzzCore Tourism <onboarding@resend.dev>',
+        from: 'BuzzCore Turístico <onboarding@resend.dev>',
         to: [to],
         subject: subject,
         html: html,
@@ -53,14 +91,14 @@ export class EmailProvider implements IEmailProvider {
         throw new Error(result.error.message);
       }
 
-      this.logger.log(`PRODUCTION EMAIL SENT to ${to}, ID: ${result.data?.id}`);
+      this.logger.log(`EMAIL REAL ENVIADO a ${to}, ID: ${result.data?.id}`);
       
       return {
         id: result.data?.id,
         success: true
       };
     } catch (error) {
-      this.logger.error(`PRODUCTION EMAIL FAILED for ${to}:`, error.message);
+      this.logger.error(`FALLÓ ENVÍO DE EMAIL REAL a ${to}:`, error.message);
       return {
         success: false,
         error: error.message
@@ -68,6 +106,37 @@ export class EmailProvider implements IEmailProvider {
     }
   }
 
+  /**
+   * Sends a tourist place recommendation email
+   * 
+   * @description
+   * Sends a beautifully formatted email with:
+   * - Place details (address, rating, hours)
+   * - Travel time and distance
+   * - Opening hours schedule
+   * - Google Maps link
+   * - Responsive HTML template with gradient design
+   * 
+   * @param {string} to - Recipient email address
+   * @param {string} userName - User's name for personalization
+   * @param {string} city - Detected city name
+   * @param {string} placeName - Tourist place name
+   * @param {any} placeDetails - Google Place Details API response
+   * @param {TravelTime} travelTime - Travel duration and distance
+   * @returns {Promise<EmailResult>} Email sending result
+   * 
+   * @example
+   * ```typescript
+   * await emailProvider.sendTouristNotification(
+   *   'user@example.com',
+   *   'John Doe',
+   *   'Bogotá',
+   *   'Monserrate',
+   *   placeDetailsObject,
+   *   { duration: '15 min', distance: '2.5 km', success: true }
+   * );
+   * ```
+   */
   async sendTouristNotification(
     to: string, 
     userName: string,
@@ -85,12 +154,32 @@ export class EmailProvider implements IEmailProvider {
       travelTime
     );
     
-    const subject = `${placeName} - Recommendation in ${city}`;
+    const subject = `${placeName} - Recomendación en ${city}`;
     
-    this.logger.log(` SENDING PRODUCTION TOURIST NOTIFICATION to: ${to}`);
+    this.logger.log(` ENVIANDO NOTIFICACIÓN TURÍSTICA REAL a: ${to}`);
     return this.send(to, subject, html);
   }
 
+  /**
+   * Builds HTML template for tourist notification email
+   * 
+   * @private
+   * @description
+   * Creates responsive HTML email with:
+   * - Gradient header with city name
+   * - Place card with details
+   * - Travel time information
+   * - Weekly opening hours
+   * - Google Maps button
+   * - Styled footer
+   * 
+   * @param {string} userName - User name for greeting
+   * @param {string} city - City name
+   * @param {string} placeName - Place name
+   * @param {any} placeDetails - Place details from Google API
+   * @param {TravelTime} travelTime - Travel information
+   * @returns {string} Complete HTML email template
+   */
   private buildTouristNotificationTemplate(
     userName: string,
     city: string,
@@ -99,23 +188,23 @@ export class EmailProvider implements IEmailProvider {
     travelTime: TravelTime
   ): string {
     const travelInfo = travelTime.success ? 
-      `<p><strong>Travel time:</strong> ${travelTime.duration} (${travelTime.distance})</p>` : 
-      '<p><strong></strong> Near your current location</p>';
+      `<p><strong>Tiempo de viaje:</strong> ${travelTime.duration} (${travelTime.distance})</p>` : 
+      '<p><strong></strong> Cercano a tu ubicación</p>';
 
     const placeInfo = placeDetails ? `
-      <p><strong>Address:</strong> ${placeDetails.formatted_address || 'Near your location'}</p>
-      <p><strong>Rating:</strong> ${placeDetails.rating || 'N/A'} / 5 (${placeDetails.user_ratings_total || 0} reviews)</p>
-      <p><strong>Hours:</strong> ${placeDetails.opening_hours?.open_now ? '✅ Open now' : '❌ Closed'}</p>
-      ${placeDetails.website ? `<p><strong>🌐 Website:</strong> <a href="${placeDetails.website}">${placeDetails.website}</a></p>` : ''}
-      ${placeDetails.international_phone_number ? `<p><strong>📞 Phone:</strong> ${placeDetails.international_phone_number}</p>` : ''}
+      <p><strong>Dirección:</strong> ${placeDetails.formatted_address || 'Próxima a tu ubicación'}</p>
+      <p><strong>Rating:</strong> ${placeDetails.rating || 'N/A'} / 5 (${placeDetails.user_ratings_total || 0} reseñas)</p>
+      <p><strong>Horario:</strong> ${placeDetails.opening_hours?.open_now ? '✅ Abierto ahora' : '❌ Cerrado'}</p>
+      ${placeDetails.website ? `<p><strong>🌐 Sitio web:</strong> <a href="${placeDetails.website}">${placeDetails.website}</a></p>` : ''}
+      ${placeDetails.international_phone_number ? `<p><strong>📞 Teléfono:</strong> ${placeDetails.international_phone_number}</p>` : ''}
     ` : `
-      <p><strong>Location:</strong> Near your current area</p>
-      <p><strong>Rating:</strong> Recommended place</p>
+      <p><strong>Ubicación:</strong> Próxima a tu área actual</p>
+      <p><strong>Rating:</strong> Lugar recomendado</p>
     `;
 
     const openingHours = placeDetails?.opening_hours?.weekday_text ? `
       <div style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;">
-        <strong>Opening Hours:</strong>
+        <strong>Horarios:</strong>
         ${placeDetails.opening_hours.weekday_text.map((day: string) => `<div>${day}</div>`).join('')}
       </div>
     ` : '';
@@ -136,13 +225,13 @@ export class EmailProvider implements IEmailProvider {
 </head>
 <body>
   <div class="header">
-    <h1>BuzzCore Tourism</h1>
-    <p>Discover amazing places in ${city}</p>
+    <h1>BuzzCore Turístico</h1>
+    <p>Descubre lugares increíbles en ${city}</p>
   </div>
   
   <div class="content">
-    <h2>Hello ${userName}!</h2>
-    <p>Welcome to <strong>${city}</strong>. We found a perfect tourist spot for you to visit:</p>
+    <h2>¡Hola ${userName}!</h2>
+    <p>Te damos la bienvenida a <strong>${city}</strong>. Hemos encontrado un lugar turístico perfecto para que visites:</p>
     
     <div class="place-card">
       <h3 style="color: #667eea; margin-top: 0;">${placeName}</h3>
@@ -151,22 +240,34 @@ export class EmailProvider implements IEmailProvider {
       ${openingHours}
     </div>
     
-    <p>We hope you enjoy this recommendation and your stay in ${city}!</p>
+    <p>¡Esperamos que disfrutes esta recomendación y tu estadía en ${city}!</p>
     
     <div style="text-align: center;">
-      <a href="https://maps.google.com/?q=${placeDetails?.formatted_address || placeName}" class="button">View on Google Maps</a>
+      <a href="https://maps.google.com/?q=${placeDetails?.formatted_address || placeName}" class="button">Ver en Google Maps</a>
     </div>
   </div>
   
   <div class="footer">
-    <p>© 2025 BuzzCore Tourism. All rights reserved.</p>
-    <p><small>If you no longer wish to receive these notifications, <a href="#">update your preferences</a>.</small></p>
+    <p>© 2025 BuzzCore Turístico. Todos los derechos reservados.</p>
+    <p><small>Si no deseas recibir estas notificaciones, <a href="#">actualiza tus preferencias</a>.</small></p>
   </div>
 </body>
 </html>`;
   }
 
-  getStatus(): ProviderStatus {
+  /**
+   * Gets provider initialization status
+   * 
+   * @returns {Object} Status object with initialization state and API key validity
+   * 
+   * @example
+   * ```typescript
+   * const status = emailProvider.getStatus();
+   * console.log(status.initialized); // true/false
+   * console.log(status.hasValidApiKey); // true/false
+   * ```
+   */
+  getStatus() {
     const apiKey = this.configService.get('RESEND_API_KEY');
     return {
       initialized: this.isInitialized,
