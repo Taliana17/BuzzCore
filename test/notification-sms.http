@@ -20,10 +20,8 @@ Content-Type: application/json
 
 POST http://localhost:3000/notifications/receive-location
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZTM5Njk5My0zMWNkLTRhODItYTY1NC0wYzViNzU2OTBiYTgiLCJlbWFpbCI6ImNhcmxvcy5yb2RyaWd1ZXoudHJhdmVsQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNTEwNjczLCJleHAiOjE3NjQwMjkwNzN9.bqN2q7vzimy4ADrynQ-mfkgJwFD7VtixQFr5A8nc79Q
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZTM5Njk5My0zMWNkLTRhODItYTY1NC0wYzViNzU2OTBiYTgiLCJlbWFpbCI6ImNhcmxvcy5yb2RyaWd1ZXoudHJhdmVsQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzYzNTExNzc1LCJleHAiOjE3NjQwMzAxNzV9.rUf96_9ILoW1fptBvxzvHyQxjfQwjJQAI8-q0IYGisM
 {
   "lat": 4.710989,
-  "lng": -74.072092,
-  "city": "Bogotá"
+  "lng": -74.072092
 }
