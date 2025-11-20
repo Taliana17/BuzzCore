@@ -314,7 +314,7 @@ export class TouristPlacesService implements PlaceFinder {
     }
 
     if (tags['name']) {
-      return `${tags['name']}, Bogotá`;
+      return `${tags['name']}`;
     }
 
     return 'Location available on OpenStreetMap';
