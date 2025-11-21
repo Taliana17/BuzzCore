@@ -1,98 +1,176 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 💛🐝 BuzzCore API  
+### Aplicación Inteligente de Notificaciones y Recomendaciones Turísticas  
+*Desarrollado con NestJS · PostgreSQL · Redis · BullMQ · Google Places · Twilio · Resend*
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 📝 Descripción
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**BuzzCore API** es un sistema inteligente de notificaciones multicanal que envía recomendaciones turísticas personalizadas basadas en la ubicación del usuario.
 
-## Description
+Canales disponibles:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- 📧 Email – Resend  
+- 📱 SMS – Twilio  
+- 🔔 Push Notifications 
 
-## Project setup
+Fuentes utilizadas:
 
-```bash
-$ npm install
+- 🌍 Google Places API  
+- 🗺️ OpenStreetMap Nominatim  
+
+BuzzCore usa **NestJS**, colas con **BullMQ + Redis**, **PostgreSQL**, procesamiento asíncrono y reintentos automáticos.
+
+## 👩‍💻 Equipo del Proyecto – BuzzCore Team
+
+| Integrante | Rol | Responsabilidades |
+|------------|------|-----------------------|
+| **Camila Guevara** | Líder Técnica · QA Manager | Gestión del proyecto, Scrum Board, calidad |
+| **Diana Sierra** | QA / Tester | Pruebas funcionales, casos de prueba |
+| **Stefany Abril** | Documentación | Manuales, guías, documentación técnica |
+| **Taliana Moreno Guzmán** | Backend & Deploy | API, integración de Places, Twilio y Resend |
+| **Carol Serrano** | Backend Developer | Módulos de notificaciones y Nominatim |
+| **Ana Maria**| Diseñadora| Diagramas MER|
+
+## 🚀 Enlace de Producción
+
+📌 **Swagger Docs:**  
+https://buzzcore-production.up.railway.app/api/docs
+
+## ⭐ Características Principales
+
+- 🔐 JWT con Refresh Tokens  
+- 🌍 Google Places + OSM Nominatim  
+- 📨 Email, SMS, WhatsApp, Push  
+- 📊 BullMQ + Redis  
+- 🗄️ PostgreSQL + TypeORM  
+- 🔄 Reintentos automáticos  
+- 📘 Swagger + Compodoc  
+- 🧪 Tests con Jest  
+
+## ⚙️ Instalación
+
+```
+npm install
 ```
 
-## Compile and run the project
+## 🔐 Variables de Entorno – `.env`
 
-```bash
-# development
-$ npm run start
+```
+# Database
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=your_password
+DATABASE_NAME=buzzcore
 
-# watch mode
-$ npm run start:dev
+# JWT
+JWT_SECRET=your_jwt_secret
+JWT_REFRESH_SECRET=your_refresh_secret
 
-# production mode
-$ npm run start:prod
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+# Google Places API
+GOOGLE_PLACES_API_KEY=your_google_api_key
+
+# OpenStreetMap Nominatim
+NOMINATIM_BASE_URL=https://nominatim.openstreetmap.org
+
+# Email (Resend)
+RESEND_API_KEY=your_resend_api_key
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+
+# SMS/WhatsApp (Twilio)
+TWILIO_ACCOUNT_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_token
+TWILIO_PHONE_NUMBER=+1234567890
+TWILIO_WHATSAPP_NUMBER=whatsapp:+1234567890
+
+# Push Notifications (Firebase)
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_PRIVATE_KEY=your_private_key
+FIREBASE_CLIENT_EMAIL=your_client_email
+
+# Application
+PORT=3000
+NODE_ENV=development
 ```
 
-## Run tests
+## ▶️ Ejecutar Proyecto
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+npm run start        # development
+npm run start:dev    # watch mode
+npm run start:prod   # production
 ```
 
-## Deployment
+Swagger Local:  
+http://localhost:3000/api/docs
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🧪 Testing
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+npm run test
+npm run test:e2e
+npm run test:cov
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🔄 Flujo de Notificaciones
 
-## Resources
+1. El usuario solicita una recomendación turística.  
+2. BuzzCore consulta lugares cercanos (Google Places / OSM).  
+3. Se crea una notificación con estado `pending`.  
+4. La notificación se encola en BullMQ.  
+5. El worker procesa el envío.  
+6. Se actualiza el estado a `sent` o `failed`.  
+7. En caso de fallo → reintento automático (máx. 3).  
 
-Check out a few resources that may come in handy when working with NestJS:
+## 📡 Endpoints Principales
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 🔐 Autenticación
 
-## Support
+```
+POST /auth/register
+POST /auth/login
+POST /auth/refresh
+GET  /auth/profile
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 📨 Notificaciones
 
-## Stay in touch
+```
+POST /notifications/send
+GET  /notifications/user/:userId
+GET  /notifications/user/:userId/stats
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 📍 Lugares
 
-## License
+```
+GET /places/nearby?lat=4.7110&lng=-74.0721&type=restaurant
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🧱 Stack Tecnológico
+
+- NestJS  
+- PostgreSQL  
+- Redis  
+- BullMQ  
+- TypeORM  
+- Twilio  
+- Resend  
+- Google Places API  
+- OpenStreetMap Nominatim  
+
+
+## 📚 Recursos
+
+- NestJS Docs  
+- NestJS Discord  
+- Cursos oficiales  
+- DevTools  
+- Jobs Board  
+
+## 🪪 Licencia
+
+MIT License.
